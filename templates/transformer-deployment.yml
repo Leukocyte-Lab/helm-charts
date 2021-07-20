@@ -1,0 +1,57 @@
+{{- if .Values.transformer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transformer
+  labels:
+    {{- include "AGH2-helm.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: transformer
+  template:
+    metadata:
+      labels:
+        app: transformer
+    spec:
+      initContainers:
+        - name: transformer-init-redis
+          image: redis
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ENV_REDIS_CONN
+              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+          command:
+            [
+              "sh",
+              "-c",
+              "until redis-cli --no-auth-warning -u $ENV_REDIS_CONN ping; do echo waiting for redis; sleep 1; done",
+            ]
+      containers:
+        - name: transformer
+          image: "{{ .Values.transformer.image.repository }}:{{ .Values.transformer.image.tag }}"
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ENV_REDIS_CONN
+              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            - name: CORE_URL
+              value: "core.$(NAMESPACE).svc.cluster.local:50005"
+          command: ["./transformer"]
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: grpc
+              containerPort: 50005
+          imagePullPolicy: {{ .Values.transformer.image.pullPolicy }}
+      imagePullSecrets:
+        - name: gitlab-registry
+      restartPolicy: "Always"
+{{- end }}

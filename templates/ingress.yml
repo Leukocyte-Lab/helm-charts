@@ -1,0 +1,21 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-captain
+spec:
+  rules:
+    - host: {{ .Values.ingress.host | default "app.argushack.com" }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: frontend
+              servicePort: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              serviceName: captain
+              servicePort: 9527
+{{- end }}
