@@ -102,8 +102,8 @@ transformer:
 imageCredential:
   # Fill the username & password for image pulling
   registry: registry.gitlab.com
-  username: test
-  password: testpassword
+  username: 
+  password: 
 
 ingress:
   enabled: ture
