@@ -2,16 +2,26 @@
 
 ## Usage
 
-To install the latest version of this chart, download the Argushack helm repository and edit the `values.yaml` to fill Database infromation & API Token.
+To install the latest version of this chart, download the Argushack helm repository and copy `values.yaml` as new file then fill the Database information & API Token.
 
-After finished above, run `helm install`:
+After finished above, run `helm install` with new `values.yaml`:
 
 ``` bash
-helm install agh .
+helm install agh . -f deployment-values.yaml
 ```
 
 To install with namespace created:
 
 ``` bash
-helm install --namepsace agh --create-namespace agh .
+helm install agh . -f deployment-values.yaml --namespace agh --create-namespace
+```
+
+To upgrade AGH, run `helm upgrade`:
+
+``` bash
+# default namespace
+helm upgrade agh . -f deployment-values.yaml -f upgrade.yaml
+
+# specify namespace
+helm upgrade agh . -f deployment-values.yaml -f upgrade.yaml --namespace agh
 ```
