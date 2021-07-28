@@ -20,7 +20,7 @@ captain:
   enabled: true
   image:
     repository: registry.gitlab.com/leukocyte-lab/argushack2/captain
-    tag: v0.4.3
+    tag: v0.4.5
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
@@ -68,7 +68,7 @@ frontend:
   enabled: true
   image:
     repository: registry.gitlab.com/leukocyte-lab/argushack2/frontend
-    tag: "2.5.1"
+    tag: "2.5.4"
     pullPolicy: IfNotPresent
 
 matcher:
