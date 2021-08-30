@@ -8,8 +8,8 @@ metadata:
 rules:
   - apiGroups: ["batch"]
     resources: ["jobs"]
-    verbs: ["create", "patch", "replace", "delete"]
+    verbs: ["create", "patch", "replace", "delete", "list", "get", "watch"]
   - apiGroups: ["batch"]
     resources: ["cronjobs"]
-    verbs: ["create", "patch", "replace", "delete", "list", "read"]
+    verbs: ["create", "patch", "replace", "delete", "list", "get", "deletecollection"]
 {{- end }}

@@ -47,6 +47,11 @@ spec:
                 secretKeyRef:
                   key: "DB_CONN_STR"
                   name: core-db-secret
+            - name: EXP_MGR_DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  key: DB_CONN_STR
+                  name: expmgr-db-secret
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
