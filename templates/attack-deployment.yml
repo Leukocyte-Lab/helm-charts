@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: attack-init-redis
-          image: redis
+          image: redis:6-alpine
           command:
             [
               "sh",
