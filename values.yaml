@@ -99,6 +99,15 @@ transformer:
     tag: v1.1.0
     pullPolicy: IfNotPresent
 
+minio:
+  url: ""
+  core:
+    user: ""
+    password: ""
+  capt:
+    user: ""
+    password: ""
+
 imageCredential:
   # Fill the username & password for image pulling
   registry: registry.gitlab.com
