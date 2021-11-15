@@ -37,6 +37,15 @@ template:
     ip: 192.168.0.2
     port: 5432
 
+minio:
+  url: ""
+  core:
+    user: ""
+    password: ""
+  capt:
+    user: ""
+    password: ""
+
 imageCredential:
   # Fill the username & password for image pulling
   registry: registry.lkc-lab.com
