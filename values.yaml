@@ -5,21 +5,21 @@
 attack:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/attack
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
     tag: v0.2.0
     pullPolicy: IfNotPresent
 
 blender:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/blender
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/blender
     tag: v1.1.0
     pullPolicy: IfNotPresent
 
 captain:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/captain
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
     tag: v0.11.1
     pullPolicy: IfNotPresent
   db:
@@ -39,7 +39,7 @@ captain:
 core:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/core
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/core
     tag: v1.9.0
     pullPolicy: IfNotPresent
   db:
@@ -53,7 +53,7 @@ core:
 exploitmgr:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/exploitmgr
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/exploitmgr
     tag: v0.6.0
     pullPolicy: IfNotPresent
   db:
@@ -67,21 +67,21 @@ exploitmgr:
 frontend:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/frontend
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
     tag: "2.10.0"
     pullPolicy: IfNotPresent
 
 matcher:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/matcher
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/matcher
     tag: v1.2.0
     pullPolicy: IfNotPresent
 
 template:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/template
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/template
     tag: v0.2.4
     pullPolicy: IfNotPresent
   db:
@@ -95,7 +95,7 @@ template:
 transformer:
   enabled: true
   image:
-    repository: registry.gitlab.com/leukocyte-lab/argushack2/transformer
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/transformer
     tag: v1.1.0
     pullPolicy: IfNotPresent
 
@@ -110,7 +110,7 @@ minio:
 
 imageCredential:
   # Fill the username & password for image pulling
-  registry: registry.gitlab.com
+  registry: registry.lkc-lab.com
   username: 
   password: 
 

@@ -39,6 +39,6 @@ template:
 
 imageCredential:
   # Fill the username & password for image pulling
-  registry: registry.gitlab.com
-  username: gitlab+deploy-token-123456
+  registry: registry.lkc-lab.com
+  username: robot$leukocyte-lab+username
   password: password123456789000
