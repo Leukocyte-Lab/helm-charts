@@ -50,8 +50,8 @@ spec:
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
           resources:
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "100m"
           ports:
             - name: grpc
               containerPort: 50005
