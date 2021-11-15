@@ -68,6 +68,21 @@ spec:
               value: "transformer.$(NAMESPACE).svc.cluster.local:50005"
             - name: EXPLOITMGR_URL
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: url
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: core-minio-secret
+                  key: core-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-minio-secret
+                  key: core-minio-password
           resources:
             limits:
               memory: "256Mi"

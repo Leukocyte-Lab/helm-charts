@@ -50,6 +50,11 @@ spec:
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
             - name: TEMPLATE_URL
               value: "template.$(NAMESPACE).svc.cluster.local:50005"
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: url
             - name: Addr
               value: ":9527"
             - name: SECRET_JWT
@@ -67,6 +72,16 @@ spec:
                 secretKeyRef:
                   name: capt-keygen-secret
                   key: api-token
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: capt-minio-secret
+                  key: capt-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: capt-minio-secret
+                  key: capt-minio-password
           resources:
             limits:
               memory: "128Mi"
