@@ -83,6 +83,8 @@ spec:
                 secretKeyRef:
                   name: core-minio-secret
                   key: core-minio-password
+            - name: REGISTRY_URL
+              value: {{ .Values.imageCredential.registry }}
           resources:
             limits:
               memory: "256Mi"
