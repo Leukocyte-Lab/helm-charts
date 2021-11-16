@@ -49,7 +49,7 @@ spec:
             - name: EXPLOITMGR_URL
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
           resources:
-            limits:
+            requests:
               memory: "128Mi"
               cpu: "100m"
           ports:

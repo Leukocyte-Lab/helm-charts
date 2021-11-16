@@ -17,7 +17,7 @@ spec:
         - name: redis
           image: redis:6-alpine
           resources:
-            limits:
+            requests:
               memory: "256Mi"
               cpu: "200m"
           ports:

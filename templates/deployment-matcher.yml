@@ -46,7 +46,7 @@ spec:
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
           command: ["npm", "start"]
           resources:
-            limits:
+            requests:
               memory: "256Mi"
               cpu: "200m"
           ports:
