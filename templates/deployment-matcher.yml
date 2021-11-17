@@ -46,9 +46,9 @@ spec:
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
           command: ["npm", "start"]
           resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
           ports:
             - name: grpc
               containerPort: 50005

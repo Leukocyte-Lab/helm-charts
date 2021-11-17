@@ -37,9 +37,9 @@ spec:
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
           command: ["./transformer"]
           resources:
-            limits:
+            requests:
               memory: "128Mi"
-              cpu: "500m"
+              cpu: "100m"
           ports:
             - name: grpc
               containerPort: 50005

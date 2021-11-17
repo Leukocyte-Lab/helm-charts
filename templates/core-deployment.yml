@@ -84,7 +84,7 @@ spec:
                   name: core-minio-secret
                   key: core-minio-password
           resources:
-            limits:
+            requests:
               memory: "256Mi"
               cpu: "500m"
           ports:
