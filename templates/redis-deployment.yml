@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:6-alpine
+          image: registry.lkc-lab.com/docker/library/redis:6-alpine
           resources:
             requests:
               memory: "256Mi"
