@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: transformer-init-redis
-          image: redis:6-alpine
+          image: registry.lkc-lab.com/docker/library/redis:6-alpine
           command:
             [
               "sh",
