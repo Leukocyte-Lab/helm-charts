@@ -68,7 +68,7 @@ frontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
-    tag: "2.10.2"
+    tag: "2.10.3"
     pullPolicy: IfNotPresent
 
 matcher:
