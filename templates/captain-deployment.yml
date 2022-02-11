@@ -15,6 +15,14 @@ spec:
         app: captain
     spec:
       initContainers:
+        - name: captain-init-redis
+          image: registry.lkc-lab.com/docker/library/redis:6-alpine
+          command:
+            [
+              "sh",
+              "-c",
+              "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
+            ]
         - name: captain-init-postgresql
           image: postgres:13
           env:
