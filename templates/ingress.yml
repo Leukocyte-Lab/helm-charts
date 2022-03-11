@@ -7,6 +7,8 @@ spec:
   routes:
     - kind: Rule
       match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: https-redirectscheme
       services:
         - kind: Service
           name: frontend
@@ -17,4 +19,14 @@ spec:
         - kind: Service
           name: captain
           port: 9527
+---
+# Redirect to https
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
 {{- end }}
