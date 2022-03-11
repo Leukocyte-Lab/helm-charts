@@ -1,25 +1,20 @@
 {{- if .Values.ingress.enabled }}
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: ingress-captain
 spec:
-  rules:
-    - host: {{ .Values.ingress.host | default "app.argushack.com" }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: captain
-                port:
-                  number: 9527
+  routes:
+    - kind: Rule
+      match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: frontend
+          port: 80
+    - kind: Rule
+      match: {{ print "PathPrefix(`/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: captain
+          port: 9527
 {{- end }}
