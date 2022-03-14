@@ -82,3 +82,24 @@ imageCredential:
   username: robot$leukocyte-lab+username
   password: password123456789000
 ```
+---
+use above file as deployment.yaml    
+  
+If first time install agh, Need to add repo
+``` bash
+helm repo add lkclab https://charts.lkc-lab.com/
+```
+Install agh
+``` bash
+helm install agh lkclab/agh2-helm -f deployment.yaml --namespace agh --create-namespace
+```
+If want to up date,Need to update repo
+``` bash
+helm repo update
+```
+Update agh to new version
+``` bash
+helm upgrade agh2 lkclab/agh2-helm -f deployment.yaml --namespace agh
+```
+
+
