@@ -1,0 +1,23 @@
+name: AutoMerge
+
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ startsWith(github.event.pull_request.title, 'auto-build:') }}
+        with:
+          labels: automerge
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
