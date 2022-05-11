@@ -1,0 +1,75 @@
+name: UpdateHelmValue
+
+on:
+  workflow_dispatch:
+    inputs:
+      attack:
+        description: 'version of attack'
+        required: true
+        type: string
+      blender:
+        description: 'version of blender'
+        required: true
+        type: string
+      captain:
+        description: 'version of captain'
+        required: true
+        type: string
+      core:
+        description: 'version of core'
+        required: true
+        type: string
+      exploitmgr:
+        description: 'version of exploitmgr'
+        required: true
+        type: string
+      frontend:
+        description: 'version of frontend'
+        required: true
+        type: string
+      matcher:
+        description: 'version of matcher'
+        required: true
+        type: string
+      template:
+        description: 'version of template'
+        required: true
+        type: string
+      transformer:
+        description: 'version of transformer'
+        required: true
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: installl tools
+        run: |
+          sudo apt update
+          sudo apt install gettext-base
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: generator values.yaml
+        run: |
+          export attack="${{ github.event.inputs.attack }}"
+          export blender="${{ github.event.inputs.blender }}"
+          export captain="${{ github.event.inputs.captain }}"
+          export core="${{ github.event.inputs.core }}"
+          export exploitmgr="${{ github.event.inputs.exploitmgr }}"
+          export frontend="${{ github.event.inputs.frontend }}"
+          export matcher="${{ github.event.inputs.matcher }}"
+          export template="${{ github.event.inputs.template }}"
+          export transformer="${{ github.event.inputs.transformer }}"
+          envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
+          cat charts/agh2/values.yaml
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: build/auto-update-tags-${{ steps.sha.outputs.sha }}
+          commit-message: |
+            auto-build: values.yaml update
+
+          title: "auto-build: values.yaml update"
+          body: |
+            [AUTOMATED UPDATE]
