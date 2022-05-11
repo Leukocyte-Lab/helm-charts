@@ -24,7 +24,7 @@ captain:
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
-    name: capt-db
+    name: captain-db
     username: ""
     password: ""
     ip: 192.168.0.1
@@ -58,7 +58,7 @@ exploitmgr:
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
-    name: expmgr-db
+    name: exploitmgr-db
     username: ""
     password: ""
     ip: 192.168.0.1
