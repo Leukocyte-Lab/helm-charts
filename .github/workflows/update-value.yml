@@ -27,8 +27,8 @@ on:
         description: 'version of frontend'
         required: true
         type: string
-      attack-frontend:
-        description: 'version of attack-frontend'
+      attackfrontend:
+        description: 'version of attack frontend'
         required: true
         type: string
       matcher:
@@ -62,7 +62,7 @@ jobs:
           export core="${{ github.event.inputs.core }}"
           export exploitmgr="${{ github.event.inputs.exploitmgr }}"
           export frontend="${{ github.event.inputs.frontend }}"
-          export attack-frontend="${{ github.event.inputs.attack-frontend }}"
+          export attackfrontend="${{ github.event.inputs.attackfrontend }}"
           export matcher="${{ github.event.inputs.matcher }}"
           export template="${{ github.event.inputs.template }}"
           export transformer="${{ github.event.inputs.transformer }}"
