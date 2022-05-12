@@ -34,7 +34,7 @@ captain:
     apiToken: activ-token
     accountID: account-id
   db:
-    name: capt-db
+    name: captain-db
     username: agh
     password: password
     ip: 192.168.0.2
@@ -52,7 +52,7 @@ core:
 exploitmgr:
   db:
     # Replace the password & DB ip & port
-    name: expmgr-db
+    name: exploitmgr-db
     username: agh
     password: password
     ip: 192.168.0.2
