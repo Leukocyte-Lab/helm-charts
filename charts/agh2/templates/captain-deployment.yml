@@ -30,7 +30,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: DB_CONN_STR
-                  name: capt-db-secret
+                  name: captain-db-secret
           command:
             [
               "sh",
@@ -47,7 +47,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: DB_CONN_STR
-                  name: capt-db-secret
+                  name: captain-db-secret
             - name: NAMESPACE
               valueFrom:
                 fieldRef:

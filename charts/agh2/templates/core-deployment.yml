@@ -51,7 +51,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: DB_CONN_STR
-                  name: expmgr-db-secret
+                  name: exploitmgr-db-secret
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
