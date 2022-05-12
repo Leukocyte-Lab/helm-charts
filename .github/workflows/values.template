@@ -8,6 +8,12 @@ attack:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
     tag: $attack
     pullPolicy: IfNotPresent
+  db:
+      name: captain-db
+      username: ""
+      password: ""
+      ip: 192.168.0.1
+      port: 5432
 
 attack-frontend:
   enabled: true
