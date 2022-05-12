@@ -37,11 +37,11 @@ captain:
     ip: 192.168.0.1
     port: 5432
   # `jwt-secret` is required, plz enter random string no less then 10 letters
-  jwtSecret: 
+  jwtSecret:
   # `apiToken` & `accountID` is required, plz contact sales to get tokens
   keygen:
     apiToken:
-    accountID: 
+    accountID:
 
 core:
   enabled: true
@@ -118,9 +118,9 @@ minio:
 imageCredential:
   # Fill the username & password for image pulling
   registry: registry.lkc-lab.com
-  username: 
-  password: 
+  username:
+  password:
 
 ingress:
   enabled: ture
-  host: "app.argushack.com" 
+  host: "app.argushack.com"
