@@ -23,6 +23,20 @@ spec:
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
+        - name: attack-init-postgresql
+          image: postgres:13
+          env:
+            - name: PG_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  key: DB_CONN_STR
+                  name: attack-db-secret
+          command:
+            [
+              "sh",
+              "-c",
+              "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
+            ]
       containers:
         - name: attack
           image: "{{ .Values.attack.image.repository }}:{{ .Values.attack.image.tag }}"
