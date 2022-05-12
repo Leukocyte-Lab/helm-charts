@@ -9,6 +9,13 @@ attack:
     tag: $attack
     pullPolicy: IfNotPresent
 
+attack-frontend:
+  enabled: true
+  image:
+    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend
+    tag: $attack-frontend
+    pullPolicy: IfNotPresent
+
 blender:
   enabled: true
   image:
