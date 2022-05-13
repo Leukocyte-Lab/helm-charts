@@ -9,7 +9,7 @@ attack:
     tag: v0.3.0
     pullPolicy: IfNotPresent
   db:
-      name: captain-db
+      name: attack-db
       username: ""
       password: ""
       ip: 192.168.0.1
