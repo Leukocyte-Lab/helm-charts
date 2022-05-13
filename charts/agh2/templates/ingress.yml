@@ -27,10 +27,12 @@ spec:
           port: 80
     - kind: Rule
       match: {{ print "PathPrefix(`/attack/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: attack-stripprefix
       services:
         - kind: Service
-          name: captain
-          port: 9527
+          name: attack
+          port: 8080
     - kind: Rule
       match: {{ print "(Path(`/attack/api/user`) || Path(`/attack/api/version`)) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       middlewares:
