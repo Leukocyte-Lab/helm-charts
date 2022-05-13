@@ -14,6 +14,16 @@ entries:
   agh2-helm:
   - apiVersion: v2
     appVersion: "220413"
+    created: "2022-05-13T04:34:20.614339476Z"
+    description: A Helm chart for Kubernetes
+    digest: 138126ed8f4f5d6c90d1f36200853351a6503b83e9dcf588ac3960631a8bb1e1
+    name: agh2-helm
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh2-helm-0.4.8/agh2-helm-0.4.8.tgz
+    version: 0.4.8
+  - apiVersion: v2
+    appVersion: "220413"
     created: "2022-05-13T04:23:36.93717867Z"
     description: A Helm chart for Kubernetes
     digest: 2bb321efdd072d385a279c9d758430c5da86b69641bf9543fa5df038dbd0625f
@@ -32,4 +42,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh2-helm-0.4.6/agh2-helm-0.4.6.tgz
     version: 0.4.6
-generated: "2022-05-13T04:23:36.93718867Z"
+generated: "2022-05-13T04:34:20.614351776Z"
