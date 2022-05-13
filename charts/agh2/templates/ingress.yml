@@ -25,6 +25,30 @@ spec:
         - kind: Service
           name: attackfrontend
           port: 80
+    - kind: Rule
+      match: {{ print "PathPrefix(`/attack/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: captain
+          port: 9527
+    - kind: Rule
+      match: {{ print "(Path(`/attack/api/user`) || Path(`/attack/api/version`)) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: attack-stripprefix
+      services:
+        - kind: Service
+          name: captain
+          port: 9527
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: attack-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /attack
+    forceSlash: false
 ---
 # Redirect to https
 apiVersion: traefik.containo.us/v1alpha1
