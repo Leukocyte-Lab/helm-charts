@@ -62,7 +62,7 @@ jobs:
           export core="${{ github.event.inputs.core }}"
           export exploitmgr="${{ github.event.inputs.exploitmgr }}"
           export frontend="${{ github.event.inputs.frontend }}"
-          export attackfrontend="${{ github.event.inputs.attackfrontend }}"
+          export attackfrontend="${{ github.event.inputs.attack-frontend }}"
           export matcher="${{ github.event.inputs.matcher }}"
           export template="${{ github.event.inputs.template }}"
           export transformer="${{ github.event.inputs.transformer }}"
