@@ -27,7 +27,7 @@ on:
         description: 'version of frontend'
         required: true
         type: string
-      attackfrontend:
+      attack-frontend:
         description: 'version of attack frontend'
         required: true
         type: string
