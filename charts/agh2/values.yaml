@@ -8,8 +8,15 @@ attack:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
     tag: v0.3.0
     pullPolicy: IfNotPresent
+  db:
+    # Replace the password & DB ip & port
+    name: attack-db
+    username: ""
+    password: ""
+    ip: 192.168.0.1
+    port: 5432
 
-attackfrontend:
+attack-frontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend

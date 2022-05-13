@@ -1,0 +1,27 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attack-frontend
+  labels:
+    {{- include "AGH2-helm.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: attack-frontend
+  template:
+    metadata:
+      labels:
+        app: attack-frontend
+    spec:
+      containers:
+        - name: attack-frontend
+          image: "{{ .Values.attack-frontend.image.repository }}:{{ .Values.attack-frontend.image.tag }}"
+          ports:
+            - name: web
+              containerPort: 80
+          imagePullPolicy: {{ .Values.attack-frontend.image.pullPolicy }}
+      imagePullSecrets:
+        - name: gitlab-registry
+      restartPolicy: Always
+{{- end }}

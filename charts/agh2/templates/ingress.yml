@@ -19,6 +19,12 @@ spec:
         - kind: Service
           name: captain
           port: 9527
+    - kind: Rule
+      match: {{ print "PathPrefix(`/attack`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: attack-frontend
+          port: 80
 ---
 # Redirect to https
 apiVersion: traefik.containo.us/v1alpha1
