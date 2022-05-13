@@ -23,7 +23,7 @@ spec:
       match: {{ print "PathPrefix(`/attack`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       services:
         - kind: Service
-          name: attackfrontend
+          name: attack-frontend
           port: 80
 ---
 # Redirect to https
