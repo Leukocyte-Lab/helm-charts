@@ -2,25 +2,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: attack-frontend
+  name: attackfrontend
   labels:
     {{- include "AGH2-helm.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      app: attack-frontend
+      app: attackfrontend
   template:
     metadata:
       labels:
-        app: attack-frontend
+        app: attackfrontend
     spec:
       containers:
-        - name: attack-frontend
-          image: "{{ .Values.attack-frontend.image.repository }}:{{ .Values.attack-frontend.image.tag }}"
+        - name: attackfrontend
+          image: "{{ .Values.attackfrontend.image.repository }}:{{ .Values.attackfrontend.image.tag }}"
           ports:
             - name: web
               containerPort: 80
-          imagePullPolicy: {{ .Values.attack-frontend.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.attackfrontend.image.pullPolicy }}
       imagePullSecrets:
         - name: gitlab-registry
       restartPolicy: Always

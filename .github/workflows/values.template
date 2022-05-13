@@ -15,7 +15,7 @@ attack:
       ip: 192.168.0.1
       port: 5432
 
-attack-frontend:
+attackfrontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend
