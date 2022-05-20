@@ -27,6 +27,7 @@ helm upgrade agh . -f deployment-values.yaml -f upgrade.yaml --namespace agh
 ```
 
 ## deypoloyment-values.yaml
+
 ```
 captain:
   jwtSecret: "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b" # `jwt-secret` is required, plz enter random string no less then 10 letters
@@ -81,4 +82,31 @@ imageCredential:
   registry: registry.lkc-lab.com
   username: robot$leukocyte-lab+username
   password: password123456789000
+```
+
+---
+use above file as deployment.yaml
+  
+If first time install agh, need to add repo
+
+``` bash
+helm repo add lkclab https://charts.lkc-lab.com/
+```
+
+Install agh
+
+``` bash
+helm install agh lkclab/agh2 -f deployment.yaml --namespace agh --create-namespace
+```
+
+warning: Update helm repo before performing the products update process
+
+``` bash
+helm repo update
+```
+
+Update agh to new version
+
+``` bash
+helm upgrade agh2 lkclab/agh2 -f deployment.yaml --namespace agh
 ```
