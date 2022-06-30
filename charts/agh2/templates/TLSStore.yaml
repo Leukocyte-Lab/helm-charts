@@ -1,3 +1,4 @@
+{{- if .Values.certificate.key }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: TLSStore
 metadata:
@@ -6,3 +7,4 @@ metadata:
 spec:
   defaultCertificate:
     secretName: agh-ca
+{{- end }}
