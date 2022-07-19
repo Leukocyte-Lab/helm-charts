@@ -6,20 +6,20 @@ attack:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
-    tag: v0.3.0
+    tag: v0.4.0
     pullPolicy: IfNotPresent
   db:
-    name: attack-db
-    username: ""
-    password: ""
-    ip: 192.168.0.1
-    port: 5432
+      name: attack-db
+      username: ""
+      password: ""
+      ip: 192.168.0.1
+      port: 5432
 
 attackfrontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend
-    tag: v0.0.1
+    tag: v0.1.2
     pullPolicy: IfNotPresent
 
 blender:
@@ -33,7 +33,7 @@ captain:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
-    tag: v0.16.1
+    tag: v0.17.0
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
@@ -53,7 +53,7 @@ core:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/core
-    tag: v1.12.0
+    tag: v1.14.0
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
@@ -81,14 +81,14 @@ frontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
-    tag: v2.15.0
+    tag: v2.16.1
     pullPolicy: IfNotPresent
 
 matcher:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/matcher
-    tag: v1.2.1
+    tag: v1.2.2
     pullPolicy: IfNotPresent
 
 template:
