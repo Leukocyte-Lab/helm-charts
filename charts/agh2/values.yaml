@@ -14,6 +14,9 @@ attack:
       password: ""
       ip: 192.168.0.1
       port: 5432
+  group:
+      imageUri: registry.gitlab.com/leukocyte-lab/argushack2/group
+      tag: v0.0.1
 
 attackfrontend:
   enabled: true
@@ -33,7 +36,7 @@ captain:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
-    tag: v0.17.0
+    tag: v0.17.1
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
