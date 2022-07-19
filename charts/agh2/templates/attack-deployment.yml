@@ -54,6 +54,8 @@ spec:
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            - name: GROUP_IMAGE_URI
+              value: "{{ .Values.attack.group.imageUri }}:{{ .Values.attack.group.tag }}"
           command: ["./attack"]
           resources:
             requests:

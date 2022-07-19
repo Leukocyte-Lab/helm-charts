@@ -14,6 +14,9 @@ attack:
       password: ""
       ip: 192.168.0.1
       port: 5432
+  group:
+      imageUri: registry.gitlab.com/leukocyte-lab/argushack2/group
+      tag: v0.0.1
 
 attackfrontend:
   enabled: true
