@@ -52,6 +52,11 @@ spec:
                 secretKeyRef:
                   key: DB_CONN_STR
                   name: exploitmgr-db-secret
+            - name: ATTACK_DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  key: DB_CONN_STR
+                  name: attack-db-secret
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
