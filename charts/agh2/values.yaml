@@ -36,7 +36,7 @@ captain:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
-    tag: v0.18.1
+    tag: v0.18.3
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
