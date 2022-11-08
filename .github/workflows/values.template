@@ -16,7 +16,7 @@ attack:
       port: 5432
   group:
       imageUri: registry.gitlab.com/leukocyte-lab/argushack2/group
-      tag: v0.0.1
+      tag: v1.3.6
 
 attackfrontend:
   enabled: true
