@@ -15,7 +15,7 @@ attack:
       ip: 192.168.0.1
       port: 5432
   group:
-      imageUri: registry.gitlab.com/leukocyte-lab/argushack2/group
+      imageUri: registry.lkc-lab.com/leukocyte-lab/argushack2/group
       tag: v1.3.6
 
 attackfrontend:
