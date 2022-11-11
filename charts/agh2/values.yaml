@@ -36,7 +36,7 @@ captain:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
-    tag: v0.18.4
+    tag: v0.18.5
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
@@ -56,7 +56,7 @@ core:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/core
-    tag: v1.16.1
+    tag: v1.16.2
     pullPolicy: IfNotPresent
   db:
     # Replace the password & DB ip & port
@@ -84,7 +84,7 @@ frontend:
   enabled: true
   image:
     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
-    tag: v2.18.0
+    tag: v2.18.2
     pullPolicy: IfNotPresent
 
 matcher:
