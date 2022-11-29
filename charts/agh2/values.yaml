@@ -123,24 +123,34 @@ attack:
   service:
     ## ATTACK Group worker
     ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-Group
-    ## @param attack.service.group.image.repository ATTACK Group worker image repository
-    ## @param attack.service.group.image.tag ATTACK Group worker image tag (immutable tags are recommended)
+    ## @param attack.service.group.enabled Enable ATTACK Group worker
     ##
     group:
+      enabled: true
+      ## @param attack.service.group.image.repository ATTACK Group worker image repository
+      ## @param attack.service.group.image.tag ATTACK Group worker image tag (immutable tags are recommended)
+      ##
       image:
         repository: leukocyte-lab/argushack2/group
         tag: v1.3.6
     ## ATTACK UI
     ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-UI
-    ## @param attack.service.ui.image.repository ATTACK UI image repository
-    ## @param attack.service.ui.image.tag ATTACK UI image tag (immutable tags are recommended)
-    ## @param attack.service.ui.image.pullPolicy ATTACK UI image pull policy
+    ## @param attack.service.ui.enabled Enable ATTACK UI
     ##
     ui:
+      enabled: true
+      ## @param attack.service.ui.image.repository ATTACK UI image repository
+      ## @param attack.service.ui.image.tag ATTACK UI image tag (immutable tags are recommended)
+      ## @param attack.service.ui.image.pullPolicy ATTACK UI image pull policy
+      ##
       image:
         repository: leukocyte-lab/argushack2/attack-frontend
         tag: v0.3.0
         pullPolicy: IfNotPresent
+    ## Redis
+    ## @param attack.service.redis.enabled Enable redis
+    redis:
+      enabled: true
   ## @param attack.extraEnv ATTACK additional environment variables
   ##
   extraEnv: {}
