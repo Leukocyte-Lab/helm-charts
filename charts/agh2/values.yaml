@@ -17,44 +17,57 @@ global:
   imagePullSecrets: []
   storageClass: ""
 
-  db:
-    ## Connection information for the database
+## @section Database parameters
+db:
+  ## @extra db.connection Connection information for the database
+  ##
+  connection:
+    ## @param db.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `db.image` when use internal
     ##
-    connection:
-      ## @param global.db.connection.type Choose to use external DB or internal DB
-      ## internal` or `external` in string
-      ## Set `global.db.image` when use internal
-      ##
-      type: external
-      ## @param global.db.connection.host Database host address
-      ## IP or FQDN in string
-      ## Required if `global.db.type` is external
-      ##
-      host: database.example.com
-      
-      ## @param global.db.connection.port Database host port
-      ## Port in number
-      ##
-      port: 5432
+    type: external
+    ## @param db.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `db.type` is external
+    ##
+    host: database.example.com
     
-    ## Internal database settings
-    ## Leave as default if use external DB
+    ## @param db.connection.port Database host port
+    ## Port in number
     ##
-    internal:
-      ## @param global.db.internal.enabled Internal database
-      ##
-      enabled: false
+    port: 5432
 
-      ## Internal database image
-      ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
-      ## @param global.db.internal.image.repository Internal database image repository
-      ## @param global.db.internal.image.tag Internal database image tag (immutable tags are recommended)
-      ## @param global.db.internal.image.pullPolicy Internal database image pull policy
-      ##
-      image:
-        repository: bitnami/postgresql
-        tag: 15.1.0-debian-11-r0
-        pullPolicy: IfNotPresent
+    ## @param db.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+
+    ## @param db.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+  
+  ## @session Internal database settings
+  ## @descriptionStart
+  ## Leave `db.internal.*` as default if use external DB
+  ## @descriptionEnd
+  ##
+  internal:
+    ## @param db.internal.enabled Internal database
+    ##
+    enabled: false
+
+    ## Internal database image
+    ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
+    ## @param db.internal.image.repository Internal database image repository
+    ## @param db.internal.image.tag Internal database image tag (immutable tags are recommended)
+    ## @param db.internal.image.pullPolicy Internal database image pull policy
+    ##
+    image:
+      repository: bitnami/postgresql
+      tag: 15.1.0-debian-11-r0
+      pullPolicy: IfNotPresent
 
 attack:
   enabled: true
