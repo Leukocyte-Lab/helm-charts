@@ -1,6 +1,20 @@
-# Default values for AGH2-helm.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+  db:
+    connection:
+      type: external
+      host: database.example.com
+
+      port: 5432
+    internal:
+      enabled: false
+      image:
+        repository: bitnami/postgresql
+        tag: 15.1.0-debian-11-r0
+        pullPolicy: IfNotPresent
 
 attack:
   enabled: true
