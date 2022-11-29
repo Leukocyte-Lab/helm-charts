@@ -70,6 +70,22 @@ db:
       tag: 15.1.0-debian-11-r0
       pullPolicy: IfNotPresent
 
+## @section Redis parameters
+##
+
+## @param redis.enabled Enable redis
+redis:
+  enabled: true
+  ## Redis image
+  ## @param redis.image.repository Redis image repository
+  ## @param redis.image.tag Redis image tag (immutable tags are recommended)
+  ## @param redis.image.pullPolicy Redis image pull policy
+  ##
+  image:
+    repository: docker/library/redis
+    tag: 6-alpine
+    pullPolicy: IfNotPresent
+
 attack:
   enabled: true
   image:
