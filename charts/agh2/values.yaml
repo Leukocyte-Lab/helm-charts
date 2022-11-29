@@ -48,9 +48,9 @@ db:
     ##
     password: ""
   
-  ## @session Internal database settings
+  ## @section Internal database provisioning parameters
   ## @descriptionStart
-  ## Leave `db.internal.*` as default if use external DB
+  ## Leave as default if use external DB
   ## @descriptionEnd
   ##
   internal:

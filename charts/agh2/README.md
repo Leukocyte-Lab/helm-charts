@@ -22,18 +22,24 @@ helm install agh2 agh2/agh2
 
 ### Database parameters
 
-Leave `db.internal.*` as default if use external DB
+| Name                     | Description                              | Value                  |
+| ------------------------ | ---------------------------------------- | ---------------------- |
+| `db.connection`          | Connection information for the database  |                        |
+| `db.connection.type`     | Choose to use external DB or internal DB | `external`             |
+| `db.connection.host`     | Database host address                    | `database.example.com` |
+| `db.connection.port`     | Database host port                       | `5432`                 |
+| `db.connection.user`     | Database user                            | `argushack`            |
+| `db.connection.password` | Database password                        | `""`                   |
 
-| Name                           | Description                                                  | Value                  |
-| ------------------------------ | ------------------------------------------------------------ | ---------------------- |
-| `db.connection`                | Connection information for the database                      |                        |
-| `db.connection.type`           | Choose to use external DB or internal DB                     | `external`             |
-| `db.connection.host`           | Database host address                                        | `database.example.com` |
-| `db.connection.port`           | Database host port                                           | `5432`                 |
-| `db.connection.user`           | Database user                                                | `argushack`            |
-| `db.connection.password`       | Database password                                            | `""`                   |
-| `db.internal.enabled`          | Internal database                                            | `false`                |
-| `db.internal.image.repository` | Internal database image repository                           | `bitnami/postgresql`   |
-| `db.internal.image.tag`        | Internal database image tag (immutable tags are recommended) | `15.1.0-debian-11-r0`  |
-| `db.internal.image.pullPolicy` | Internal database image pull policy                          | `IfNotPresent`         |
+
+### Internal database settings
+
+Leave as default if use external DB
+
+| Name                           | Description                                                  | Value                 |
+| ------------------------------ | ------------------------------------------------------------ | --------------------- |
+| `db.internal.enabled`          | Internal database                                            | `false`               |
+| `db.internal.image.repository` | Internal database image repository                           | `bitnami/postgresql`  |
+| `db.internal.image.tag`        | Internal database image tag (immutable tags are recommended) | `15.1.0-debian-11-r0` |
+| `db.internal.image.pullPolicy` | Internal database image pull policy                          | `IfNotPresent`        |
 
