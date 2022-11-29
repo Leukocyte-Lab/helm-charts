@@ -86,35 +86,64 @@ redis:
     tag: 6-alpine
     pullPolicy: IfNotPresent
 
+## @section AGH2-ATTACK parameters
+## @descriptionStart
+## ATTACK module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
+## @descriptionEnd
+##
 attack:
+  ## @param attack.enabled Enable ATTACK module
+  ##
   enabled: true
+  ## @param attack.image.repository ATTACK image repository
+  ## @param attack.image.tag ATTACK image tag (immutable tags are recommended)
+  ## @param attack.image.pullPolicy ATTACK image pull policy
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
+    repository: leukocyte-lab/argushack2/attack
     tag: v0.9.0
     pullPolicy: IfNotPresent
-  db:
+  ## @param attack.secret.enabled Enable secret generate for ATTACK
+  ## @param attack.secret.name Secret name for ATTACK
+  ##
+  secret:
+    enabled: true # Manually create secret named as the value of `attack.secret.name` if set to false
+    name: attack-db-secret
+    ## @param attack.secret.db.name Database name
+    ## @param attack.secret.db.user Database user
+    ## @param attack.secret.db.password Database password
+    ##
+    db:
       name: attack-db
-      username: ""
+      user: ""
       password: ""
-      ip: 192.168.0.1
-      port: 5432
-  group:
-      imageUri: registry.gitlab.com/leukocyte-lab/argushack2/group
-      tag: v0.0.1
-
-attackfrontend:
-  enabled: true
-  image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend
-    tag: v0.2.3
-    pullPolicy: IfNotPresent
-
-blender:
-  enabled: true
-  image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/blender
-    tag: v1.1.0
-    pullPolicy: IfNotPresent
+  ## @extra attack.service ATTACK service parameters
+  ##
+  service:
+    ## ATTACK Group worker
+    ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-Group
+    ## @param attack.service.group.image.repository ATTACK Group worker image repository
+    ## @param attack.service.group.image.tag ATTACK Group worker image tag (immutable tags are recommended)
+    ##
+    group:
+      image:
+        repository: leukocyte-lab/argushack2/group
+        tag: v1.3.6
+    ## ATTACK UI
+    ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-UI
+    ## @param attack.service.ui.image.repository ATTACK UI image repository
+    ## @param attack.service.ui.image.tag ATTACK UI image tag (immutable tags are recommended)
+    ## @param attack.service.ui.image.pullPolicy ATTACK UI image pull policy
+    ##
+    ui:
+      image:
+        repository: leukocyte-lab/argushack2/attack-frontend
+        tag: v0.3.0
+        pullPolicy: IfNotPresent
+  ## @param attack.extraEnv ATTACK additional environment variables
+  ##
+  extraEnv: {}
 
 captain:
   enabled: true
