@@ -61,22 +61,25 @@ Leave as default if using external DB
 ATTACK module for AGH2.
 ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 
-| Name                                    | Description                                                    | Value                                                           |
-| --------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------- |
-| `attack.enabled`                        | Enable ATTACK module                                           | `true`                                                          |
-| `attack.image.repository`               | ATTACK image repository                                        | `registry.lkc-lab.com/leukocyte-lab/argushack2/attack`          |
-| `attack.image.tag`                      | ATTACK image tag (immutable tags are recommended)              | `v0.9.0`                                                        |
-| `attack.image.pullPolicy`               | ATTACK image pull policy                                       | `IfNotPresent`                                                  |
-| `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                                          |
-| `attack.secret.name`                    | Secret name for ATTACK                                         | `attack-db-secret`                                              |
-| `attack.secret.db.name`                 | Database name                                                  | `attack-db`                                                     |
-| `attack.secret.db.user`                 | Database user                                                  | `""`                                                            |
-| `attack.secret.db.password`             | Database password                                              | `""`                                                            |
-| `attack.service`                        | ATTACK service parameters                                      |                                                                 |
-| `attack.service.group.image.repository` | ATTACK Group worker image repository                           | `registry.lkc-lab.com/leukocyte-lab/argushack2/group`           |
-| `attack.service.group.image.tag`        | ATTACK Group worker image tag (immutable tags are recommended) | `v1.3.6`                                                        |
-| `attack.service.ui.image.repository`    | ATTACK UI image repository                                     | `registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend` |
-| `attack.service.ui.image.tag`           | ATTACK UI image tag (immutable tags are recommended)           | `v0.3.0`                                                        |
-| `attack.service.ui.image.pullPolicy`    | ATTACK UI image pull policy                                    | `IfNotPresent`                                                  |
-| `attack.extraEnv`                       | ATTACK additional environment variables                        | `{}`                                                            |
+| Name                                    | Description                                                    | Value                                      |
+| --------------------------------------- | -------------------------------------------------------------- | ------------------------------------------ |
+| `attack.enabled`                        | Enable ATTACK module                                           | `true`                                     |
+| `attack.image.repository`               | ATTACK image repository                                        | `leukocyte-lab/argushack2/attack`          |
+| `attack.image.tag`                      | ATTACK image tag (immutable tags are recommended)              | `v0.9.0`                                   |
+| `attack.image.pullPolicy`               | ATTACK image pull policy                                       | `IfNotPresent`                             |
+| `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                     |
+| `attack.secret.name`                    | Secret name for ATTACK                                         | `attack-db-secret`                         |
+| `attack.secret.db.name`                 | Database name                                                  | `attack-db`                                |
+| `attack.secret.db.user`                 | Database user                                                  | `""`                                       |
+| `attack.secret.db.password`             | Database password                                              | `""`                                       |
+| `attack.service`                        | ATTACK service parameters                                      |                                            |
+| `attack.service.group.enabled`          | Enable ATTACK Group worker                                     | `true`                                     |
+| `attack.service.group.image.repository` | ATTACK Group worker image repository                           | `leukocyte-lab/argushack2/group`           |
+| `attack.service.group.image.tag`        | ATTACK Group worker image tag (immutable tags are recommended) | `v1.3.6`                                   |
+| `attack.service.ui.enabled`             | Enable ATTACK UI                                               | `true`                                     |
+| `attack.service.ui.image.repository`    | ATTACK UI image repository                                     | `leukocyte-lab/argushack2/attack-frontend` |
+| `attack.service.ui.image.tag`           | ATTACK UI image tag (immutable tags are recommended)           | `v0.3.0`                                   |
+| `attack.service.ui.image.pullPolicy`    | ATTACK UI image pull policy                                    | `IfNotPresent`                             |
+| `attack.service.redis.enabled`          | Enable redis                                                   | `true`                                     |
+| `attack.extraEnv`                       | ATTACK additional environment variables                        | `{}`                                       |
 
