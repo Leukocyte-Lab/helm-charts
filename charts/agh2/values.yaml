@@ -13,7 +13,7 @@
 ## @param global.storageClass Global storage class for dynamic provisioning
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "registry.lkc-lab.com"
   imagePullSecrets: []
   storageClass: ""
 
@@ -56,7 +56,7 @@ db:
   ## @descriptionEnd
   ##
   internal:
-    ## @param db.internal.enabled Internal database
+    ## @param db.internal.enabled Enable internal database
     ##
     enabled: false
     ## Internal database image
