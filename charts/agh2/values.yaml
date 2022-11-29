@@ -32,17 +32,14 @@ db:
     ## Required if `db.type` is external
     ##
     host: database.example.com
-    
     ## @param db.connection.port Database host port
     ## Port in number
     ##
     port: 5432
-
     ## @param db.connection.user Database user
     ## DB User in string
     ##
     user: argushack
-
     ## @param db.connection.password Database password
     ## DB Password in string
     ##
@@ -57,7 +54,6 @@ db:
     ## @param db.internal.enabled Internal database
     ##
     enabled: false
-
     ## Internal database image
     ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
     ## @param db.internal.image.repository Internal database image repository
