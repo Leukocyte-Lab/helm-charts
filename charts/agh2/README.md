@@ -1,112 +1,39 @@
 # AGH2-helm
 
-## Usage
+## Install
 
-To install the latest version of this chart, download the Argushack helm repository and copy `values.yaml` as new file then fill the Database information & API Token.
-
-After finished above, run `helm install` with new `values.yaml`:
-
-``` bash
-helm install agh . -f deployment-values.yaml
-```
-
-To install with namespace created:
-
-``` bash
-helm install agh . -f deployment-values.yaml --namespace agh --create-namespace
-```
-
-To upgrade AGH, run `helm upgrade`:
-
-``` bash
-# default namespace
-helm upgrade agh . -f deployment-values.yaml -f upgrade.yaml
-
-# specify namespace
-helm upgrade agh . -f deployment-values.yaml -f upgrade.yaml --namespace agh
-```
-
-## deypoloyment-values.yaml
-
-```
-captain:
-  jwtSecret: "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b" # `jwt-secret` is required, plz enter random string no less then 10 letters
-  keygen:       # `apiToken` & `accountID` is required, plz contact sales to get tokens
-    apiToken: activ-token
-    accountID: account-id
-  db:
-    name: captain-db
-    username: agh
-    password: password
-    ip: 192.168.0.2
-    port: 5432
-
-core:
-  db:
-    # Replace the password & DB ip & port
-    name: core-db
-    username: agh
-    password: password
-    ip: 192.168.0.2
-    port: 5432
-
-exploitmgr:
-  db:
-    # Replace the password & DB ip & port
-    name: exploitmgr-db
-    username: agh
-    password: password
-    ip: 192.168.0.2
-    port: 5432
-
-template:
-  db:
-    # Replace the password & DB ip & port
-    name: template-db
-    username: agh
-    password: password
-    ip: 192.168.0.2
-    port: 5432
-
-minio:
-  url: ""
-  core:
-    user: ""
-    password: ""
-  capt:
-    user: ""
-    password: ""
-
-imageCredential:
-  # Fill the username & password for image pulling
-  registry: registry.lkc-lab.com
-  username: robot$leukocyte-lab+username
-  password: password123456789000
-```
-
----
-use above file as deployment.yaml
-  
-If first time install agh, need to add repo
-
-``` bash
-helm repo add lkclab https://charts.lkc-lab.com/
-```
-
-Install agh
-
-``` bash
-helm install agh lkclab/agh2 -f deployment.yaml --namespace agh --create-namespace
-```
-
-warning: Update helm repo before performing the products update process
-
-``` bash
+```bash
+helm repo add agh2 https://agh2.github.io/helm-charts
 helm repo update
+
+helm install agh2 agh2/agh2
 ```
 
-Update agh to new version
+## Parameters
 
-``` bash
-helm upgrade agh2 lkclab/agh2 -f deployment.yaml --namespace agh
-```
+### Global parameters
+
+| Name                      | Description                                     | Value |
+| ------------------------- | ----------------------------------------------- | ----- |
+| `global.imageRegistry`    | Global Docker Image registry                    | `""`  |
+| `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
+| `global.storageClass`     | Global storage class for dynamic provisioning   | `""`  |
+
+
+### Database parameters
+
+Leave `db.internal.*` as default if use external DB
+
+| Name                           | Description                                                  | Value                  |
+| ------------------------------ | ------------------------------------------------------------ | ---------------------- |
+| `db.connection`                | Connection information for the database                      |                        |
+| `db.connection.type`           | Choose to use external DB or internal DB                     | `external`             |
+| `db.connection.host`           | Database host address                                        | `database.example.com` |
+| `db.connection.port`           | Database host port                                           | `5432`                 |
+| `db.connection.user`           | Database user                                                | `argushack`            |
+| `db.connection.password`       | Database password                                            | `""`                   |
+| `db.internal.enabled`          | Internal database                                            | `false`                |
+| `db.internal.image.repository` | Internal database image repository                           | `bitnami/postgresql`   |
+| `db.internal.image.tag`        | Internal database image tag (immutable tags are recommended) | `15.1.0-debian-11-r0`  |
+| `db.internal.image.pullPolicy` | Internal database image pull policy                          | `IfNotPresent`         |
+
