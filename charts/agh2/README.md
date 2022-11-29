@@ -3,10 +3,10 @@
 ## Install
 
 ```bash
-helm repo add agh2 https://agh2.github.io/helm-charts
+helm repo add lkclab https://charts.lkc-lab.com/
 helm repo update
 
-helm install agh2 agh2/agh2
+helm install agh2 lkclab/agh2
 ```
 
 ## Parameters
@@ -22,19 +22,21 @@ helm install agh2 agh2/agh2
 
 ### Database parameters
 
-| Name                     | Description                              | Value                  |
-| ------------------------ | ---------------------------------------- | ---------------------- |
-| `db.connection`          | Connection information for the database  |                        |
-| `db.connection.type`     | Choose to use external DB or internal DB | `external`             |
-| `db.connection.host`     | Database host address                    | `database.example.com` |
-| `db.connection.port`     | Database host port                       | `5432`                 |
-| `db.connection.user`     | Database user                            | `argushack`            |
-| `db.connection.password` | Database password                        | `""`                   |
+| Name                               | Description                              | Value                  |
+| ---------------------------------- | ---------------------------------------- | ---------------------- |
+| `db.connection`                    | Connection information for the database  |                        |
+| `db.connection.type`               | Choose to use external DB or internal DB | `external`             |
+| `db.connection.host`               | Database host address                    | `database.example.com` |
+| `db.connection.port`               | Database host port                       | `5432`                 |
+| `db.connection.user`               | Database user                            | `argushack`            |
+| `db.connection.password`           | Database password                        | `""`                   |
+| `db.connection.options`            | Database connection options              |                        |
+| `db.connection.options.disableSSL` | Disable SSL connection                   | `true`                 |
 
 
-### Internal database settings
+### Internal database provisioning parameters
 
-Leave as default if use external DB
+Leave as default if using external DB
 
 | Name                           | Description                                                  | Value                 |
 | ------------------------------ | ------------------------------------------------------------ | --------------------- |

@@ -24,7 +24,7 @@ db:
   connection:
     ## @param db.connection.type Choose to use external DB or internal DB
     ## internal` or `external` in string
-    ## Set `db.image` when use internal
+    ## Set `db.image` when internal is in use
     ##
     type: external
     ## @param db.connection.host Database host address
@@ -52,7 +52,7 @@ db:
 
   ## @section Internal database provisioning parameters
   ## @descriptionStart
-  ## Leave as default if use external DB
+  ## Leave as default if using external DB
   ## @descriptionEnd
   ##
   internal:
