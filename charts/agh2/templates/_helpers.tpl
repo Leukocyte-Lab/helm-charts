@@ -147,3 +147,17 @@ Return the proper Docker Image Registry Secret Names
 {{- define "attack.imagePullSecrets" -}}
 {{- include "common.images.pullSecrets" (dict "images" .Values.attack.image "global" .Values.global) -}}
 {{- end -}}
+
+{{/*
+Return the proper blender image name
+*/}}
+{{- define "blender.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.blender.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "blender.imagePullSecrets" -}}
+{{- include "common.images.pullSecrets" (dict "images" .Values.blender.image "global" .Values.global) -}}
+{{- end -}}
