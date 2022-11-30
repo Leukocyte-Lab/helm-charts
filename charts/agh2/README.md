@@ -1,4 +1,4 @@
-# AGH2-helm
+# AGH2
 
 ## Install
 
