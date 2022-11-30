@@ -154,13 +154,25 @@ attack:
   ## @param attack.extraEnv ATTACK additional environment variables
   ##
   extraEnv: {}
-# blender:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/blender
-#     tag: v1.1.0
-#     pullPolicy: IfNotPresent
 
+## @section AGH2-Blender parameters
+## @descriptionStart
+## Blender module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Blender
+## @descriptionEnd
+##
+blender:
+  ## @param blender.enabled Enable Blender module
+  ##
+  enabled: true
+  ## @param blender.image.repository Blender image repository
+  ## @param blender.image.tag Blender image tag (immutable tags are recommended)
+  ## @param blender.image.pullPolicy Blender image pull policy
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/blender
+    tag: v1.1.0
+    pullPolicy: IfNotPresent
 # captain:
 #   enabled: true
 #   image:
