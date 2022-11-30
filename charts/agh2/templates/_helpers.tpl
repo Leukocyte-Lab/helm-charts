@@ -62,12 +62,88 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
+{{/*
+Return DB connection string
+Usage:
+{{- include "connection-string" (dict "db" (deepCopy .Values.db.connection | merge .Values.path.to.secret.db)) }}
+*/}}
+{{- define "connection-string" -}}
+{{- $connStr := printf "%s://%s:%s@%s:%s/%s" .db.driver .db.host .db.port .db.user .db.password .db.database -}}
+{{- if .db.options.disableSSL -}}
+  {{- printf "%s?sslmode=disable" $connStr | b64enc -}}
+{{- end -}}
+  {{- printf $connStr | b64enc -}}
+{{- end -}}
 
 {{/*
-Create the image pull secret section
+Return the proper redis image name
 */}}
-{{- define "imagePullSecret" }}
-{{- with .Values.imageCredential }}
-{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"auth\":\"%s\"}}}" (required "imageCredential.registry is required" .registry) (required "imageCredential.username is required" .username) (required "imageCredential.password is required" .password) (printf "%s:%s" .username .password | b64enc) | b64enc }}
-{{- end }}
-{{- end }}
+{{- define "redis.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.redis.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper db image name
+*/}}
+{{- define "db.image" -}}
+{{- if .Values.db.internal.enabled -}}
+  {{- include "common.images.image" (dict "imageRoot" .Values.db.internal.image "global" .Values.global) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the proper ATTACK image name
+*/}}
+{{- define "attack.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper group image name
+*/}}
+{{- define "attack.service.group.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.group.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper ui image name
+*/}}
+{{- define "attack.service.ui.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.ui.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "attack.imagePullSecrets" -}}
+{{- include "common.images.pullSecrets" (dict "images" .Values.attack.image "global" .Values.global) -}}
+{{- end -}}
+
+
+{{/*
+Return the proper ATTACK image name
+*/}}
+{{- define "attack.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper group image name
+*/}}
+{{- define "attack.service.group.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.group.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper ui image name
+*/}}
+{{- define "attack.service.ui.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.ui.image "global" .Values.global) -}}
+{{- end -}}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "attack.imagePullSecrets" -}}
+{{- include "common.images.pullSecrets" (dict "images" .Values.attack.image "global" .Values.global) -}}
+{{- end -}}
