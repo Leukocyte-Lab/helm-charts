@@ -57,6 +57,9 @@ spec:
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
             - name: GROUP_IMAGE_URI
               value: {{- include "attack.service.group.image" . -}}
+            {{- if .Values.attack.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.attack.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
           command: ["./attack"]
           resources:
             requests:
