@@ -83,3 +83,16 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | `attack.service.redis.enabled`          | Enable redis                                                   | `true`                                     |
 | `attack.extraEnv`                       | ATTACK additional environment variables                        | `{}`                                       |
 
+
+### AGH2-Blender parameters
+
+Blender module for AGH2.
+ref: https://github.com/Leukocyte-Lab/AGH2-Blender
+
+| Name                       | Description                                        | Value                              |
+| -------------------------- | -------------------------------------------------- | ---------------------------------- |
+| `blender.enabled`          | Enable Blender module                              | `true`                             |
+| `blender.image.repository` | Blender image repository                           | `leukocyte-lab/argushack2/blender` |
+| `blender.image.tag`        | Blender image tag (immutable tags are recommended) | `v1.1.0`                           |
+| `blender.image.pullPolicy` | Blender image pull policy                          | `IfNotPresent`                     |
+
