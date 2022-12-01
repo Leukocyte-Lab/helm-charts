@@ -16,8 +16,19 @@ helm install agh2 lkclab/agh2
 | Name                      | Description                                     | Value                  |
 | ------------------------- | ----------------------------------------------- | ---------------------- |
 | `global.imageRegistry`    | Global Docker Image registry                    | `registry.lkc-lab.com` |
-| `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`                   |
+| `global.imagePullSecrets` | Global Docker registry secret names as an array | `["lkc-registry"]`     |
 | `global.storageClass`     | Global storage class for dynamic provisioning   | `""`                   |
+
+
+### Common parameters
+
+| Name                                 | Description                                       | Value                  |
+| ------------------------------------ | ------------------------------------------------- | ---------------------- |
+| `customRegistrySecret.enabled`       | Enable custom registry secret generation          | `true`                 |
+| `customRegistrySecret.secretName`    | Name of the generated secret                      | `lkc-registry`         |
+| `customRegistrySecret.auth.registry` | URL of the registry server                        | `registry.lkc-lab.com` |
+| `customRegistrySecret.auth.username` | Username to authenticate with the registry server | `""`                   |
+| `customRegistrySecret.auth.password` | Password to authenticate with the registry server | `""`                   |
 
 
 ### Database parameters
