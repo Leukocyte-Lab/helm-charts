@@ -70,6 +70,53 @@ db:
       tag: 15.1.0-debian-11-r0
       pullPolicy: IfNotPresent
 
+## @section Minio parameters
+##
+minio:
+  connection:
+    ## @param minio.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `minio.image` when internal is in use
+    ##
+    type: external
+    ## @param minio.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `minio.type` is external
+    ##
+    host: database.example.com
+    ## @param minio.connection.port Database host port
+    ## Port in number
+    ##
+    port: 5432
+    ## @param minio.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+    ## @param minio.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+  ## @section Internal minio provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using external DB
+  ## @descriptionEnd
+  ##
+  internal:
+    ## @param minio.internal.enabled Enable internal minio
+    ##
+    enabled: false
+  ## Minio image
+  ## @param minio.image.repository Internal Minio image repository
+  ## @param minio.image.tag Internal Minio image tag (immutable tags are recommended)
+  ## @param minio.image.pullPolicy Internal Minio image pull policy
+  ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: bitnami/minio
+    tag: 2022.11.29-debian-11-r0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+
 ## @section Redis parameters
 ##
 
