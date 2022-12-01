@@ -554,6 +554,8 @@ transformer:
 ## @descriptionEnd
 ##
 ui:
+  ## @param ui.enabled Enable UI module
+  ##
   enabled: true
   ## @param ui.image.repository UI image repository
   ## @param ui.image.tag UI image tag (immutable tags are recommended)
@@ -565,9 +567,9 @@ ui:
     tag: v2.19.0
     pullPolicy: IfNotPresent
     pullSecrets: []
-## @param ui.extraEnv UI additional environment variables
-##
-extraEnv: {}
+  ## @param ui.extraEnv UI additional environment variables
+  ##
+  extraEnv: {}
 # ingress:
 #   enabled: ture
 #   host: "app.argushack.com"
