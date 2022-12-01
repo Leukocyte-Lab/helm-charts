@@ -16,6 +16,7 @@ spec:
     spec:
       {{- include "attack.imagePullSecrets" . | nindent 6 -}}
       initContainers:
+        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled -}}
         - name: attack-init-redis
           image: {{- include "redis.image" . -}}
           command:
@@ -24,14 +25,15 @@ spec:
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
+        {{- end -}}
         - name: attack-init-postgresql
-          image: postgres:13
+          image: {{- include "db.image" . -}}
           env:
             - name: PG_CONN_STR
               valueFrom:
                 secretKeyRef:
+                  name: {{ .Values.attack.secret.db.secretName }}
                   key: DB_CONN_STR
-                  name: {{ .Values.attack.secret.name }}
           command:
             [
               "sh",
@@ -42,6 +44,10 @@ spec:
         - name: attack
           image: {{- include "attack.image" . -}}
           env:
+            {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled -}}
+            - name: ENV_REDIS_CONN
+              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            {{- end -}}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -49,12 +55,10 @@ spec:
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
+                  name: {{ .Values.attack.secret.db.secretName }}
                   key: DB_CONN_STR
-                  name: attack-db-secret
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
-            - name: ENV_REDIS_CONN
-              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
             - name: GROUP_IMAGE_URI
               value: {{- include "attack.service.group.image" . -}}
             {{- if .Values.attack.extraEnv }}
