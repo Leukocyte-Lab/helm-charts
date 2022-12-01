@@ -29,6 +29,8 @@ helm install agh2 lkclab/agh2
 | `customRegistrySecret.auth.registry` | URL of the registry server                        | `registry.lkc-lab.com` |
 | `customRegistrySecret.auth.username` | Username to authenticate with the registry server | `""`                   |
 | `customRegistrySecret.auth.password` | Password to authenticate with the registry server | `""`                   |
+| `ingress.enabled`                    | Enable ingress controller                         | `true`                 |
+| `ingress.host`                       | Ingress hostname                                  | `app.argushack.com`    |
 
 
 ### Database parameters
