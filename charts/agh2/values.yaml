@@ -19,14 +19,15 @@ global:
 
 ## @section Database parameters
 db:
-  ## @extra db.connection Connection information for the database
-  ##
   connection:
     ## @param db.connection.type Choose to use external DB or internal DB
     ## internal` or `external` in string
     ## Set `db.image` when internal is in use
     ##
     type: external
+    ## @param db.connection.driver Database driver
+    ##
+    driver: postgresql
     ## @param db.connection.host Database host address
     ## IP or FQDN in string
     ## Required if `db.type` is external
@@ -59,16 +60,18 @@ db:
     ## @param db.internal.enabled Enable internal database
     ##
     enabled: false
-    ## Internal database image
-    ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
-    ## @param db.internal.image.repository Internal database image repository
-    ## @param db.internal.image.tag Internal database image tag (immutable tags are recommended)
-    ## @param db.internal.image.pullPolicy Internal database image pull policy
-    ##
-    image:
-      repository: bitnami/postgresql
-      tag: 15.1.0-debian-11-r0
-      pullPolicy: IfNotPresent
+  ## Internal database image
+  ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
+  ## @param db.image.repository Internal database image repository
+  ## @param db.image.tag Internal database image tag (immutable tags are recommended)
+  ## @param db.image.pullPolicy Internal database image pull policy
+  ## @param db.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: bitnami/postgresql
+    tag: 15.1.0-debian-11-r0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
 
 ## @section Minio parameters
 ##
@@ -127,11 +130,13 @@ redis:
   ## @param redis.image.repository Redis image repository
   ## @param redis.image.tag Redis image tag (immutable tags are recommended)
   ## @param redis.image.pullPolicy Redis image pull policy
+  ## @param redis.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
     repository: docker/library/redis
     tag: 6-alpine
     pullPolicy: IfNotPresent
+    pullSecrets: []
 
 ## @section AGH2-ATTACK parameters
 ## @descriptionStart
@@ -146,11 +151,13 @@ attack:
   ## @param attack.image.repository ATTACK image repository
   ## @param attack.image.tag ATTACK image tag (immutable tags are recommended)
   ## @param attack.image.pullPolicy ATTACK image pull policy
+  ## @param attack.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
     repository: leukocyte-lab/argushack2/attack
     tag: v0.9.0
     pullPolicy: IfNotPresent
+    pullSecrets: []
   ## @param attack.secret.enabled Enable secret generate for ATTACK
   ##
   secret:
@@ -191,11 +198,13 @@ attack:
       ## @param attack.service.ui.image.repository ATTACK UI image repository
       ## @param attack.service.ui.image.tag ATTACK UI image tag (immutable tags are recommended)
       ## @param attack.service.ui.image.pullPolicy ATTACK UI image pull policy
+      ## @param attack.service.ui.image.pullSecrets Specify docker-registry secret names as an array
       ##
       image:
         repository: leukocyte-lab/argushack2/attack-frontend
         tag: v0.3.0
         pullPolicy: IfNotPresent
+        pullSecrets: []
     ## Redis
     ## @param attack.service.redis.enabled Enable redis
     redis:
@@ -217,11 +226,20 @@ blender:
   ## @param blender.image.repository Blender image repository
   ## @param blender.image.tag Blender image tag (immutable tags are recommended)
   ## @param blender.image.pullPolicy Blender image pull policy
+  ## @param blender.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
     repository: leukocyte-lab/argushack2/blender
     tag: v1.1.0
     pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @extra blender.service ATTACK service parameters
+  ##
+  service:
+    ## Redis
+    ## @param blender.service.redis.enabled Enable redis
+    redis:
+      enabled: true
   ## @param blender.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
@@ -239,11 +257,13 @@ captain:
   ## @param captain.image.repository Captain image repository
   ## @param captain.image.tag Captain image tag (immutable tags are recommended)
   ## @param captain.image.pullPolicy Captain image pull policy
+  ## @param captain.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
     repository: leukocyte-lab/argushack2/captain
     tag: v0.19.0
     pullPolicy: IfNotPresent
+    pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
   ##
   secret:
@@ -268,7 +288,7 @@ captain:
     minio:
       enabled: true
       secretName: capt-minio-secret
-      user: ""
+      user: "capt-minio-user"
       password: ""
     ## @param captain.secret.keygen.enabled Enable secret generate for keygen
     ## @param captain.secret.keygen.secretName Secret name for keygen

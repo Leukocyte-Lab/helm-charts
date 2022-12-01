@@ -14,20 +14,20 @@ spec:
       labels:
         app: captain
     spec:
-      {{- include "captain.imagePullSecrets" . | nindent 6 -}}
+      {{- include "captain.imagePullSecrets" . | nindent 6 }}
       initContainers:
-        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled -}}
+        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled }}
         - name: captain-init-redis
-          image: {{- include "redis.image" . -}}
+          image: {{ include "redis.image" . }}
           command:
             [
               "sh",
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
-        {{- end -}}
+        {{- end }}
         - name: captain-init-postgresql
-          image: {{- include "db.image" . -}}
+          image: {{ include "db.image" . }}
           env:
             - name: PG_CONN_STR
               valueFrom:
@@ -42,14 +42,14 @@ spec:
             ]
       containers:
         - name: captain
-          image: {{- include "captain.image" . -}}
+          image: {{ include "captain.image" . }}
           command:
             - ./captain
           env:
-            {{- if and .Values.redis.enabled .Values.captain.service.redis.enabled -}}
+            {{- if and .Values.redis.enabled .Values.captain.service.redis.enabled }}
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
-            {{- end -}}
+            {{- end }}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
