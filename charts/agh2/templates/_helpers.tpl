@@ -203,7 +203,7 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
-Return the proper Exploit Manager image name
+Return the proper Transformer image name
 */}}
 {{- define "transformer.image" -}}
 {{- include "common.images.image" (dict "imageRoot" .Values.transformer.image "global" .Values.global) }}
