@@ -536,6 +536,13 @@ transformer:
     tag: v1.1.0
     pullPolicy: IfNotPresent
     pullSecrets: []
+  ## @extra transformer.service Exploit-Manager service parameters
+  ##
+  service:
+    ## Redis
+    ## @param transformer.service.redis.enabled Enable redis
+    redis:
+      enabled: true
   ## @param transformer.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
