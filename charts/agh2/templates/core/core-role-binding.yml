@@ -4,7 +4,7 @@ kind: RoleBinding
 metadata:
   name: core-role-binding
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

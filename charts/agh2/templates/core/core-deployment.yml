@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: core
   labels:
-    project: agh
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -14,23 +14,26 @@ spec:
       labels:
         app: core
     spec:
+      {{- include "core.imagePullSecrets" . | nindent 6 }}
       initContainers:
+        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled }}
         - name: core-init-redis
-          image: registry.lkc-lab.com/docker/library/redis:6-alpine
+          image: {{ include "redis.image" . }}
           command:
             [
               "sh",
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
+        {{- end }}
         - name: core-init-postgresql
-          image: postgres:13
+          image: {{ include "db.image" . }}
           env:
             - name: PG_CONN_STR
               valueFrom:
                 secretKeyRef:
+                  name: {{ .Values.core.secret.db.secretName }}
                   key: DB_CONN_STR
-                  name: core-db-secret
           command:
             [
               "sh",
@@ -39,40 +42,54 @@ spec:
             ]
       containers:
         - name: core
-          image: "{{ .Values.core.image.repository }}:{{ .Values.core.image.tag }}"
+          image: {{ include "core.image" . }}
           command: ["./core"]
           env:
-            - name: DB_Conn
-              valueFrom:
-                secretKeyRef:
-                  key: "DB_CONN_STR"
-                  name: core-db-secret
-            - name: EXP_MGR_DB_Conn
-              valueFrom:
-                secretKeyRef:
-                  key: DB_CONN_STR
-                  name: exploitmgr-db-secret
+            {{- if and .Values.redis.enabled .Values.captain.service.redis.enabled }}
+            - name: ENV_REDIS_CONN
+              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            {{- end }}
+            {{- if .Values.attack.enabled }}
             - name: ATTACK_DB_Conn
               valueFrom:
                 secretKeyRef:
                   key: DB_CONN_STR
-                  name: attack-db-secret
+                  name: {{ .Values.attack.secret.db.secretName }}
+            {{- end }}
+            {{- if .Values.exploitmgr.enabled }}
+            - name: EXP_MGR_DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.exploitmgr.secret.db.secretName }}
+                  key: DB_CONN_STR
+            {{- end }}
+            {{- if .Values.blender.enabled }}
+            - name: BLENDER_URL
+              value: "blender.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.exploitmgr.enabled }}
+            - name: EXPLOITMGR_URL
+              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.matcher.enabled }}
+            - name: MATCHER_URL
+              value: "matcher.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.transformer.enabled }}
+            - name: TRANSFORMER_URL
+              value: "transformer.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: ENV_REDIS_CONN
-              value: "redis://redis.$(NAMESPACE).svc.cluster.local"
+            - name: DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: "DB_CONN_STR"
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
-            - name: BLENDER_URL
-              value: "blender.$(NAMESPACE).svc.cluster.local:50005"
-            - name: MATCHER_URL
-              value: "matcher.$(NAMESPACE).svc.cluster.local:50005"
-            - name: TRANSFORMER_URL
-              value: "transformer.$(NAMESPACE).svc.cluster.local:50005"
-            - name: EXPLOITMGR_URL
-              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
             - name: MINIO_URL
               valueFrom:
                 secretKeyRef:
@@ -89,7 +106,10 @@ spec:
                   name: core-minio-secret
                   key: core-minio-password
             - name: REGISTRY_URL
-              value: {{ .Values.imageCredential.registry }}
+              value: {{ coalesce .Values.core.env.REGISTRY_URL .Values.global.imageRegistry }}
+            {{- if .Values.core.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.core.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
           resources:
             requests:
               memory: "256Mi"
@@ -98,8 +118,6 @@ spec:
             - name: grpc
               containerPort: 50005
           imagePullPolicy: {{ .Values.core.image.pullPolicy }}
-      imagePullSecrets:
-        - name: gitlab-registry
       restartPolicy: Always
       automountServiceAccountToken: true
       serviceAccountName: core-svc-account
