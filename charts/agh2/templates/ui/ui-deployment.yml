@@ -1,0 +1,26 @@
+{{- if and .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+  labels:
+    {{- include "AGH2.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      {{- include "attack.imagePullSecrets" . | nindent 6 }}
+      containers:
+        - name: ui
+          image: {{ include "ui.image" . }}
+          ports:
+            - name: web
+              containerPort: 80
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+      restartPolicy: Always
+{{- end }}
