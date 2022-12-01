@@ -41,6 +41,9 @@ customRegistrySecret:
 ingress:
   enabled: true
   host: app.argushack.com
+
+  ## @section TLS parameters
+  ##
   tls:
     ## @param ingress.tls.enabled Enable TLS certificate generation
     ## @param ingress.tls.secretName Name of the generated secret
