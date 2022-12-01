@@ -79,17 +79,6 @@ spec:
             - name: TRANSFORMER_URL
               value: "transformer.$(NAMESPACE).svc.cluster.local:50005"
             {{- end }}
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: DB_Conn
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.db.secretName }}
-                  key: "DB_CONN_STR"
-            - name: CORE_URL
-              value: "core.$(NAMESPACE).svc.cluster.local:50005"
             - name: MINIO_URL
               valueFrom:
                 secretKeyRef:
@@ -105,6 +94,17 @@ spec:
                 secretKeyRef:
                   name: core-minio-secret
                   key: core-minio-password
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: "DB_CONN_STR"
+            - name: CORE_URL
+              value: "core.$(NAMESPACE).svc.cluster.local:50005"
             - name: REGISTRY_URL
               value: {{ coalesce .Values.core.env.REGISTRY_URL .Values.global.imageRegistry }}
             {{- if .Values.core.extraEnv }}

@@ -38,8 +38,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            {{- if .Values.core.enabled }}
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
             {{- if .Values.blender.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.blender.extraEnv "context" $) | nindent 12 }}
             {{- end }}

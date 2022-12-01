@@ -48,6 +48,14 @@ spec:
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
             {{- end }}
+            {{- if .Values.core.enabled }}
+            - name: CORE_URL
+              value: "core.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.attack.service.group.enabled }}
+            - name: GROUP_IMAGE_URI
+              value: {{ include "attack.service.group.image" . }}
+            {{- end }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -57,10 +65,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.attack.secret.db.secretName }}
                   key: DB_CONN_STR
-            - name: CORE_URL
-              value: "core.$(NAMESPACE).svc.cluster.local:50005"
-            - name: GROUP_IMAGE_URI
-              value: {{ include "attack.service.group.image" . }}
             {{- if .Values.attack.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.attack.extraEnv "context" $) | nindent 12 }}
             {{- end }}

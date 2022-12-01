@@ -50,6 +50,18 @@ spec:
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
             {{- end }}
+            {{- if .Values.core.enabled }}
+            - name: CORE_URL
+              value: "core.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.exploitmgr.enabled }}
+            - name: EXPMGR_URL
+              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.template.enabled }}
+            - name: TEMPLATE_URL
+              value: "template.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
@@ -59,12 +71,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: CORE_URL
-              value: "core.$(NAMESPACE).svc.cluster.local:50005"
-            - name: EXPMGR_URL
-              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
-            - name: TEMPLATE_URL
-              value: "template.$(NAMESPACE).svc.cluster.local:50005"
             - name: Addr
               value: ":9527"
             - name: MINIO_URL
