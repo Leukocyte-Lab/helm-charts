@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{/*
 Return DB connection string
 Usage:
-{{ include "connection-string" (dict "db" (merge .Values.db.connection .Values.path.to.secret.db .)) }}
+{{ include "connection-string" (dict "db" (merge .Values.path.to.secret.db .Values.db.connection .)) }}
 */}}
 {{- define "connection-string" -}}
 {{- $connStr := printf "%v://%v:%v@%v:%v/%v" .db.driver .db.user .db.password .db.host .db.port .db.name }}
