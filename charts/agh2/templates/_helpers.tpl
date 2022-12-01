@@ -115,8 +115,8 @@ Return the proper ui image name
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "attack.imagePullSecrets" -}}
-{{- include "common.images.pullSecrets" (dict "images" (list .Values.attack.image .Values.attack.service.group.image .Values.attack.service.ui.image) "global" .Values.global) }}
-{{- end }}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.attack.image .Values.attack.service.group.image .Values.attack.service.ui.image) "global" .Values.global) }}
+{{- end -}}
 
 {{/*
 Return the proper blender image name
@@ -129,8 +129,8 @@ Return the proper blender image name
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "blender.imagePullSecrets" -}}
-{{- include "common.images.pullSecrets" (dict "images" (list .Values.blender.image) "global" .Values.global) }}
-{{- end }}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.blender.image) "global" .Values.global) }}
+{{- end -}}
 
 {{/*
 Return the proper Captain image name
@@ -143,8 +143,8 @@ Return the proper Captain image name
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "captain.imagePullSecrets" -}}
-{{- include "common.images.pullSecrets" (dict "images" (list .Values.captain.image) "global" .Values.global) }}
-{{- end }}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.captain.image) "global" .Values.global) }}
+{{- end -}}
 
 {{/*
 Return the proper Captain image name
@@ -157,5 +157,5 @@ Return the proper Captain image name
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "core.imagePullSecrets" -}}
-{{- include "common.images.pullSecrets" (dict "images" (list .Values.core.image) "global" .Values.global) }}
-{{- end }}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.core.image) "global" .Values.global) }}
+{{- end -}}
