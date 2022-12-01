@@ -202,3 +202,16 @@ Return the proper Docker Image Registry Secret Names
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.template.image) "global" .Values.global) }}
 {{- end -}}
 
+{{/*
+Return the proper Exploit Manager image name
+*/}}
+{{- define "transformer.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.transformer.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "transformer.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.transformer.image) "global" .Values.global) }}
+{{- end -}}
