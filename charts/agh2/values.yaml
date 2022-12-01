@@ -315,6 +315,67 @@ core:
   ##
   extraEnv: {}
 
+## @section AGH2-Exploit-Manager parameters
+## @descriptionStart
+## Exploit-Manager module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
+## @descriptionEnd
+##
+exploitmgr:
+  ## @param exploitmgr.enabled Enable Exploit-Manager module
+  ##
+  enabled: true
+  ## @param exploitmgr.image.repository Exploit-Manager image repository
+  ## @param exploitmgr.image.tag Exploit-Manager image tag (immutable tags are recommended)
+  ## @param exploitmgr.image.pullPolicy Exploit-Manager image pull policy
+  ## @param exploitmgr.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/exploitmgr
+    tag: v0.11.1
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `exploitmgr.secret.name` if set to false
+    ## @param exploitmgr.secret.db.enabled Enable secret generate for Exploit-Manager database
+    ## @param exploitmgr.secret.db.secretName Secret name for Exploit-Manager DB
+    ## @param exploitmgr.secret.db.name Database name
+    ## @param exploitmgr.secret.db.user Database user
+    ## @param exploitmgr.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: exploitmgr-db-secret
+      name: exploitmgr-db
+      user: ""
+      password: ""
+    ## @param exploitmgr.secret.minio.enabled Enable secret generate for Minio
+    ## @param exploitmgr.secret.minio.secretName Secret name for Minio
+    ## @param exploitmgr.secret.minio.user Minio user
+    ## @param exploitmgr.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: exploitmgr-minio-secret
+      user: ""
+      password: ""
+  ## @extra exploitmgr.service Exploit-Manager service parameters
+  ##
+  service:
+    ## Redis
+    ## @param exploitmgr.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @extra exploitmgr.env Exploit-Manager environment variables
+  ## @param exploitmgr.env.REGISTRY_URL Exploit-Manager registry URL
+  ##
+  env:
+    REGISTRY_URL: "https://registry.lkc-lab.com"
+  ## @param exploitmgr.extraEnv Exploit-Manager additional environment variables
+  ##
+  extraEnv: {}
 # frontend:
 #   enabled: true
 #   image:
