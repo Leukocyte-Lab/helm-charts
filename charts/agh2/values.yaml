@@ -343,13 +343,29 @@ core:
 #     ip: 192.168.0.1
 #     port: 5432
 
-# transformer:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/transformer
-#     tag: v1.1.0
-#     pullPolicy: IfNotPresent
-
+## @section AGH2-Transformer parameters
+## @descriptionStart
+## Transformer module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Transformer
+## @descriptionEnd
+##
+transformer:
+  ## @param transformer.enabled Enable Transformer module
+  ##
+  enabled: true
+  ## @param transformer.image.repository Transformer image repository
+  ## @param transformer.image.tag Transformer image tag (immutable tags are recommended)
+  ## @param transformer.image.pullPolicy Transformer image pull policy
+  ## @param transformer.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/transformer
+    tag: v1.1.0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param transformer.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 # minio:
 #   url: ""
 #   core:
