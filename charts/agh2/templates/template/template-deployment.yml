@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: template
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -14,15 +14,16 @@ spec:
       labels:
         app: template
     spec:
+      {{- include "template.imagePullSecrets" . | nindent 6 }}
       initContainers:
         - name: template-init-postgresql
-          image: postgres:13
+          image: {{ include "db.image" . }}
           env:
             - name: PG_CONN_STR
               valueFrom:
                 secretKeyRef:
+                  name: {{ .Values.exploitmgr.secret.db.secretName }}
                   key: DB_CONN_STR
-                  name: template-db-secret
           command:
             [
               "sh",
@@ -31,23 +32,30 @@ spec:
             ]
       containers:
         - name: template
-          image: "{{ .Values.template.image.repository }}:{{ .Values.template.image.tag }}"
+          image: {{ include "template.image" . }}
           command:
             - ./template
           env:
+            {{- if .Values.core.enabled }}
+            - name: CORE_URL
+              value: "core.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.exploitmgr.enabled }}
+            - name: EXPLOITMGR_URL
+              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
                   key: DB_CONN_STR
-                  name: template-db-secret
+                  name: {{ .Values.exploitmgr.secret.db.secretName }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: CORE_URL
-              value: "core.$(NAMESPACE).svc.cluster.local:50005"
-            - name: EXPLOITMGR_URL
-              value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
+            {{- if .Values.transformer.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.transformer.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
           resources:
             requests:
               memory: "128Mi"
