@@ -546,21 +546,28 @@ transformer:
   ## @param transformer.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
-# minio:
-#   url: ""
-#   core:
-#     user: ""
-#     password: ""
-#   capt:
-#     user: ""
-#     password: ""
 
-# imageCredential:
-#   # Fill the username & password for image pulling
-#   registry: registry.lkc-lab.com
-#   username: ""
-#   password: ""
-
+## @section AGH2-UI parameters
+## @descriptionStart
+## UI module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-UI
+## @descriptionEnd
+##
+ui:
+  enabled: true
+  ## @param ui.image.repository UI image repository
+  ## @param ui.image.tag UI image tag (immutable tags are recommended)
+  ## @param ui.image.pullPolicy UI image pull policy
+  ## @param ui.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/frontend
+    tag: v2.19.0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+## @param ui.extraEnv UI additional environment variables
+##
+extraEnv: {}
 # ingress:
 #   enabled: ture
 #   host: "app.argushack.com"
