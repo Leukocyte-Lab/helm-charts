@@ -1,9 +1,10 @@
+{{- if .Values.redis.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -13,9 +14,10 @@ spec:
       labels:
         app: redis
     spec:
+      {{- include "redis.imagePullSecrets" . | nindent 6 }}
       containers:
         - name: redis
-          image: registry.lkc-lab.com/docker/library/redis:6-alpine
+          image: {{ include "redis.image" . }}
           resources:
             requests:
               memory: "256Mi"
@@ -25,3 +27,4 @@ spec:
               containerPort: 6379
           imagePullPolicy: IfNotPresent
       restartPolicy: Always
+{{- end }}
