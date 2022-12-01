@@ -322,13 +322,29 @@ core:
 #     tag: v2.18.2
 #     pullPolicy: IfNotPresent
 
-# matcher:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/matcher
-#     tag: v1.2.2
-#     pullPolicy: IfNotPresent
-
+## @section AGH2-Matcher parameters
+## @descriptionStart
+## Matcher module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Matcher
+## @descriptionEnd
+##
+matcher:
+  ## @param matcher.enabled Enable Matcher module
+  ##
+  enabled: true
+  ## @param matcher.image.repository Matcher image repository
+  ## @param matcher.image.tag Matcher image tag (immutable tags are recommended)
+  ## @param matcher.image.pullPolicy Matcher image pull policy
+  ## @param matcher.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/matcher
+    tag: v1.2.2
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param matcher.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 # template:
 #   enabled: true
 #   image:
