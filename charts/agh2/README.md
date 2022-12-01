@@ -248,6 +248,21 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Matcher
 | `matcher.extraEnv`          | Captain additional environment variables           | `{}`                               |
 
 
+### AGH2-Template parameters
+
+Template module for AGH2.
+ref: https://github.com/Leukocyte-Lab/AGH2-Template
+
+| Name                         | Description                                         | Value                               |
+| ---------------------------- | --------------------------------------------------- | ----------------------------------- |
+| `template.enabled`           | Enable Template module                              | `true`                              |
+| `template.image.repository`  | Template image repository                           | `leukocyte-lab/argushack2/template` |
+| `template.image.tag`         | Template image tag (immutable tags are recommended) | `v0.2.5`                            |
+| `template.image.pullPolicy`  | Template image pull policy                          | `IfNotPresent`                      |
+| `template.image.pullSecrets` | Specify docker-registry secret names as an array    | `[]`                                |
+| `template.extraEnv`          | Captain additional environment variables            | `{}`                                |
+
+
 ### AGH2-Transformer parameters
 
 Transformer module for AGH2.
