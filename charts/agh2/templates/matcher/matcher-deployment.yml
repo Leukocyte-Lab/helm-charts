@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: matcher
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -14,15 +14,16 @@ spec:
       labels:
         app: matcher
     spec:
+      {{- include "matcher.imagePullSecrets" . | nindent 6 }}
       initContainers:
-        - name: matcher-init-postgres
-          image: postgres:13
+        - name: exploitmgr-init-postgresql
+          image: {{ include "db.image" . }}
           env:
             - name: PG_CONN_STR
               valueFrom:
                 secretKeyRef:
+                  name: {{ .Values.exploitmgr.secret.db.secretName }}
                   key: DB_CONN_STR
-                  name: exploitmgr-db-secret
           command:
             [
               "sh",
@@ -31,20 +32,21 @@ spec:
             ]
       containers:
         - name: matcher
-          image: "{{ .Values.matcher.image.repository }}:{{ .Values.matcher.image.tag }}"
+          image: {{ include "matcher.image" . }}
           env:
-            - name: DB_Conn
-              valueFrom:
-                secretKeyRef:
-                  key: DB_CONN_STR
-                  name: exploitmgr-db-secret
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            {{- if .Values.core.enabled }}
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
-          command: ["npm", "start"]
+            {{- end }}
+            {{- if .Values.matcher.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.matcher.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
+          command:
+            - ./matcher
           resources:
             requests:
               memory: "256Mi"
@@ -53,7 +55,5 @@ spec:
             - name: grpc
               containerPort: 50005
           imagePullPolicy: {{ .Values.matcher.image.pullPolicy }}
-      imagePullSecrets:
-        - name: gitlab-registry
       restartPolicy: "Always"
 {{- end }}
