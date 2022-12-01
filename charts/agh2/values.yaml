@@ -105,16 +105,18 @@ attack:
     tag: v0.9.0
     pullPolicy: IfNotPresent
   ## @param attack.secret.enabled Enable secret generate for ATTACK
-  ## @param attack.secret.name Secret name for ATTACK
   ##
   secret:
     enabled: true # Manually create secret named as the value of `attack.secret.name` if set to false
-    name: attack-db-secret
+    ## @param attack.secret.db.enabled Enable secret generate for DB
+    ## @param attack.secret.db.secretName Secret name for Captain DB
     ## @param attack.secret.db.name Database name
     ## @param attack.secret.db.user Database user
     ## @param attack.secret.db.password Database password
     ##
     db:
+      enabled: true
+      secretName: attack-db-secret
       name: attack-db
       user: ""
       password: ""
