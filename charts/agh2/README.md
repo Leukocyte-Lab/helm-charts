@@ -68,7 +68,8 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | `attack.image.tag`                      | ATTACK image tag (immutable tags are recommended)              | `v0.9.0`                                   |
 | `attack.image.pullPolicy`               | ATTACK image pull policy                                       | `IfNotPresent`                             |
 | `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                     |
-| `attack.secret.name`                    | Secret name for ATTACK                                         | `attack-db-secret`                         |
+| `attack.secret.db.enabled`              | Enable secret generate for DB                                  | `true`                                     |
+| `attack.secret.db.secretName`           | Secret name for Captain DB                                     | `attack-db-secret`                         |
 | `attack.secret.db.name`                 | Database name                                                  | `attack-db`                                |
 | `attack.secret.db.user`                 | Database user                                                  | `""`                                       |
 | `attack.secret.db.password`             | Database password                                              | `""`                                       |
@@ -95,4 +96,38 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Blender
 | `blender.image.repository` | Blender image repository                           | `leukocyte-lab/argushack2/blender` |
 | `blender.image.tag`        | Blender image tag (immutable tags are recommended) | `v1.1.0`                           |
 | `blender.image.pullPolicy` | Blender image pull policy                          | `IfNotPresent`                     |
+| `blender.extraEnv`         | Captain additional environment variables           | `{}`                               |
+
+
+### AGH2-Captain parameters
+
+Captain module for AGH2.
+ref: https://github.com/Leukocyte-Lab/AGH2-Captain
+
+| Name                               | Description                                        | Value                              |
+| ---------------------------------- | -------------------------------------------------- | ---------------------------------- |
+| `captain.enabled`                  | Enable Captain module                              | `true`                             |
+| `captain.image.repository`         | Captain image repository                           | `leukocyte-lab/argushack2/captain` |
+| `captain.image.tag`                | Captain image tag (immutable tags are recommended) | `v0.19.0`                          |
+| `captain.image.pullPolicy`         | Captain image pull policy                          | `IfNotPresent`                     |
+| `captain.secret.enabled`           | Enable secret generate for Captain                 | `true`                             |
+| `captain.secret.db.enabled`        | Enable secret generate for Captain database        | `true`                             |
+| `captain.secret.db.secretName`     | Secret name for Captain DB                         | `capt-db-secret`                   |
+| `captain.secret.db.name`           | Database name                                      | `captain-db`                       |
+| `captain.secret.db.user`           | Database user                                      | `""`                               |
+| `captain.secret.db.password`       | Database password                                  | `""`                               |
+| `captain.secret.minio.enabled`     | Enable secret generate for Minio                   | `true`                             |
+| `captain.secret.minio.secretName`  | Secret name for Minio                              | `capt-minio-secret`                |
+| `captain.secret.minio.user`        | Minio user                                         | `""`                               |
+| `captain.secret.minio.password`    | Minio password                                     | `""`                               |
+| `captain.secret.keygen.enabled`    | Enable secret generate for keygen                  | `true`                             |
+| `captain.secret.keygen.secretName` | Secret name for keygen                             | `capt-keygen-secret`               |
+| `captain.secret.keygen.apiToken`   | Keygen API Token                                   | `""`                               |
+| `captain.secret.keygen.accountID`  | Keygen Account ID                                  | `""`                               |
+| `captain.secret.jwt.enabled`       | Enable secret generate for JWT                     | `true`                             |
+| `captain.secret.jwt.secretName`    | Secret name for JWT                                | `capt-jwt-secret`                  |
+| `captain.secret.jwt.secret`        | JWT secret                                         | `""`                               |
+| `captain.service`                  | Captain service parameters                         |                                    |
+| `captain.service.redis.enabled`    | Enable redis                                       | `true`                             |
+| `captain.extraEnv`                 | Captain additional environment variables           | `{}`                               |
 
