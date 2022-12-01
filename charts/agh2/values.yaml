@@ -252,33 +252,68 @@ captain:
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
-# core:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/core
-#     tag: v1.16.2
-#     pullPolicy: IfNotPresent
-#   db:
-#     # Replace the password & DB ip & port
-#     name: core-db
-#     username: agh
-#     password: ""
-#     ip: 192.168.0.1
-#     port: 5432
 
-# exploitmgr:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/exploitmgr
-#     tag: v0.11.1
-#     pullPolicy: IfNotPresent
-#   db:
-#     # Replace the password & DB ip & port
-#     name: exploitmgr-db
-#     username: ""
-#     password: ""
-#     ip: 192.168.0.1
-#     port: 5432
+## @section AGH2-Core parameters
+## @descriptionStart
+## Core module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Core
+## @descriptionEnd
+##
+core:
+  ## @param core.enabled Enable Core module
+  ##
+  enabled: true
+  ## @param core.image.repository Core image repository
+  ## @param core.image.tag Core image tag (immutable tags are recommended)
+  ## @param core.image.pullPolicy Core image pull policy
+  ## @param core.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/core
+    tag: v1.16.2
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param core.secret.enabled Enable secret generate for Core
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `core.secret.name` if set to false
+    ## @param core.secret.db.enabled Enable secret generate for Core database
+    ## @param core.secret.db.secretName Secret name for Core DB
+    ## @param core.secret.db.name Database name
+    ## @param core.secret.db.user Database user
+    ## @param core.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: core-db-secret
+      name: core-db
+      user: ""
+      password: ""
+    ## @param core.secret.minio.enabled Enable secret generate for Minio
+    ## @param core.secret.minio.secretName Secret name for Minio
+    ## @param core.secret.minio.user Minio user
+    ## @param core.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: core-minio-secret
+      user: "core-minio-user"
+      password: ""
+  ## @extra core.service Core service parameters
+  ##
+  service:
+    ## Redis
+    ## @param core.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @extra core.env Core environment variables
+  ## @param core.env.REGISTRY_URL Core registry URL
+  ##
+  env:
+    REGISTRY_URL: "https://registry.lkc-lab.com"
+  ## @param core.extraEnv Core additional environment variables
+  ##
+  extraEnv: {}
 
 # frontend:
 #   enabled: true
