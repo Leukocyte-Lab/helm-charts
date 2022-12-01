@@ -10,5 +10,5 @@ spec:
     app: captain
   ports:
     - port: 9527
-      targetPort: 9527
+      targetPort: http
 {{- end }}
