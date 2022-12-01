@@ -43,7 +43,8 @@ spec:
       containers:
         - name: core
           image: {{ include "core.image" . }}
-          command: ["./core"]
+          command:
+            - ./core
           env:
             {{- if and .Values.redis.enabled .Values.captain.service.redis.enabled }}
             - name: ENV_REDIS_CONN

@@ -68,7 +68,8 @@ spec:
             {{- if .Values.attack.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.attack.extraEnv "context" $) | nindent 12 }}
             {{- end }}
-          command: ["./attack"]
+          command:
+            - ./attack
           resources:
             requests:
               memory: "128Mi"
