@@ -175,6 +175,9 @@ blender:
     repository: leukocyte-lab/argushack2/blender
     tag: v1.1.0
     pullPolicy: IfNotPresent
+  ## @param captain.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
 ## @section AGH2-Captain parameters
 ## @descriptionStart
