@@ -14,26 +14,26 @@ spec:
       labels:
         app: blender
     spec:
-      {{- include "blender.imagePullSecrets" . | nindent 6 -}}
+      {{- include "blender.imagePullSecrets" . | nindent 6 }}
       initContainers:
-        {{- if and .Values.redis.enabled .Values.blender.service.redis.enabled -}}
+        {{- if and .Values.redis.enabled .Values.blender.service.redis.enabled }}
         - name: blender-init-redis
-          image: {{- include "redis.image" . -}}
+          image: {{ include "redis.image" . }}
           command:
             [
               "sh",
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
-        {{- end -}}
+        {{- end }}
       containers:
         - name: blender
-          image: {{- include "blender.image" . -}}
+          image: {{ include "blender.image" . }}
           env:
-            {{- if and .Values.redis.enabled .Values.blender.service.redis.enabled -}}
+            {{- if and .Values.redis.enabled .Values.blender.service.redis.enabled }}
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
-            {{- end -}}
+            {{- end }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
