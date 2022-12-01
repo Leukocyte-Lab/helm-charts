@@ -453,11 +453,6 @@ exploitmgr:
     ## @param exploitmgr.service.redis.enabled Enable redis
     redis:
       enabled: true
-  ## @extra exploitmgr.env Exploit-Manager environment variables
-  ## @param exploitmgr.env.REGISTRY_URL Exploit-Manager registry URL
-  ##
-  env:
-    REGISTRY_URL: "https://registry.lkc-lab.com"
   ## @param exploitmgr.extraEnv Exploit-Manager additional environment variables
   ##
   extraEnv: {}
@@ -509,10 +504,36 @@ template:
   ##
   image:
     repository: leukocyte-lab/argushack2/template
-    tag: v0.2.5
+    tag: v0.11.1
     pullPolicy: IfNotPresent
     pullSecrets: []
-  ## @param template.extraEnv Captain additional environment variables
+  ## @param template.secret.enabled Enable secret generate for Template
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `template.secret.name` if set to false
+    ## @param template.secret.db.enabled Enable secret generate for Template database
+    ## @param template.secret.db.secretName Secret name for Template DB
+    ## @param template.secret.db.name Database name
+    ## @param template.secret.db.user Database user
+    ## @param template.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: template-db-secret
+      name: template-db
+      user: ""
+      password: ""
+    ## @param template.secret.minio.enabled Enable secret generate for Minio
+    ## @param template.secret.minio.secretName Secret name for Minio
+    ## @param template.secret.minio.user Minio user
+    ## @param template.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: template-minio-secret
+      user: ""
+      password: ""
+  ## @param template.extraEnv Template additional environment variables
   ##
   extraEnv: {}
 
