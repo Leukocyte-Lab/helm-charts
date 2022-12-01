@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: transformer
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     app: transformer
   ports:
     - port: 50005
-      targetPort: 50005
+      targetPort: grpc
 {{- end }}

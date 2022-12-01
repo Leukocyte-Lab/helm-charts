@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: transformer
   labels:
-    {{- include "AGH2-helm.labels" . | nindent 4 }}
+    {{- include "AGH2.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -14,27 +14,37 @@ spec:
       labels:
         app: transformer
     spec:
+      {{- include "transformer.imagePullSecrets" . | nindent 6 }}
       initContainers:
+        {{- if and .Values.redis.enabled .Values.transformer.service.redis.enabled }}
         - name: transformer-init-redis
-          image: registry.lkc-lab.com/docker/library/redis:6-alpine
+          image: {{ include "redis.image" . }}
           command:
             [
               "sh",
               "-c",
               "until redis-cli --no-auth-warning -h $REDIS_SERVICE_HOST -p $REDIS_SERVICE_PORT ping; do echo waiting for redis; sleep 1; done",
             ]
+        {{- end }}
       containers:
         - name: transformer
-          image: "{{ .Values.transformer.image.repository }}:{{ .Values.transformer.image.tag }}"
+          image: {{ include "transformer.image" . }}
           env:
+            {{- if and .Values.redis.enabled .Values.transformer.service.redis.enabled }}
+            - name: ENV_REDIS_CONN
+              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            {{- end }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: ENV_REDIS_CONN
-              value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
+            {{- if .Values.core.enabled }}
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
+            {{- end }}
+            {{- if .Values.transformer.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.transformer.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
           command: ["./transformer"]
           resources:
             requests:
@@ -44,7 +54,5 @@ spec:
             - name: grpc
               containerPort: 50005
           imagePullPolicy: {{ .Values.transformer.image.pullPolicy }}
-      imagePullSecrets:
-        - name: gitlab-registry
       restartPolicy: "Always"
 {{- end }}
