@@ -84,6 +84,13 @@ Return the proper redis image name
 {{- end }}
 
 {{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "redis.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.redis.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
 Return the proper db image name
 */}}
 {{- define "db.image" -}}
