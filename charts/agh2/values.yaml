@@ -14,8 +14,26 @@
 ##
 global:
   imageRegistry: "registry.lkc-lab.com"
-  imagePullSecrets: []
+  imagePullSecrets:
+    - lkc-registry
   storageClass: ""
+
+## @section Common parameters
+##
+
+## @param customRegistrySecret.enabled Enable custom registry secret generation
+## @param customRegistrySecret.secretName Name of the generated secret
+##
+customRegistrySecret:
+  enabled: true
+  secretName: lkc-registry
+  ## @param customRegistrySecret.auth.registry URL of the registry server
+  ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
+  ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
+  auth:
+    registry: registry.lkc-lab.com
+    username: ""
+    password: ""
 
 ## @section Database parameters
 db:
