@@ -491,19 +491,30 @@ matcher:
   ## @param matcher.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
-# template:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/template
-#     tag: v0.2.5
-#     pullPolicy: IfNotPresent
-#   db:
-#     # Replace the password & DB ip & port
-#     name: template-db
-#     username: ""
-#     password: ""
-#     ip: 192.168.0.1
-#     port: 5432
+
+## @section AGH2-Template parameters
+## @descriptionStart
+## Template module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Template
+## @descriptionEnd
+##
+template:
+  ## @param template.enabled Enable Template module
+  ##
+  enabled: true
+  ## @param template.image.repository Template image repository
+  ## @param template.image.tag Template image tag (immutable tags are recommended)
+  ## @param template.image.pullPolicy Template image pull policy
+  ## @param template.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/template
+    tag: v0.2.5
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param template.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
 ## @section AGH2-Transformer parameters
 ## @descriptionStart
