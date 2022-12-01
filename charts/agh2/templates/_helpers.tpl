@@ -105,7 +105,7 @@ Return the proper group image name
 {{- end }}
 
 {{/*
-Return the proper ui image name
+Return the proper UI image name
 */}}
 {{- define "attack.service.ui.image" -}}
 {{- include "common.images.image" (dict "imageRoot" .Values.attack.service.ui.image "global" .Values.global) }}
@@ -119,7 +119,7 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
-Return the proper blender image name
+Return the proper Blender image name
 */}}
 {{- define "blender.image" -}}
 {{- include "common.images.image" (dict "imageRoot" .Values.blender.image "global" .Values.global) }}
@@ -147,7 +147,7 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
-Return the proper Captain image name
+Return the proper Core image name
 */}}
 {{- define "core.image" -}}
 {{- include "common.images.image" (dict "imageRoot" .Values.core.image "global" .Values.global) }}
