@@ -2,29 +2,36 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-captain
+  name: agh-ingressroute
 spec:
   routes:
+    {{- if .Values.ui.enabled }}
     - kind: Rule
       match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       middlewares:
         - name: https-redirectscheme
       services:
         - kind: Service
-          name: frontend
+          name: ui
           port: 80
+    {{- end }}
+    {{- if .Values.captain.enabled }}
     - kind: Rule
       match: {{ print "PathPrefix(`/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       services:
         - kind: Service
           name: captain
           port: 9527
+    {{- end }}
+    {{- if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
     - kind: Rule
       match: {{ print "PathPrefix(`/attack`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       services:
         - kind: Service
-          name: attackfrontend
+          name: attack-ui
           port: 80
+    {{- end }}
+    {{- if and .Values.attack.enabled }}
     - kind: Rule
       match: {{ print "PathPrefix(`/attack/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
       middlewares:
@@ -41,7 +48,9 @@ spec:
         - kind: Service
           name: captain
           port: 9527
+    {{- end }}
 ---
+{{- if and .Values.attack.enabled }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -51,6 +60,7 @@ spec:
     prefixes:
       - /attack
     forceSlash: false
+{{- end }}
 ---
 # Redirect to https
 apiVersion: traefik.containo.us/v1alpha1
