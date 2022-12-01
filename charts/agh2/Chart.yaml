@@ -27,6 +27,10 @@ dependencies:
     version: 12.1.2
     repository: https://charts.bitnami.com/bitnami
     condition: db.internal.enabled
+  - name: minio
+    version: 11.10.19
+    repository: https://charts.bitnami.com/bitnami
+    condition: minio.internal.enabled
   - name: common
     version: 2.2.1
     repository: https://charts.bitnami.com/bitnami
