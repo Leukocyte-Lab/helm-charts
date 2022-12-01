@@ -228,8 +228,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
 | `exploitmgr.secret.minio.password`   | Minio password                                             | `""`                                  |
 | `exploitmgr.service`                 | Exploit-Manager service parameters                         |                                       |
 | `exploitmgr.service.redis.enabled`   | Enable redis                                               | `true`                                |
-| `exploitmgr.env`                     | Exploit-Manager environment variables                      |                                       |
-| `exploitmgr.env.REGISTRY_URL`        | Exploit-Manager registry URL                               | `https://registry.lkc-lab.com`        |
 | `exploitmgr.extraEnv`                | Exploit-Manager additional environment variables           | `{}`                                  |
 
 
@@ -253,14 +251,24 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Matcher
 Template module for AGH2.
 ref: https://github.com/Leukocyte-Lab/AGH2-Template
 
-| Name                         | Description                                         | Value                               |
-| ---------------------------- | --------------------------------------------------- | ----------------------------------- |
-| `template.enabled`           | Enable Template module                              | `true`                              |
-| `template.image.repository`  | Template image repository                           | `leukocyte-lab/argushack2/template` |
-| `template.image.tag`         | Template image tag (immutable tags are recommended) | `v0.2.5`                            |
-| `template.image.pullPolicy`  | Template image pull policy                          | `IfNotPresent`                      |
-| `template.image.pullSecrets` | Specify docker-registry secret names as an array    | `[]`                                |
-| `template.extraEnv`          | Captain additional environment variables            | `{}`                                |
+| Name                               | Description                                         | Value                               |
+| ---------------------------------- | --------------------------------------------------- | ----------------------------------- |
+| `template.enabled`                 | Enable Template module                              | `true`                              |
+| `template.image.repository`        | Template image repository                           | `leukocyte-lab/argushack2/template` |
+| `template.image.tag`               | Template image tag (immutable tags are recommended) | `v0.11.1`                           |
+| `template.image.pullPolicy`        | Template image pull policy                          | `IfNotPresent`                      |
+| `template.image.pullSecrets`       | Specify docker-registry secret names as an array    | `[]`                                |
+| `template.secret.enabled`          | Enable secret generate for Template                 | `true`                              |
+| `template.secret.db.enabled`       | Enable secret generate for Template database        | `true`                              |
+| `template.secret.db.secretName`    | Secret name for Template DB                         | `template-db-secret`                |
+| `template.secret.db.name`          | Database name                                       | `template-db`                       |
+| `template.secret.db.user`          | Database user                                       | `""`                                |
+| `template.secret.db.password`      | Database password                                   | `""`                                |
+| `template.secret.minio.enabled`    | Enable secret generate for Minio                    | `true`                              |
+| `template.secret.minio.secretName` | Secret name for Minio                               | `template-minio-secret`             |
+| `template.secret.minio.user`       | Minio user                                          | `""`                                |
+| `template.secret.minio.password`   | Minio password                                      | `""`                                |
+| `template.extraEnv`                | Template additional environment variables           | `{}`                                |
 
 
 ### AGH2-Transformer parameters
@@ -268,12 +276,29 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Template
 Transformer module for AGH2.
 ref: https://github.com/Leukocyte-Lab/AGH2-Transformer
 
-| Name                            | Description                                            | Value                                  |
-| ------------------------------- | ------------------------------------------------------ | -------------------------------------- |
-| `transformer.enabled`           | Enable Transformer module                              | `true`                                 |
-| `transformer.image.repository`  | Transformer image repository                           | `leukocyte-lab/argushack2/transformer` |
-| `transformer.image.tag`         | Transformer image tag (immutable tags are recommended) | `v1.1.0`                               |
-| `transformer.image.pullPolicy`  | Transformer image pull policy                          | `IfNotPresent`                         |
-| `transformer.image.pullSecrets` | Specify docker-registry secret names as an array       | `[]`                                   |
-| `transformer.extraEnv`          | Captain additional environment variables               | `{}`                                   |
+| Name                                | Description                                            | Value                                  |
+| ----------------------------------- | ------------------------------------------------------ | -------------------------------------- |
+| `transformer.enabled`               | Enable Transformer module                              | `true`                                 |
+| `transformer.image.repository`      | Transformer image repository                           | `leukocyte-lab/argushack2/transformer` |
+| `transformer.image.tag`             | Transformer image tag (immutable tags are recommended) | `v1.1.0`                               |
+| `transformer.image.pullPolicy`      | Transformer image pull policy                          | `IfNotPresent`                         |
+| `transformer.image.pullSecrets`     | Specify docker-registry secret names as an array       | `[]`                                   |
+| `transformer.service`               | Exploit-Manager service parameters                     |                                        |
+| `transformer.service.redis.enabled` | Enable redis                                           | `true`                                 |
+| `transformer.extraEnv`              | Captain additional environment variables               | `{}`                                   |
+
+
+### AGH2-UI parameters
+
+UI module for AGH2.
+ref: https://github.com/Leukocyte-Lab/AGH2-UI
+
+| Name                   | Description                                      | Value                               |
+| ---------------------- | ------------------------------------------------ | ----------------------------------- |
+| `ui.enabled`           | Enable UI module                                 | `true`                              |
+| `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack2/frontend` |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v2.19.0`                           |
+| `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                      |
+| `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                                |
+| `ui.extraEnv`          | UI additional environment variables              | `{}`                                |
 
