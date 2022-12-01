@@ -215,3 +215,17 @@ Return the proper Docker Image Registry Secret Names
 {{- define "transformer.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.transformer.image) "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Return the proper UI image name
+*/}}
+{{- define "ui.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.ui.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "ui.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.ui.image) "global" .Values.global) }}
+{{- end -}}
