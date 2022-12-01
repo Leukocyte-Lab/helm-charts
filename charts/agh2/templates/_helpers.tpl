@@ -173,3 +173,18 @@ Return the proper Docker Image Registry Secret Names
 {{- define "exploitmgr.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.exploitmgr.image) "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Return the proper Matcher image name
+*/}}
+{{- define "matcher.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.matcher.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "matcher.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.matcher.image) "global" .Values.global) }}
+{{- end -}}
+
