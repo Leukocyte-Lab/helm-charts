@@ -188,3 +188,17 @@ Return the proper Docker Image Registry Secret Names
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.matcher.image) "global" .Values.global) }}
 {{- end -}}
 
+{{/*
+Return the proper Template image name
+*/}}
+{{- define "template.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.template.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "template.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.template.image) "global" .Values.global) }}
+{{- end -}}
+
