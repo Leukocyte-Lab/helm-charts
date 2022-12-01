@@ -83,18 +83,18 @@ spec:
             - name: MINIO_URL
               valueFrom:
                 secretKeyRef:
-                  name: minio-secret
+                  name: {{ .Values.minio.secret.secretName }}
                   key: url
             - name: MINIO_USER
               valueFrom:
                 secretKeyRef:
-                  name: core-minio-secret
-                  key: core-minio-user
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-user
             - name: MINIO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: core-minio-secret
-                  key: core-minio-password
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-password
             - name: NAMESPACE
               valueFrom:
                 fieldRef:

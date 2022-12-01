@@ -93,6 +93,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.captain.secret.keygen.secretName }}
                   key: api-token
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.minio.secret.secretName }}
+                  key: url
             - name: MINIO_USER
               valueFrom:
                 secretKeyRef:
