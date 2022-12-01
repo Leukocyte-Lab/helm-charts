@@ -35,6 +35,13 @@ customRegistrySecret:
     username: ""
     password: ""
 
+## @param ingress.enabled Enable ingress controller
+## @param ingress.host Ingress hostname
+##
+ingress:
+  enabled: true
+  host: app.argushack.com
+
 ## @section Database parameters
 db:
   connection:
