@@ -159,3 +159,17 @@ Return the proper Docker Image Registry Secret Names
 {{- define "core.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.core.image) "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Return the proper Exploit Manager image name
+*/}}
+{{- define "exploitmgr.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.exploitmgr.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "exploitmgr.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.exploitmgr.image) "global" .Values.global) }}
+{{- end -}}
