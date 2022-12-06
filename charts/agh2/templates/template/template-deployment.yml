@@ -64,7 +64,5 @@ spec:
             - name: grpc
               containerPort: 50005
           imagePullPolicy: {{ .Values.template.image.pullPolicy }}
-      imagePullSecrets:
-        - name: gitlab-registry
       restartPolicy: Always
 {{- end }}
