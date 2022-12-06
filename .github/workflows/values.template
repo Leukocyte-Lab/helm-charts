@@ -245,7 +245,7 @@ attack:
       ## @param attack.service.ui.image.pullSecrets Specify docker-registry secret names as an array
       ##
       image:
-        repository: leukocyte-lab/argushack2/attackfrontend
+        repository: leukocyte-lab/argushack2/attack-frontend
         tag: $attackfrontend
         pullPolicy: IfNotPresent
         pullSecrets: []
