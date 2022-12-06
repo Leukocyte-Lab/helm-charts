@@ -46,7 +46,8 @@ spec:
             {{- include "common.tplvalues.render" (dict "value" .Values.matcher.extraEnv "context" $) | nindent 12 }}
             {{- end }}
           command:
-            - ./matcher
+            - npm
+            - start
           resources:
             requests:
               memory: "256Mi"
