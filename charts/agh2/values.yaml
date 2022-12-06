@@ -381,7 +381,7 @@ core:
   ##
   image:
     repository: leukocyte-lab/argushack2/core
-    tag: v1.16.2
+    tag: v1.17.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param core.secret.enabled Enable secret generate for Core
@@ -443,7 +443,7 @@ exploitmgr:
   ##
   image:
     repository: leukocyte-lab/argushack2/exploitmgr
-    tag: v0.11.1
+    tag: v0.12.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
@@ -530,7 +530,7 @@ template:
   ##
   image:
     repository: leukocyte-lab/argushack2/template
-    tag: v0.11.1
+    tag: v0.2.5
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param template.secret.enabled Enable secret generate for Template
