@@ -73,11 +73,6 @@ spec:
                   key: DB_CONN_STR
             - name: Addr
               value: ":9527"
-            - name: MINIO_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: url
             - name: SECRET_JWT
               valueFrom:
                 secretKeyRef:
