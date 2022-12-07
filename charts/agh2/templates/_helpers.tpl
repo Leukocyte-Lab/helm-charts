@@ -94,7 +94,7 @@ Return the proper Docker Image Registry Secret Names
 Return the proper db image name
 */}}
 {{- define "db.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.db.image "global" .Values.global) }}
+{{- include "common.images.image" (dict "imageRoot" (default .Values.db.image .Values.postgresql.image) "global" .Values.global) }}
 {{- end }}
 
 {{/*

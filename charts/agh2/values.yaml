@@ -88,32 +88,34 @@ db:
     ##
     options:
       disableSSL: true
-
-  ## @section Internal database provisioning parameters
-  ## @descriptionStart
-  ## Leave as default if using external DB
-  ## @descriptionEnd
+  ## @param db.internal.enabled Enable internal database
   ##
   internal:
-    ## @param db.internal.enabled Enable internal database
-    ##
-    enabled: false
+    enabled: true
+
+## @section Internal PostgreSQL database provisioning parameters
+## @descriptionStart
+## Leave as default if using external DB
+## @descriptionEnd
+##
+postgresql:
+  ## @param postgresql.enabled Enable internal database
+  ##
+  enabled: true
+  ## @skip postgresql.fullnameOverride
+  fullnameOverride: db # remapping chart bitnami/postgresql -> db
   ## Internal database image
   ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
-  ## @param db.image.repository Internal database image repository
-  ## @param db.image.tag Internal database image tag (immutable tags are recommended)
-  ## @param db.image.pullPolicy Internal database image pull policy
-  ## @param db.image.pullSecrets Specify docker-registry secret names as an array
+  ## @param postgresql.image.repository Internal database image repository
+  ## @param postgresql.image.tag Internal database image tag (immutable tags are recommended)
+  ## @param postgresql.image.pullPolicy Internal database image pull policy
+  ## @param postgresql.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/postgresql
-    tag: 15.1.0-debian-11-r0
+    repository: docker/groonga/pgroonga
+    tag: latest-debian-15
     pullPolicy: IfNotPresent
     pullSecrets: []
-
-## @skip postgresql.fullnameOverride
-postgresql:
-  fullnameOverride: db # remapping chart bitnami/postgresql -> db
 
 ## @section Minio parameters
 ##
