@@ -55,19 +55,20 @@ helm install agh2 lkclab/agh2
 | `db.connection.password`           | Database password                        | `""`                   |
 | `db.connection.options`            | Database connection options              |                        |
 | `db.connection.options.disableSSL` | Disable SSL connection                   | `true`                 |
+| `db.internal.enabled`              | Enable internal database                 | `true`                 |
 
 
-### Internal database provisioning parameters
+### Internal PostgreSQL database provisioning parameters
 
 Leave as default if using external DB
 
-| Name                   | Description                                                  | Value                       |
-| ---------------------- | ------------------------------------------------------------ | --------------------------- |
-| `db.internal.enabled`  | Enable internal database                                     | `false`                     |
-| `db.image.repository`  | Internal database image repository                           | `docker/bitnami/postgresql` |
-| `db.image.tag`         | Internal database image tag (immutable tags are recommended) | `15.1.0-debian-11-r0`       |
-| `db.image.pullPolicy`  | Internal database image pull policy                          | `IfNotPresent`              |
-| `db.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                        |
+| Name                           | Description                                                  | Value                     |
+| ------------------------------ | ------------------------------------------------------------ | ------------------------- |
+| `postgresql.enabled`           | Enable internal database                                     | `true`                    |
+| `postgresql.image.repository`  | Internal database image repository                           | `docker/groonga/pgroonga` |
+| `postgresql.image.tag`         | Internal database image tag (immutable tags are recommended) | `latest-debian-15`        |
+| `postgresql.image.pullPolicy`  | Internal database image pull policy                          | `IfNotPresent`            |
+| `postgresql.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                      |
 
 
 ### Minio parameters
