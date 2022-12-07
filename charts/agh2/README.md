@@ -47,7 +47,7 @@ helm install agh2 lkclab/agh2
 
 | Name                               | Description                              | Value                  |
 | ---------------------------------- | ---------------------------------------- | ---------------------- |
-| `db.connection.type`               | Choose to use external DB or internal DB | `internal`             |
+| `db.connection.type`               | Choose to use external DB or internal DB | `external`             |
 | `db.connection.driver`             | Database driver                          | `postgresql`           |
 | `db.connection.host`               | Database host address                    | `database.example.com` |
 | `db.connection.port`               | Database host port                       | `5432`                 |
@@ -63,7 +63,7 @@ Leave as default if using external DB
 
 | Name                   | Description                                                  | Value                       |
 | ---------------------- | ------------------------------------------------------------ | --------------------------- |
-| `db.internal.enabled`  | Enable internal database                                     | `true`                      |
+| `db.internal.enabled`  | Enable internal database                                     | `false`                     |
 | `db.image.repository`  | Internal database image repository                           | `docker/bitnami/postgresql` |
 | `db.image.tag`         | Internal database image tag (immutable tags are recommended) | `15.1.0-debian-11-r0`       |
 | `db.image.pullPolicy`  | Internal database image pull policy                          | `IfNotPresent`              |
@@ -90,7 +90,7 @@ Leave as default if using external DB
 | Name                      | Description                                               | Value                     |
 | ------------------------- | --------------------------------------------------------- | ------------------------- |
 | `minio.internal.enabled`  | Enable internal minio                                     | `false`                   |
-| `minio.image.repository`  | Internal Minio image repository                           | `bitnami/minio`           |
+| `minio.image.repository`  | Internal Minio image repository                           | `docker/bitnami/minio`    |
 | `minio.image.tag`         | Internal Minio image tag (immutable tags are recommended) | `2022.11.29-debian-11-r0` |
 | `minio.image.pullPolicy`  | Internal Minio image pull policy                          | `IfNotPresent`            |
 | `minio.image.pullSecrets` | Specify docker-registry secret names as an array          | `[]`                      |
