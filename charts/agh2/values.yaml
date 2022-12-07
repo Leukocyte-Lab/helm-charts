@@ -116,6 +116,12 @@ postgresql:
     tag: latest-debian-15
     pullPolicy: IfNotPresent
     pullSecrets: []
+  ## @param postgresql.auth.username Internal database initial user
+  ## @param postgresql.auth.password Internal database initial password
+  ##
+  auth:
+    username: argushack
+    password: ""
 
 ## @section Minio parameters
 ##

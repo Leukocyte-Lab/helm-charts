@@ -69,6 +69,8 @@ Leave as default if using external DB
 | `postgresql.image.tag`         | Internal database image tag (immutable tags are recommended) | `latest-debian-15`        |
 | `postgresql.image.pullPolicy`  | Internal database image pull policy                          | `IfNotPresent`            |
 | `postgresql.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                      |
+| `postgresql.auth.username`     | Internal database initial user                               | `argushack`               |
+| `postgresql.auth.password`     | Internal database initial password                           | `""`                      |
 
 
 ### Minio parameters
