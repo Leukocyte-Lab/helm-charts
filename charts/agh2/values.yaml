@@ -163,7 +163,7 @@ minio:
   ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: bitnami/minio
+    repository: docker/bitnami/minio
     tag: 2022.11.29-debian-11-r0
     pullPolicy: IfNotPresent
     pullSecrets: []
