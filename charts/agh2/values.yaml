@@ -177,6 +177,9 @@ minio:
     ## @param minio.internal.enabled Enable internal minio
     ##
     enabled: false
+  ## @skip minio.fullnameOverride
+  ##
+  fullnameOverride: minio # remapping chart bitnami/minio -> minio
   ## MinIO image
   ## @param minio.image.repository Internal MinIO image repository
   ## @param minio.image.tag Internal MinIO image tag (immutable tags are recommended)
