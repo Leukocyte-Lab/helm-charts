@@ -134,14 +134,6 @@ postgresql:
       scriptsConfigMap: "db-init-scripts"
       user: argushack
       password: ""
-    ## @skip postgresql.primary.containerSecurityContext
-    containerSecurityContext:
-      enabled: false
-      runAsUser: 1000
-    ## @skip postgresql.primary.podSecurityContext
-    podSecurityContext:
-      enabled: false
-      fsGroup: 1000
 ## @section Minio parameters
 ##
 minio:
