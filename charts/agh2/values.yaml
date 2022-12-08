@@ -123,6 +123,14 @@ postgresql:
     username: argushack
     password: ""
 
+  ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
+  ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
+  ##
+  primary:
+    initdb:
+      enabled: true
+      scriptsConfigMap: "db-init-scripts"
+
 ## @section Minio parameters
 ##
 minio:
