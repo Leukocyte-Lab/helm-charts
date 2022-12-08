@@ -95,13 +95,21 @@ Leave as default if using external DB
 
 Leave as default if using external DB
 
-| Name                      | Description                                               | Value                     |
-| ------------------------- | --------------------------------------------------------- | ------------------------- |
-| `minio.internal.enabled`  | Enable internal minio                                     | `false`                   |
-| `minio.image.repository`  | Internal Minio image repository                           | `docker/bitnami/minio`    |
-| `minio.image.tag`         | Internal Minio image tag (immutable tags are recommended) | `2022.11.29-debian-11-r0` |
-| `minio.image.pullPolicy`  | Internal Minio image pull policy                          | `IfNotPresent`            |
-| `minio.image.pullSecrets` | Specify docker-registry secret names as an array          | `[]`                      |
+| Name                              | Description                                               | Value                         |
+| --------------------------------- | --------------------------------------------------------- | ----------------------------- |
+| `minio.internal.enabled`          | Enable internal minio                                     | `false`                       |
+| `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnami/minio`        |
+| `minio.image.tag`                 | Internal MinIO image tag (immutable tags are recommended) | `2022.12.2-debian-11-r0`      |
+| `minio.image.pullPolicy`          | Internal MinIO image pull policy                          | `IfNotPresent`                |
+| `minio.image.pullSecrets`         | Specify docker-registry secret names as an array          | `[]`                          |
+| `minio.clientImage.repository`    | Internal MinIO image repository                           | `docker/bitnami/minio-client` |
+| `minio.clientImage.tag`           | Internal MinIO image tag (immutable tags are recommended) | `2022.11.17-debian-11-r4`     |
+| `minio.clientImage.pullPolicy`    | Internal MinIO image pull policy                          | `IfNotPresent`                |
+| `minio.clientImage.pullSecrets`   | Specify docker-registry secret names as an array          | `[]`                          |
+| `minio.auth.rootUser`             | Internal database root user                               | `argushack`                   |
+| `minio.auth.rootPassword`         | Internal database root password                           | `""`                          |
+| `minio.provisioning.enabled`      | Enable minio provisioning                                 | `true`                        |
+| `minio.provisioning.generateUser` | Enable minio user generation                              | `true`                        |
 
 
 ### Redis parameters
