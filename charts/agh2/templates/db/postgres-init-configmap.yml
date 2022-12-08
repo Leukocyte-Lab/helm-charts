@@ -8,7 +8,7 @@ metadata:
 data:
   init.sh: |
     cat <<EOF > /tmp/init.sql
-    CREATE ROLE {{ .Values.db.connection.user }} WITH
+    CREATE ROLE "{{ .Values.db.connection.user }}" WITH
       LOGIN
       NOSUPERUSER
       INHERIT
@@ -24,7 +24,7 @@ data:
           {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
           {{- $password := coalesce $module.secret.db.password $global.db.connection.password }}
           {{- if and (ne $user $global.db.connection.user) (ne $password $global.db.connection.password ) }}
-    CREATE ROLE {{ $user }} WITH
+    CREATE ROLE "{{ $user }}" WITH
       LOGIN
       NOSUPERUSER
       INHERIT
@@ -36,12 +36,12 @@ data:
           {{- if $module.secret.db.name }}
     -- Create DB {{ $module.secret.db.name }}
     CREATE DATABASE "{{ $module.secret.db.name }}" WITH 
-      OWNER = {{ $user }}
+      OWNER = '{{ $user }}'
       ENCODING = 'UTF8'
       CONNECTION LIMIT = -1;
     \c {{ $module.secret.db.name }}
     CREATE EXTENSION IF NOT EXISTS pgroonga;
-    GRANT USAGE ON SCHEMA pgroonga TO {{ $user }};
+    GRANT USAGE ON SCHEMA pgroonga TO "{{ $user }}";
           {{- end }}
         {{- end }}
       {{- end }}
