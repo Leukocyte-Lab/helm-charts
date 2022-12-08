@@ -62,17 +62,19 @@ helm install agh2 lkclab/agh2
 
 Leave as default if using external DB
 
-| Name                                         | Description                                                  | Value                                          |
-| -------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------- |
-| `postgresql.enabled`                         | Enable internal database                                     | `true`                                         |
-| `postgresql.image.repository`                | Internal database image repository                           | `leukocyte-lab/postgresql`                     |
-| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended) | `v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian` |
-| `postgresql.image.pullPolicy`                | Internal database image pull policy                          | `IfNotPresent`                                 |
-| `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array             | `[]`                                           |
-| `postgresql.auth.username`                   | Internal database initial user                               | `argushack`                                    |
-| `postgresql.auth.password`                   | Internal database initial password                           | `""`                                           |
-| `postgresql.primary.initdb.enabled`          | Enable initdb scripts generation                             | `true`                                         |
-| `postgresql.primary.initdb.scriptsConfigMap` | Name of ConfigMap containing db-init scripts                 | `db-init-scripts`                              |
+| Name                                         | Description                                                   | Value                                          |
+| -------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
+| `postgresql.enabled`                         | Enable internal database                                      | `true`                                         |
+| `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                     |
+| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian` |
+| `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                 |
+| `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                           |
+| `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                    |
+| `postgresql.auth.password`                   | Internal database initial password                            | `""`                                           |
+| `postgresql.primary.initdb.enabled`          | Enable initdb scripts generation                              | `true`                                         |
+| `postgresql.primary.initdb.scriptsConfigMap` | Name of ConfigMap containing db-init scripts                  | `db-init-scripts`                              |
+| `postgresql.primary.initdb.user`             | Specify the PostgreSQL username to execute the initdb scripts | `argushack`                                    |
+| `postgresql.primary.initdb.password`         | Specify the PostgreSQL password to execute the initdb scripts | `""`                                           |
 
 
 ### Minio parameters

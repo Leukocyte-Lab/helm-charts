@@ -125,11 +125,15 @@ postgresql:
 
   ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
   ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
+  ## @param postgresql.primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
+  ## @param postgresql.primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
   ##
   primary:
     initdb:
       enabled: true
       scriptsConfigMap: "db-init-scripts"
+      user: argushack
+      password: ""
 
 ## @section Minio parameters
 ##
