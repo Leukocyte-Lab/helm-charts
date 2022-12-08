@@ -177,17 +177,56 @@ minio:
     ## @param minio.internal.enabled Enable internal minio
     ##
     enabled: false
-  ## Minio image
-  ## @param minio.image.repository Internal Minio image repository
-  ## @param minio.image.tag Internal Minio image tag (immutable tags are recommended)
-  ## @param minio.image.pullPolicy Internal Minio image pull policy
+  ## MinIO image
+  ## @param minio.image.repository Internal MinIO image repository
+  ## @param minio.image.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.image.pullPolicy Internal MinIO image pull policy
   ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
     repository: docker/bitnami/minio
-    tag: 2022.11.29-debian-11-r0
+    tag: 2022.12.2-debian-11-r0
     pullPolicy: IfNotPresent
     pullSecrets: []
+
+  # MinIO Client image
+  ## @param minio.clientImage.repository Internal MinIO image repository
+  ## @param minio.clientImage.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.clientImage.pullPolicy Internal MinIO image pull policy
+  ## @param minio.clientImage.pullSecrets Specify docker-registry secret names as an array
+  ##
+  clientImage:
+    repository: docker/bitnami/minio-client
+    tag: 2022.11.17-debian-11-r4
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param minio.auth.rootUser Internal database root user
+  ## @param minio.auth.rootPassword Internal database root password
+  ##
+  auth:
+    rootUser: argushack
+    rootPassword: ""
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  provisioning:
+    enabled: true
+    generateUser: true
+    ## @skip minio.provisioning.policies
+    ## @skip minio.provisioning.usersExistingSecrets
+    ##
+    policies:
+      - name: bucket-specific-policy
+        statements:
+          - effect: "Allow"
+            resources:
+              - "arn:aws:s3:::*"
+            actions:
+              - "s3:GetBucketLocation"
+              - "s3:ListBucket"
+              - "s3:GetObject"
+    usersExistingSecrets:
+      - agh-minio-users-secret
 
 ## @section Redis parameters
 ##
