@@ -6,9 +6,8 @@ metadata:
   labels:
     {{- include "AGH2.labels" . | nindent 4 }}
 data:
-  init.sql: |-
-    CREATE USER {{ .Values.db.connection.user }} WITH
-      PASSWORD '{{ .Values.db.connection.password }}';
+  init.sh: |
+    cat << EOF | runuser -u postgres -- psql -f -
     CREATE ROLE {{ .Values.db.connection.user }} WITH
       LOGIN
       NOSUPERUSER
@@ -25,8 +24,6 @@ data:
           {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
           {{- $password := coalesce $module.secret.db.password $global.db.connection.password }}
           {{- if and (ne $user $global.db.connection.user) (ne $password $global.db.connection.password ) }}
-    CREATE USER {{ $user }} WITH
-      PASSWORD '{{ $password }}';
     CREATE ROLE {{ $user }} WITH
       LOGIN
       NOSUPERUSER
@@ -38,7 +35,7 @@ data:
           {{- end }}
           {{- if $module.secret.db.name }}
     -- Create DB {{ $module.secret.db.name }}
-    CREATE DATABASE "captain-db" WITH 
+    CREATE DATABASE "{{ $module.secret.db.name }}" WITH 
       OWNER = {{ $user }}
       ENCODING = 'UTF8'
       CONNECTION LIMIT = -1;
