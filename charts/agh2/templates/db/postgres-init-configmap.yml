@@ -1,0 +1,48 @@
+{{- if and .Values.db.internal.enabled .Values.postgresql.enabled .Values.postgresql.primary.initdb.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.postgresql.primary.initdb.scriptsConfigMap }}
+  labels:
+    {{- include "AGH2.labels" . | nindent 4 }}
+data:
+  init.sql:
+    CREATE ROLE {{ .Values.db.connection.user }} WITH
+      LOGIN
+      NOSUPERUSER
+      INHERIT
+      NOCREATEDB
+      NOCREATEROLE
+      NOREPLICATION
+      PASSWORD '{{ .Values.db.connection.password }}';
+    {{- $global := .Values }}
+    {{- range values .Values }}
+      {{- $module := . }}
+      {{- if and (hasKey $module "secret") (hasKey $module.secret "db") }}
+        {{- if and (hasKey $module.secret.db "user") (hasKey $module.secret.db "password") }}
+          {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
+          {{- $password := coalesce $module.secret.db.password $global.db.connection.password }}
+          {{- if and (ne $user $global.db.connection.user) (ne $password $global.db.connection.password ) }}
+    CREATE ROLE {{ $user }} WITH
+      LOGIN
+      NOSUPERUSER
+      INHERIT
+      NOCREATEDB
+      NOCREATEROLE
+      NOREPLICATION
+      PASSWORD '{{ $password }}';
+          {{- end }}
+          {{- if $module.secret.db.name }}
+    -- Create DB {{ $module.secret.db.name }}
+    CREATE DATABASE "captain-db" WITH 
+      OWNER = {{ $user }}
+      ENCODING = 'UTF8'
+      CONNECTION LIMIT = -1;
+    \c {{ $module.secret.db.name }}
+    CREATE EXTENSION IF NOT EXISTS pgroonga;
+    GRANT USAGE ON SCHEMA pgroonga TO {{ $user }};
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+{{- end }}
