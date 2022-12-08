@@ -118,10 +118,12 @@ postgresql:
     pullSecrets: []
   ## @param postgresql.auth.username Internal database initial user
   ## @param postgresql.auth.password Internal database initial password
+  ## @param postgresql.auth.postgresPassword Internal database initial postgres admin password
   ##
   auth:
     username: argushack
     password: ""
+    postgresPassword: ""
 
   ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
   ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
