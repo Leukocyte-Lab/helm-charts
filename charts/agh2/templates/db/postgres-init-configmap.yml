@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "AGH2.labels" . | nindent 4 }}
 data:
-  init.sql:
+  init.sql: |-
     CREATE USER {{ .Values.db.connection.user }} WITH
       PASSWORD '{{ .Values.db.connection.password }}';
     CREATE ROLE {{ .Values.db.connection.user }} WITH
