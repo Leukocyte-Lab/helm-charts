@@ -1,0 +1,10 @@
+{{- if .Values.ingress.tls.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: default
+spec:
+  defaultCertificate:
+    secretName: {{ .Values.ingress.tls.secretName }}
+{{- end }}

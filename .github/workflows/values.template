@@ -1,139 +1,686 @@
-# Default values for AGH2-helm.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## Default values for AGH2.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
 
-attack:
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
+
+## @param global.imageRegistry Global Docker Image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global storage class for dynamic provisioning
+##
+global:
+  imageRegistry: "registry.lkc-lab.com"
+  imagePullSecrets:
+    - lkc-registry
+  storageClass: ""
+
+## @section Common parameters
+##
+
+## @param customRegistrySecret.enabled Enable custom registry secret generation
+## @param customRegistrySecret.secretName Name of the generated secret
+##
+customRegistrySecret:
   enabled: true
+  secretName: lkc-registry
+  ## @param customRegistrySecret.auth.registry URL of the registry server
+  ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
+  ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
+  auth:
+    registry: registry.lkc-lab.com
+    username: ""
+    password: ""
+
+## @param ingress.enabled Enable ingress controller
+## @param ingress.host Ingress hostname
+##
+ingress:
+  enabled: true
+  host: app.argushack.com
+
+  ## @section TLS parameters
+  ##
+  tls:
+    ## @param ingress.tls.enabled Enable TLS certificate generation
+    ## @param ingress.tls.secretName Name of the generated secret
+    ## @param ingress.tls.cert Server certificate content
+    ## @param ingress.tls.key Server private key content
+    ##
+    enabled: false
+    secretName: agh-tls
+    cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUUwakNDQkhpZ0F3SUJBZ0lSQU5jRVNiK2E0M0NQeE85Sm9rWVdUcWt3Q2dZSUtvWkl6ajBFQXdJd2dZOHgKQ3pBSkJnTlZCQVlUQWtkQ01Sc3dHUVlEVlFRSUV4SkhjbVZoZEdWeUlFMWhibU5vWlhOMFpYSXhFREFPQmdOVgpCQWNUQjFOaGJHWnZjbVF4R0RBV0JnTlZCQW9URDFObFkzUnBaMjhnVEdsdGFYUmxaREUzTURVR0ExVUVBeE11ClUyVmpkR2xuYnlCRlEwTWdSRzl0WVdsdUlGWmhiR2xrWVhScGIyNGdVMlZqZFhKbElGTmxjblpsY2lCRFFUQWUKRncweU1qQTFNVEV3TURBd01EQmFGdzB5TXpBME1URXlNelU1TlRsYU1Cd3hHakFZQmdOVkJBTVRFV0Z3Y0M1aApjbWQxYzJoaFkyc3VZMjl0TUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUUwR0N3LzRkeHR1Y1U5Z0hXCmorc2xCcHlvVDY1MHF6b2s2bVhxbUIwL3IxbGtqVE1ydVkvbnhyd2p4ZXFYZTlZejJtSkVjazBFZTdYcWV4Y2YKL0FPVXg0bUlrQmJyTTZUZHp3UVJtcUxabUl1SjFEYWI3bkk0UXNwdXZ2U3RQV3dmbzRJRENEQ0NBd1F3SHdZRApWUjBqQkJnd0ZvQVU5b1VLT3hHRzRRUjlEcW9MTE5MdXpHUjdlNjR3SFFZRFZSME9CQllFRkJVUDh1RHZaK042Ci9qUFJsa2hzZWFQMDRLeVlNQTRHQTFVZER3RUIvd1FFQXdJSGdEQU1CZ05WSFJNQkFmOEVBakFBTUIwR0ExVWQKSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakJKQmdOVkhTQUVRakJBTURRR0N5c0dBUVFCc2pFQgpBZ0lITUNVd0l3WUlLd1lCQlFVSEFnRVdGMmgwZEhCek9pOHZjMlZqZEdsbmJ5NWpiMjB2UTFCVE1BZ0dCbWVCCkRBRUNBVENCaEFZSUt3WUJCUVVIQVFFRWVEQjJNRThHQ0NzR0FRVUZCekFDaGtOb2RIUndPaTh2WTNKMExuTmwKWTNScFoyOHVZMjl0TDFObFkzUnBaMjlGUTBORWIyMWhhVzVXWVd4cFpHRjBhVzl1VTJWamRYSmxVMlZ5ZG1WeQpRMEV1WTNKME1DTUdDQ3NHQVFVRkJ6QUJoaGRvZEhSd09pOHZiMk56Y0M1elpXTjBhV2R2TG1OdmJUQXpCZ05WCkhSRUVMREFxZ2hGaGNIQXVZWEpuZFhOb1lXTnJMbU52YllJVmQzZDNMbUZ3Y0M1aGNtZDFjMmhoWTJzdVkyOXQKTUlJQmZBWUtLd1lCQkFIV2VRSUVBZ1NDQVd3RWdnRm9BV1lBZFFDdDk3NzZmUDhReUl1ZFBad2VQaGhxdEdjcApYYyt4RENUS2hZWTA2OXlDaWdBQUFZQ3lYcUdRQUFBRUF3QkdNRVFDSUgwK3g4ZFR6YXEvaUJaeUU3L2pBSW5lCjJnSGhyT0tiYjBvZnZnMkYzKzhuQWlCaVZIZFV6cWZVL21vR0RyNEJLZk9BbWM0MHJWc0plSHZWWFVycjYrcGEKVUFCMUFIb3lqRlRZdHkyMklPbzQ0RkllNllRV2NESVRoVTA3MGl2Qk9sZWpVdXRTQUFBQmdMSmVvYmdBQUFRRApBRVl3UkFJZ085czRoV1U5cTZTZXBKZ0d5L21CN2xjejBqUmFBVVRtcmdocnhYYXgvZkFDSUJzSnNHeDJkaTExCnV6SEhxbUNUMXpBNUdkem9QTnlQbGxTK3hqWEl5WEpuQUhZQTZEN1EyajcxQmpVeTUxY292SWxyeVFQVHk5RVIKYSt6cmFlRjNmVzBHdlc0QUFBR0FzbDZoY2dBQUJBTUFSekJGQWlCb1FwT1BvUjVuWEpDMW95VjJseDRqK2hCagpxSnRjVW5sRll6d1lOSklDS0FJaEFMdDVTUjlXNGpKbitlNjhINEl4eU9ab1Evd2RlZEVaNVNUYUpzUHA3dDdKCk1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lRRGNwQ0RqZjdwSEN4ekxNNW5XclpqQzMxS1MzanB5eVFreXNnbFEKZng0cG9BSWdKZE5qR2hsYkZqaHRWTFRCK1cyNkFNRVMveUMxSFZjeTh6STY4RWwzREdnPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t
+    key: ""
+
+## @section Database parameters
+db:
+  connection:
+    ## @param db.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `db.image` when internal is in use
+    ##
+    type: external
+    ## @param db.connection.driver Database driver
+    ##
+    driver: postgresql
+    ## @param db.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `db.type` is external
+    ##
+    host: database.example.com
+    ## @param db.connection.port Database host port
+    ## Port in number
+    ##
+    port: 5432
+    ## @param db.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+    ## @param db.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+    ## @extra db.connection.options Database connection options
+    ## @param db.connection.options.disableSSL Disable SSL connection
+    ##
+    options:
+      disableSSL: true
+  ## @param db.internal.enabled Enable internal database
+  ##
+  internal:
+    enabled: true
+
+## @section Internal PostgreSQL database provisioning parameters
+## @descriptionStart
+## Leave as default if using external DB
+## @descriptionEnd
+##
+postgresql:
+  ## @param postgresql.enabled Enable internal database
+  ##
+  enabled: true
+  ## @skip postgresql.fullnameOverride
+  fullnameOverride: db # remapping chart bitnami/postgresql -> db
+  ## Internal database image
+  ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
+  ## @param postgresql.image.repository Internal database image repository
+  ## @param postgresql.image.tag Internal database image tag (immutable tags are recommended)
+  ## @param postgresql.image.pullPolicy Internal database image pull policy
+  ## @param postgresql.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack
+    repository: leukocyte-lab/postgresql
+    tag: v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param postgresql.auth.username Internal database initial user
+  ## @param postgresql.auth.password Internal database initial password
+  ## @param postgresql.auth.postgresPassword Internal database initial postgres admin password
+  ##
+  auth:
+    username: argushack
+    password: ""
+    postgresPassword: ""
+
+  ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
+  ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
+  ## @param postgresql.primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
+  ## @param postgresql.primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
+  ##
+  primary:
+    initdb:
+      enabled: true
+      scriptsConfigMap: "db-init-scripts"
+      user: argushack
+      password: ""
+## @section Minio parameters
+##
+minio:
+  connection:
+    ## @param minio.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `minio.image` when internal is in use
+    ##
+    type: external
+    ## @param minio.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `minio.type` is external
+    ##
+    host: database.example.com
+    ## @param minio.connection.port Database host port
+    ## Port in number
+    ##
+    port: 5432
+    ## @param minio.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+    ## @param minio.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+  ## @param minio.secret.enabled Enable minio secret generation
+  ## @param minio.secret.secretName Name of the generated secret
+  ##
+  secret:
+    enabled: true
+    secretName: minio-secret
+  ## @section Internal minio provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using external DB
+  ## @descriptionEnd
+  ##
+  internal:
+    ## @param minio.internal.enabled Enable internal minio
+    ##
+    enabled: false
+  ## @skip minio.fullnameOverride
+  ##
+  fullnameOverride: minio # remapping chart bitnami/minio -> minio
+  ## MinIO image
+  ## @param minio.image.repository Internal MinIO image repository
+  ## @param minio.image.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.image.pullPolicy Internal MinIO image pull policy
+  ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: docker/bitnami/minio
+    tag: 2022.12.2-debian-11-r0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+
+  # MinIO Client image
+  ## @param minio.clientImage.repository Internal MinIO image repository
+  ## @param minio.clientImage.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.clientImage.pullPolicy Internal MinIO image pull policy
+  ## @param minio.clientImage.pullSecrets Specify docker-registry secret names as an array
+  ##
+  clientImage:
+    repository: docker/bitnami/minio-client
+    tag: 2022.11.17-debian-11-r4
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param minio.auth.rootUser Internal database root user
+  ## @param minio.auth.rootPassword Internal database root password
+  ##
+  auth:
+    rootUser: argushack
+    rootPassword: ""
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  provisioning:
+    enabled: true
+    generateUser: true
+    ## @skip minio.provisioning.policies
+    ## @skip minio.provisioning.usersExistingSecrets
+    ##
+    policies:
+      - name: bucket-specific-policy
+        statements:
+          - effect: "Allow"
+            resources:
+              - "arn:aws:s3:::*"
+            actions:
+              - "s3:GetBucketLocation"
+              - "s3:ListBucket"
+              - "s3:GetObject"
+    usersExistingSecrets:
+      - agh-minio-users-secret
+
+## @section Redis parameters
+##
+
+## @param redis.enabled Enable redis
+redis:
+  enabled: true
+  ## Redis image
+  ## @param redis.image.repository Redis image repository
+  ## @param redis.image.tag Redis image tag (immutable tags are recommended)
+  ## @param redis.image.pullPolicy Redis image pull policy
+  ## @param redis.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: docker/library/redis
+    tag: 6-alpine
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+
+## @section AGH2-ATTACK parameters
+## @descriptionStart
+## ATTACK module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
+## @descriptionEnd
+##
+attack:
+  ## @param attack.enabled Enable ATTACK module
+  ##
+  enabled: true
+  ## @param attack.image.repository ATTACK image repository
+  ## @param attack.image.tag ATTACK image tag (immutable tags are recommended)
+  ## @param attack.image.pullPolicy ATTACK image pull policy
+  ## @param attack.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/attack
     tag: $attack
     pullPolicy: IfNotPresent
-  db:
+    pullSecrets: []
+  ## @param attack.secret.enabled Enable secret generate for ATTACK
+  ##
+  secret:
+    enabled: true # Manually create secret named as the value of `attack.secret.name` if set to false
+    ## @param attack.secret.db.enabled Enable secret generate for DB
+    ## @param attack.secret.db.secretName Secret name for Captain DB
+    ## @param attack.secret.db.name Database name
+    ## @param attack.secret.db.user Database user
+    ## @param attack.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: attack-db-secret
       name: attack-db
-      username: ""
+      user: ""
       password: ""
-      ip: 192.168.0.1
-      port: 5432
-  group:
-      imageUri: registry.lkc-lab.com/leukocyte-lab/argushack2/group
-      tag: v1.3.6
+  ## @extra attack.service ATTACK service parameters
+  ##
+  service:
+    ## ATTACK Group worker
+    ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-Group
+    ## @param attack.service.group.enabled Enable ATTACK Group worker
+    ##
+    group:
+      enabled: true
+      ## @param attack.service.group.image.repository ATTACK Group worker image repository
+      ## @param attack.service.group.image.tag ATTACK Group worker image tag (immutable tags are recommended)
+      ##
+      image:
+        repository: leukocyte-lab/argushack2/group
+        tag: v1.3.6
+    ## ATTACK UI
+    ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-UI
+    ## @param attack.service.ui.enabled Enable ATTACK UI
+    ##
+    ui:
+      enabled: true
+      ## @param attack.service.ui.image.repository ATTACK UI image repository
+      ## @param attack.service.ui.image.tag ATTACK UI image tag (immutable tags are recommended)
+      ## @param attack.service.ui.image.pullPolicy ATTACK UI image pull policy
+      ## @param attack.service.ui.image.pullSecrets Specify docker-registry secret names as an array
+      ##
+      image:
+        repository: leukocyte-lab/argushack2/attack-frontend
+        tag: $attackfrontend
+        pullPolicy: IfNotPresent
+        pullSecrets: []
+    ## Redis
+    ## @param attack.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @param attack.extraEnv ATTACK additional environment variables
+  ##
+  extraEnv: {}
 
-attackfrontend:
-  enabled: true
-  image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/attack-frontend
-    tag: $attackfrontend
-    pullPolicy: IfNotPresent
-
+## @section AGH2-Blender parameters
+## @descriptionStart
+## Blender module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Blender
+## @descriptionEnd
+##
 blender:
+  ## @param blender.enabled Enable Blender module
+  ##
   enabled: true
+  ## @param blender.image.repository Blender image repository
+  ## @param blender.image.tag Blender image tag (immutable tags are recommended)
+  ## @param blender.image.pullPolicy Blender image pull policy
+  ## @param blender.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/blender
+    repository: leukocyte-lab/argushack2/blender
     tag: $blender
     pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @extra blender.service ATTACK service parameters
+  ##
+  service:
+    ## Redis
+    ## @param blender.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @param blender.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
+## @section AGH2-Captain parameters
+## @descriptionStart
+## Captain module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Captain
+## @descriptionEnd
+##
 captain:
+  ## @param captain.enabled Enable Captain module
+  ##
   enabled: true
+  ## @param captain.image.repository Captain image repository
+  ## @param captain.image.tag Captain image tag (immutable tags are recommended)
+  ## @param captain.image.pullPolicy Captain image pull policy
+  ## @param captain.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/captain
+    repository: leukocyte-lab/argushack2/captain
     tag: $captain
     pullPolicy: IfNotPresent
-  db:
-    # Replace the password & DB ip & port
-    name: captain-db
-    username: ""
-    password: ""
-    ip: 192.168.0.1
-    port: 5432
-  # `jwt-secret` is required, plz enter random string no less then 10 letters
-  jwtSecret:
-  # `apiToken` & `accountID` is required, plz contact sales to get tokens
-  keygen:
-    apiToken:
-    accountID:
+    pullSecrets: []
+  ## @param captain.secret.enabled Enable secret generate for Captain
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `captain.secret.name` if set to false
+    ## @param captain.secret.db.enabled Enable secret generate for Captain database
+    ## @param captain.secret.db.secretName Secret name for Captain DB
+    ## @param captain.secret.db.name Database name
+    ## @param captain.secret.db.user Database user
+    ## @param captain.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: capt-db-secret
+      name: captain-db
+      user: ""
+      password: ""
+    ## @param captain.secret.minio.enabled Enable secret generate for Minio
+    ## @param captain.secret.minio.secretName Secret name for Minio
+    ## @param captain.secret.minio.user Minio user
+    ## @param captain.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: capt-minio-secret
+      user: "capt-minio-user"
+      password: ""
+    ## @param captain.secret.keygen.enabled Enable secret generate for keygen
+    ## @param captain.secret.keygen.secretName Secret name for keygen
+    ## @param captain.secret.keygen.apiToken Keygen API Token
+    ## @param captain.secret.keygen.accountID Keygen Account ID
+    ## ref: https://keygen.sh/docs/api
+    ##
+    keygen:
+      enabled: true
+      secretName: capt-keygen-secret
+      apiToken: ""
+      accountID: ""
+    ## @param captain.secret.jwt.enabled Enable secret generate for JWT
+    ## @param captain.secret.jwt.secretName Secret name for JWT
+    ## @param captain.secret.jwt.secret JWT secret
+    ##
+    jwt:
+      enabled: true
+      secretName: capt-jwt-secret
+      secret: ""
+  ## @extra captain.service Captain service parameters
+  ##
+  service:
+    ## Redis
+    ## @param captain.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @param captain.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
+## @section AGH2-Core parameters
+## @descriptionStart
+## Core module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Core
+## @descriptionEnd
+##
 core:
+  ## @param core.enabled Enable Core module
+  ##
   enabled: true
+  ## @param core.image.repository Core image repository
+  ## @param core.image.tag Core image tag (immutable tags are recommended)
+  ## @param core.image.pullPolicy Core image pull policy
+  ## @param core.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/core
+    repository: leukocyte-lab/argushack2/core
     tag: $core
     pullPolicy: IfNotPresent
-  db:
-    # Replace the password & DB ip & port
-    name: core-db
-    username: agh
-    password: ""
-    ip: 192.168.0.1
-    port: 5432
+    pullSecrets: []
+  ## @param core.secret.enabled Enable secret generate for Core
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `core.secret.name` if set to false
+    ## @param core.secret.db.enabled Enable secret generate for Core database
+    ## @param core.secret.db.secretName Secret name for Core DB
+    ## @param core.secret.db.name Database name
+    ## @param core.secret.db.user Database user
+    ## @param core.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: core-db-secret
+      name: core-db
+      user: ""
+      password: ""
+    ## @param core.secret.minio.enabled Enable secret generate for Minio
+    ## @param core.secret.minio.secretName Secret name for Minio
+    ## @param core.secret.minio.user Minio user
+    ## @param core.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: core-minio-secret
+      user: "core-minio-user"
+      password: ""
+  ## @extra core.service Core service parameters
+  ##
+  service:
+    ## Redis
+    ## @param core.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @extra core.env Core environment variables
+  ## @param core.env.REGISTRY_URL Core registry URL
+  ##
+  env:
+    REGISTRY_URL: "https://registry.lkc-lab.com"
+  ## @param core.extraEnv Core additional environment variables
+  ##
+  extraEnv: {}
 
+## @section AGH2-Exploit-Manager parameters
+## @descriptionStart
+## Exploit-Manager module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
+## @descriptionEnd
+##
 exploitmgr:
+  ## @param exploitmgr.enabled Enable Exploit-Manager module
+  ##
   enabled: true
+  ## @param exploitmgr.image.repository Exploit-Manager image repository
+  ## @param exploitmgr.image.tag Exploit-Manager image tag (immutable tags are recommended)
+  ## @param exploitmgr.image.pullPolicy Exploit-Manager image pull policy
+  ## @param exploitmgr.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/exploitmgr
+    repository: leukocyte-lab/argushack2/exploitmgr
     tag: $exploitmgr
     pullPolicy: IfNotPresent
-  db:
-    # Replace the password & DB ip & port
-    name: exploitmgr-db
-    username: ""
-    password: ""
-    ip: 192.168.0.1
-    port: 5432
+    pullSecrets: []
+  ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `exploitmgr.secret.name` if set to false
+    ## @param exploitmgr.secret.db.enabled Enable secret generate for Exploit-Manager database
+    ## @param exploitmgr.secret.db.secretName Secret name for Exploit-Manager DB
+    ## @param exploitmgr.secret.db.name Database name
+    ## @param exploitmgr.secret.db.user Database user
+    ## @param exploitmgr.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: exploitmgr-db-secret
+      name: exploitmgr-db
+      user: ""
+      password: ""
+    ## @param exploitmgr.secret.minio.enabled Enable secret generate for Minio
+    ## @param exploitmgr.secret.minio.secretName Secret name for Minio
+    ## @param exploitmgr.secret.minio.user Minio user
+    ## @param exploitmgr.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: exploitmgr-minio-secret
+      user: ""
+      password: ""
+  ## @extra exploitmgr.service Exploit-Manager service parameters
+  ##
+  service:
+    ## Redis
+    ## @param exploitmgr.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @param exploitmgr.extraEnv Exploit-Manager additional environment variables
+  ##
+  extraEnv: {}
+# frontend:
+#   enabled: true
+#   image:
+#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
+#     tag: v2.18.2
+#     pullPolicy: IfNotPresent
 
-frontend:
-  enabled: true
-  image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
-    tag: $frontend
-    pullPolicy: IfNotPresent
-
+## @section AGH2-Matcher parameters
+## @descriptionStart
+## Matcher module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Matcher
+## @descriptionEnd
+##
 matcher:
+  ## @param matcher.enabled Enable Matcher module
+  ##
   enabled: true
+  ## @param matcher.image.repository Matcher image repository
+  ## @param matcher.image.tag Matcher image tag (immutable tags are recommended)
+  ## @param matcher.image.pullPolicy Matcher image pull policy
+  ## @param matcher.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/matcher
+    repository: leukocyte-lab/argushack2/matcher
     tag: $matcher
     pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param matcher.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
+## @section AGH2-Template parameters
+## @descriptionStart
+## Template module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Template
+## @descriptionEnd
+##
 template:
+  ## @param template.enabled Enable Template module
+  ##
   enabled: true
+  ## @param template.image.repository Template image repository
+  ## @param template.image.tag Template image tag (immutable tags are recommended)
+  ## @param template.image.pullPolicy Template image pull policy
+  ## @param template.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/template
+    repository: leukocyte-lab/argushack2/template
     tag: $template
     pullPolicy: IfNotPresent
-  db:
-    # Replace the password & DB ip & port
-    name: template-db
-    username: ""
-    password: ""
-    ip: 192.168.0.1
-    port: 5432
+    pullSecrets: []
+  ## @param template.secret.enabled Enable secret generate for Template
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `template.secret.name` if set to false
+    ## @param template.secret.db.enabled Enable secret generate for Template database
+    ## @param template.secret.db.secretName Secret name for Template DB
+    ## @param template.secret.db.name Database name
+    ## @param template.secret.db.user Database user
+    ## @param template.secret.db.password Database password
+    ##
+    db:
+      enabled: true
+      secretName: template-db-secret
+      name: template-db
+      user: ""
+      password: ""
+    ## @param template.secret.minio.enabled Enable secret generate for Minio
+    ## @param template.secret.minio.secretName Secret name for Minio
+    ## @param template.secret.minio.user Minio user
+    ## @param template.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: template-minio-secret
+      user: ""
+      password: ""
+  ## @param template.extraEnv Template additional environment variables
+  ##
+  extraEnv: {}
 
+## @section AGH2-Transformer parameters
+## @descriptionStart
+## Transformer module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-Transformer
+## @descriptionEnd
+##
 transformer:
+  ## @param transformer.enabled Enable Transformer module
+  ##
   enabled: true
+  ## @param transformer.image.repository Transformer image repository
+  ## @param transformer.image.tag Transformer image tag (immutable tags are recommended)
+  ## @param transformer.image.pullPolicy Transformer image pull policy
+  ## @param transformer.image.pullSecrets Specify docker-registry secret names as an array
+  ##
   image:
-    repository: registry.lkc-lab.com/leukocyte-lab/argushack2/transformer
+    repository: leukocyte-lab/argushack2/transformer
     tag: $transformer
     pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @extra transformer.service Exploit-Manager service parameters
+  ##
+  service:
+    ## Redis
+    ## @param transformer.service.redis.enabled Enable redis
+    redis:
+      enabled: true
+  ## @param transformer.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
 
-minio:
-  url: ""
-  core:
-    user: ""
-    password: ""
-  capt:
-    user: ""
-    password: ""
-
-imageCredential:
-  # Fill the username & password for image pulling
-  registry: registry.lkc-lab.com
-  username:
-  password:
-
-ingress:
-  enabled: ture
-  host: "app.argushack.com"
-
-certificate:
-  cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUUwakNDQkhpZ0F3SUJBZ0lSQU5jRVNiK2E0M0NQeE85Sm9rWVdUcWt3Q2dZSUtvWkl6ajBFQXdJd2dZOHgKQ3pBSkJnTlZCQVlUQWtkQ01Sc3dHUVlEVlFRSUV4SkhjbVZoZEdWeUlFMWhibU5vWlhOMFpYSXhFREFPQmdOVgpCQWNUQjFOaGJHWnZjbVF4R0RBV0JnTlZCQW9URDFObFkzUnBaMjhnVEdsdGFYUmxaREUzTURVR0ExVUVBeE11ClUyVmpkR2xuYnlCRlEwTWdSRzl0WVdsdUlGWmhiR2xrWVhScGIyNGdVMlZqZFhKbElGTmxjblpsY2lCRFFUQWUKRncweU1qQTFNVEV3TURBd01EQmFGdzB5TXpBME1URXlNelU1TlRsYU1Cd3hHakFZQmdOVkJBTVRFV0Z3Y0M1aApjbWQxYzJoaFkyc3VZMjl0TUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUUwR0N3LzRkeHR1Y1U5Z0hXCmorc2xCcHlvVDY1MHF6b2s2bVhxbUIwL3IxbGtqVE1ydVkvbnhyd2p4ZXFYZTlZejJtSkVjazBFZTdYcWV4Y2YKL0FPVXg0bUlrQmJyTTZUZHp3UVJtcUxabUl1SjFEYWI3bkk0UXNwdXZ2U3RQV3dmbzRJRENEQ0NBd1F3SHdZRApWUjBqQkJnd0ZvQVU5b1VLT3hHRzRRUjlEcW9MTE5MdXpHUjdlNjR3SFFZRFZSME9CQllFRkJVUDh1RHZaK042Ci9qUFJsa2hzZWFQMDRLeVlNQTRHQTFVZER3RUIvd1FFQXdJSGdEQU1CZ05WSFJNQkFmOEVBakFBTUIwR0ExVWQKSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakJKQmdOVkhTQUVRakJBTURRR0N5c0dBUVFCc2pFQgpBZ0lITUNVd0l3WUlLd1lCQlFVSEFnRVdGMmgwZEhCek9pOHZjMlZqZEdsbmJ5NWpiMjB2UTFCVE1BZ0dCbWVCCkRBRUNBVENCaEFZSUt3WUJCUVVIQVFFRWVEQjJNRThHQ0NzR0FRVUZCekFDaGtOb2RIUndPaTh2WTNKMExuTmwKWTNScFoyOHVZMjl0TDFObFkzUnBaMjlGUTBORWIyMWhhVzVXWVd4cFpHRjBhVzl1VTJWamRYSmxVMlZ5ZG1WeQpRMEV1WTNKME1DTUdDQ3NHQVFVRkJ6QUJoaGRvZEhSd09pOHZiMk56Y0M1elpXTjBhV2R2TG1OdmJUQXpCZ05WCkhSRUVMREFxZ2hGaGNIQXVZWEpuZFhOb1lXTnJMbU52YllJVmQzZDNMbUZ3Y0M1aGNtZDFjMmhoWTJzdVkyOXQKTUlJQmZBWUtLd1lCQkFIV2VRSUVBZ1NDQVd3RWdnRm9BV1lBZFFDdDk3NzZmUDhReUl1ZFBad2VQaGhxdEdjcApYYyt4RENUS2hZWTA2OXlDaWdBQUFZQ3lYcUdRQUFBRUF3QkdNRVFDSUgwK3g4ZFR6YXEvaUJaeUU3L2pBSW5lCjJnSGhyT0tiYjBvZnZnMkYzKzhuQWlCaVZIZFV6cWZVL21vR0RyNEJLZk9BbWM0MHJWc0plSHZWWFVycjYrcGEKVUFCMUFIb3lqRlRZdHkyMklPbzQ0RkllNllRV2NESVRoVTA3MGl2Qk9sZWpVdXRTQUFBQmdMSmVvYmdBQUFRRApBRVl3UkFJZ085czRoV1U5cTZTZXBKZ0d5L21CN2xjejBqUmFBVVRtcmdocnhYYXgvZkFDSUJzSnNHeDJkaTExCnV6SEhxbUNUMXpBNUdkem9QTnlQbGxTK3hqWEl5WEpuQUhZQTZEN1EyajcxQmpVeTUxY292SWxyeVFQVHk5RVIKYSt6cmFlRjNmVzBHdlc0QUFBR0FzbDZoY2dBQUJBTUFSekJGQWlCb1FwT1BvUjVuWEpDMW95VjJseDRqK2hCagpxSnRjVW5sRll6d1lOSklDS0FJaEFMdDVTUjlXNGpKbitlNjhINEl4eU9ab1Evd2RlZEVaNVNUYUpzUHA3dDdKCk1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lRRGNwQ0RqZjdwSEN4ekxNNW5XclpqQzMxS1MzanB5eVFreXNnbFEKZng0cG9BSWdKZE5qR2hsYkZqaHRWTFRCK1cyNkFNRVMveUMxSFZjeTh6STY4RWwzREdnPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t
-  key:
+## @section AGH2-UI parameters
+## @descriptionStart
+## UI module for AGH2.
+## ref: https://github.com/Leukocyte-Lab/AGH2-UI
+## @descriptionEnd
+##
+ui:
+  ## @param ui.enabled Enable UI module
+  ##
+  enabled: true
+  ## @param ui.image.repository UI image repository
+  ## @param ui.image.tag UI image tag (immutable tags are recommended)
+  ## @param ui.image.pullPolicy UI image pull policy
+  ## @param ui.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack2/frontend
+    tag: $frontend
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param ui.extraEnv UI additional environment variables
+  ##
+  extraEnv: {}

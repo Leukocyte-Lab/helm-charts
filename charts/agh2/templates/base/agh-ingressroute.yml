@@ -1,0 +1,74 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: agh-ingressroute
+spec:
+  routes:
+    {{- if .Values.ui.enabled }}
+    - kind: Rule
+      match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: ui
+          port: 80
+    {{- end }}
+    {{- if .Values.captain.enabled }}
+    - kind: Rule
+      match: {{ print "PathPrefix(`/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: captain
+          port: 9527
+    {{- end }}
+    {{- if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
+    - kind: Rule
+      match: {{ print "PathPrefix(`/attack`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      services:
+        - kind: Service
+          name: attack-ui
+          port: 80
+    {{- end }}
+    {{- if and .Values.attack.enabled }}
+    - kind: Rule
+      match: {{ print "PathPrefix(`/attack/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: attack-stripprefix
+      services:
+        - kind: Service
+          name: attack
+          port: 8080
+    - kind: Rule
+      match: {{ print "(Path(`/attack/api/user`) || Path(`/attack/api/version`)) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: attack-stripprefix
+      services:
+        - kind: Service
+          name: captain
+          port: 9527
+    {{- end }}
+---
+{{- if and .Values.attack.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: attack-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /attack
+    forceSlash: false
+{{- end }}
+---
+# Redirect to https
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+{{- end }}

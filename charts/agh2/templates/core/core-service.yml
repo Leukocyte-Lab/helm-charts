@@ -1,0 +1,14 @@
+{{- if .Values.core.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: core
+  labels:
+    {{- include "AGH2.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: core
+  ports:
+    - port: 50005
+      targetPort: grpc
+{{- end }}
