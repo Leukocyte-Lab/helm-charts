@@ -427,6 +427,22 @@ captain:
     ## @param captain.service.redis.enabled Enable redis
     redis:
       enabled: true
+    ## Checkin-Daemon
+    ## @param captain.service.checkinDaemon.enabled Enable checkin-daemon
+    checkinDaemon:
+      enabled: true
+      ## @param captain.service.checkinDaemon.image.repository Checkin-Daemon image repository
+      ## @param captain.service.checkinDaemon.image.tag Checkin-Daemon image tag (immutable tags are recommended)
+      ## @param captain.service.checkinDaemon.image.pullPolicy Checkin-Daemon image pull policy
+      ## @param captain.service.checkinDaemon.image.pullSecrets Specify docker-registry secret names as an array
+      ##
+      image:
+        repository: leukocyte-lab/argushack2/checkin-daemon
+        tag: v0.1.0
+        pullPolicy: IfNotPresent
+        pullSecrets: []
+      ## @param captain.service.checkinDaemon.schedule Checkin-Daemon cronjob schedule
+      schedule: "0 0 * * *"
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
