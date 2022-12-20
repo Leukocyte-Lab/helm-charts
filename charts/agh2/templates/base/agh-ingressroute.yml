@@ -14,6 +14,15 @@ spec:
         - kind: Service
           name: ui
           port: 80
+    {{- else if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
+    - kind: Rule
+      match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      middlewares:
+        - name: attack-redirectregex
+      services:
+        - kind: Service
+          name: attack-ui
+          port: 80
     {{- end }}
     {{- if .Values.captain.enabled }}
     - kind: Rule
@@ -50,7 +59,7 @@ spec:
           port: 9527
     {{- end }}
 ---
-{{- if and .Values.attack.enabled }}
+{{- if .Values.attack.enabled }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -62,7 +71,17 @@ spec:
     forceSlash: false
 {{- end }}
 ---
-# Redirect to https
+{{- if and (not .Values.ui.enabled) .Values.attack.enabled .Values.attack.service.ui.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: attack-redirectregex
+spec:
+  redirectRegex:
+    regex: "^https://([^/]*)/(?!attack|api)(.*)"
+    replacement: "^https://${1}/attack/${2}"
+{{- end }}
+---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
