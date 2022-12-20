@@ -147,6 +147,13 @@ Return the proper Captain image name
 {{- end }}
 
 {{/*
+Return the proper checkin-daemon image name
+*/}}
+{{- define "captain.service.checkinDaemon.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.captain.service.checkinDaemon.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "captain.imagePullSecrets" -}}
