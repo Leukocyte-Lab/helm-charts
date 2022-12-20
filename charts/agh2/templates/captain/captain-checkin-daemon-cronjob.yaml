@@ -1,0 +1,67 @@
+{{- if and .Values.captain.enabled .Values.captain.service.checkinDaemon.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: checkin-daemon
+  labels:
+    {{- include "AGH2.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.captain.service.checkinDaemon.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: checkin-daemon
+        spec:
+          {{- include "captain.imagePullSecrets" . | nindent 6 }}
+          initContainers:
+            - name: checkin-daemon-init-postgresql
+              image: {{ include "db.image" . }}
+              env:
+                - name: PG_CONN_STR
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.captain.secret.db.secretName }}
+                      key: DB_CONN_STR
+              command:
+                [
+                  "sh",
+                  "-c",
+                  "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
+                ]
+          containers:
+            - name: checkin-daemon
+              image: {{ include "captain.service.checkinDaemon.image" . }}
+              command:
+                - ./checkin-daemon
+              env:
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: DB_Conn
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.captain.secret.db.secretName }}
+                      key: DB_CONN_STR
+                - name: "KEYGEN_ACCOUNT_ID"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.captain.secret.keygen.secretName }}
+                      key: account-id
+                - name: "KEYGEN_API_TOKEN"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.captain.secret.keygen.secretName }}
+                      key: api-token
+              resources:
+                requests:
+                  memory: "128Mi"
+                  cpu: "500m"
+                limits:
+                  memory: "256Mi"
+                  cpu: "1"
+              imagePullPolicy: {{ .Values.captain.service.checkinDaemon.image.pullPolicy }}
+          restartPolicy: "Never"
+{{- end }}
