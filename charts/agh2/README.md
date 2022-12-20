@@ -230,7 +230,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Core
 | `core.service`                 | Core service parameters                          |                                 |
 | `core.service.redis.enabled`   | Enable redis                                     | `true`                          |
 | `core.env`                     | Core environment variables                       |                                 |
-| `core.env.REGISTRY_URL`        | Core registry URL                                | `https://registry.lkc-lab.com`  |
+| `core.env.REGISTRY_URL`        | Core registry URL                                | `registry.lkc-lab.com`          |
 | `core.extraEnv`                | Core additional environment variables            | `{}`                            |
 
 
