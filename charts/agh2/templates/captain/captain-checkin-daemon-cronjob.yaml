@@ -14,7 +14,7 @@ spec:
           labels:
             app: checkin-daemon
         spec:
-          {{- include "captain.imagePullSecrets" . | nindent 6 }}
+          {{- include "captain.imagePullSecrets" . | nindent 10 }}
           initContainers:
             - name: checkin-daemon-init-postgresql
               image: {{ include "db.image" . }}
