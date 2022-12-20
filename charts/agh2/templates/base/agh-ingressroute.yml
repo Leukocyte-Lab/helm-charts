@@ -78,7 +78,7 @@ metadata:
   name: attack-redirectregex
 spec:
   redirectRegex:
-    regex: "^https://([^/]*)/(?!attack|api)(.*)"
+    regex: "^https?://([^/]*)/(?!attack|api)(.*)"
     replacement: "^https://${1}/attack/${2}"
 {{- end }}
 ---
