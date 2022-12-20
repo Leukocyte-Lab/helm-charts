@@ -504,7 +504,7 @@ core:
   ## @param core.env.REGISTRY_URL Core registry URL
   ##
   env:
-    REGISTRY_URL: "https://registry.lkc-lab.com"
+    REGISTRY_URL: "registry.lkc-lab.com"
   ## @param core.extraEnv Core additional environment variables
   ##
   extraEnv: {}

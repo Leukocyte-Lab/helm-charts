@@ -107,7 +107,7 @@ spec:
             - name: CORE_URL
               value: "core.$(NAMESPACE).svc.cluster.local:50005"
             - name: REGISTRY_URL
-              value: {{ coalesce .Values.core.env.REGISTRY_URL .Values.global.imageRegistry }}
+              value: {{ required "at least one of core.env.REGISTRY_URL or global.imageRegistry is required" (coalesce .Values.core.env.REGISTRY_URL .Values.global.imageRegistry) }}
             {{- if .Values.core.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.core.extraEnv "context" $) | nindent 12 }}
             {{- end }}
