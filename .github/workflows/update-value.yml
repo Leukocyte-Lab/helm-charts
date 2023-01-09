@@ -43,6 +43,10 @@ on:
         description: "version of transformer"
         required: true
         type: string
+      checkin-daemon:
+        description: "version of checkin daemon"
+        required: true
+        type: string
 
 jobs:
   update:
@@ -70,6 +74,7 @@ jobs:
           export matcher="${{ github.event.inputs.matcher }}"
           export template="${{ github.event.inputs.template }}"
           export transformer="${{ github.event.inputs.transformer }}"
+          export checkindaemon="${{ github.event.inputs.checkin-daemon }}"
           envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
           cat charts/agh2/values.yaml
 
