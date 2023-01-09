@@ -4,43 +4,43 @@ on:
   workflow_dispatch:
     inputs:
       attack:
-        description: 'version of attack'
+        description: "version of attack"
         required: true
         type: string
       blender:
-        description: 'version of blender'
+        description: "version of blender"
         required: true
         type: string
       captain:
-        description: 'version of captain'
+        description: "version of captain"
         required: true
         type: string
       core:
-        description: 'version of core'
+        description: "version of core"
         required: true
         type: string
       exploitmgr:
-        description: 'version of exploitmgr'
+        description: "version of exploitmgr"
         required: true
         type: string
       frontend:
-        description: 'version of frontend'
+        description: "version of frontend"
         required: true
         type: string
       attack-frontend:
-        description: 'version of attack frontend'
+        description: "version of attack frontend"
         required: true
         type: string
       matcher:
-        description: 'version of matcher'
+        description: "version of matcher"
         required: true
         type: string
       template:
-        description: 'version of template'
+        description: "version of template"
         required: true
         type: string
       transformer:
-        description: 'version of transformer'
+        description: "version of transformer"
         required: true
         type: string
 
