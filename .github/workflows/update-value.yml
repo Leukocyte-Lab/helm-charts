@@ -3,52 +3,8 @@ name: UpdateHelmValue
 on:
   workflow_dispatch:
     inputs:
-      attack:
-        description: "version of attack"
-        required: true
-        type: string
-      blender:
-        description: "version of blender"
-        required: true
-        type: string
-      captain:
-        description: "version of captain"
-        required: true
-        type: string
-      core:
-        description: "version of core"
-        required: true
-        type: string
-      exploitmgr:
-        description: "version of exploitmgr"
-        required: true
-        type: string
-      frontend:
-        description: "version of frontend"
-        required: true
-        type: string
-      attack-frontend:
-        description: "version of attack frontend"
-        required: true
-        type: string
-      matcher:
-        description: "version of matcher"
-        required: true
-        type: string
-      template:
-        description: "version of template"
-        required: true
-        type: string
-      transformer:
-        description: "version of transformer"
-        required: true
-        type: string
-      checkin-daemon:
-        description: "version of checkin daemon"
-        required: true
-        type: string
-      group:
-        description: "version of group"
+      version:
+        description: "version of argushack in json"
         required: true
         type: string
 
@@ -68,18 +24,18 @@ jobs:
         uses: actions/checkout@v3
       - name: generator values.yaml
         run: |
-          export attack="${{ github.event.inputs.attack }}"
-          export blender="${{ github.event.inputs.blender }}"
-          export captain="${{ github.event.inputs.captain }}"
-          export core="${{ github.event.inputs.core }}"
-          export exploitmgr="${{ github.event.inputs.exploitmgr }}"
-          export frontend="${{ github.event.inputs.frontend }}"
-          export attackfrontend="${{ github.event.inputs.attack-frontend }}"
-          export matcher="${{ github.event.inputs.matcher }}"
-          export template="${{ github.event.inputs.template }}"
-          export transformer="${{ github.event.inputs.transformer }}"
-          export checkindaemon="${{ github.event.inputs.checkin-daemon }}"
-          export group="${{ github.event.inputs.group }}"
+          export attack="${{ fromJson(github.event.inputs.version).attack }}"
+          export blender="${{ fromJson(github.event.inputs.version).blender }}"
+          export captain="${{ fromJson(github.event.inputs.version).captain }}"
+          export core="${{ fromJson(github.event.inputs.version).core }}"
+          export exploitmgr="${{ fromJson(github.event.inputs.version).exploitmgr }}"
+          export frontend="${{ fromJson(github.event.inputs.version).frontend }}"
+          export attackfrontend="${{ fromJson(github.event.inputs.version).attack-frontend }}"
+          export matcher="${{ fromJson(github.event.inputs.version).matcher }}"
+          export template="${{ fromJson(github.event.inputs.version).template }}"
+          export transformer="${{ fromJson(github.event.inputs.version).transformer }}"
+          export checkindaemon="${{ fromJson(github.event.inputs.version).checkin-daemon }}"
+          export group="${{ fromJson(github.event.inputs.version).group }}"
           envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
           cat charts/agh2/values.yaml
 
