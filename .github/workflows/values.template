@@ -299,7 +299,7 @@ attack:
       ##
       image:
         repository: leukocyte-lab/argushack2/group
-        tag: v1.3.6
+        tag: $group
     ## ATTACK UI
     ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-UI
     ## @param attack.service.ui.enabled Enable ATTACK UI
