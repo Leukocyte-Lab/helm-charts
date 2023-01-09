@@ -76,7 +76,7 @@ jobs:
       - name: update chart version
         working-directory: charts/agh2
         run: |
-          version="$(cat Chart.yaml | grep version: | awk '{print $2}')"
+          version="$(cat Chart.yaml | grep version: | awk '{print $2}' | head -n 1)"
           sed -i "s/$version/$(semver bump patch $version)/g" Chart.yaml
 
       - name: Create PR
