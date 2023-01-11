@@ -29,9 +29,9 @@ jobs:
         with:
           repo: "Leukocyte-Lab/AGH2-ATTACK-Init"
           version: "latest"
-          file: "attack.sql"
+          file: "attack.sql.tgz"
           token: ${{ secrets.GH_TOKEN }}
-          target: "charts/agh2/artifacts/attack.sql"
+          target: "charts/agh2/artifacts/attack.sql.tgz"
 
       - name: Add Helm dependency repos
         run: |
