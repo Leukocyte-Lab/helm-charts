@@ -49,10 +49,11 @@ data:
     EOF
 
     {{ if .Values.captain.enabled }}
-    cat <<EOF > /tmp/attack.sql
+    cat <<EOF > /tmp/attack.sql.tgz
     \c {{ .Values.captain.secret.db.name }}
-    {{ .Files.Get "artifacts/attack.sql" | indent 4 }}
+    {{ .Files.Get "artifacts/attack.sql.tgz" | indent 4 }}
     EOF
+    tar -xzf /tmp/attack.sql.tgz -C /tmp
     {{- end }}
 
     . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ .Values.postgresql.auth.postgresPassword }} psql -f /tmp/init.sql &&
