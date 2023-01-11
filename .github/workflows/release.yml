@@ -30,7 +30,7 @@ jobs:
           repo: "Leukocyte-Lab/AGH2-ATTACK-Init"
           version: "latest"
           file: "attack.sql"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
           target: "charts/agh2/artifacts/attack.sql"
 
       - name: Add Helm dependency repos
