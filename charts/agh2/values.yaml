@@ -541,7 +541,7 @@ exploitmgr:
     ##
     db:
       enabled: true
-      secretName: exploitmgr-db-secret
+      secretName: expmgr-db-secret
       name: exploitmgr-db
       user: ""
       password: ""

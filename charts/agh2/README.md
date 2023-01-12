@@ -47,7 +47,7 @@ helm install agh2 lkclab/agh2
 
 | Name                               | Description                              | Value                  |
 | ---------------------------------- | ---------------------------------------- | ---------------------- |
-| `db.connection.type`               | Choose to use external DB or internal DB | `external`             |
+| `db.connection.type`               | Choose to use external DB or internal DB | `internal`             |
 | `db.connection.driver`             | Database driver                          | `postgresql`           |
 | `db.connection.host`               | Database host address                    | `database.example.com` |
 | `db.connection.port`               | Database host port                       | `5432`                 |
@@ -66,7 +66,7 @@ Leave as default if using external DB
 | -------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
 | `postgresql.enabled`                         | Enable internal database                                      | `true`                                         |
 | `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                     |
-| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian` |
+| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian` |
 | `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                 |
 | `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                           |
 | `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                    |
@@ -82,9 +82,9 @@ Leave as default if using external DB
 
 | Name                        | Description                              | Value                  |
 | --------------------------- | ---------------------------------------- | ---------------------- |
-| `minio.connection.type`     | Choose to use external DB or internal DB | `external`             |
+| `minio.connection.type`     | Choose to use external DB or internal DB | `internal`             |
 | `minio.connection.host`     | Database host address                    | `database.example.com` |
-| `minio.connection.port`     | Database host port                       | `5432`                 |
+| `minio.connection.port`     | Database host port                       | `9000`                 |
 | `minio.connection.user`     | Database user                            | `argushack`            |
 | `minio.connection.password` | Database password                        | `""`                   |
 | `minio.secret.enabled`      | Enable minio secret generation           | `true`                 |
@@ -97,7 +97,7 @@ Leave as default if using external DB
 
 | Name                              | Description                                               | Value                         |
 | --------------------------------- | --------------------------------------------------------- | ----------------------------- |
-| `minio.internal.enabled`          | Enable internal minio                                     | `false`                       |
+| `minio.internal.enabled`          | Enable internal minio                                     | `true`                        |
 | `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnami/minio`        |
 | `minio.image.tag`                 | Internal MinIO image tag (immutable tags are recommended) | `2022.12.2-debian-11-r0`      |
 | `minio.image.pullPolicy`          | Internal MinIO image pull policy                          | `IfNotPresent`                |
@@ -132,7 +132,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | --------------------------------------- | -------------------------------------------------------------- | ------------------------------------------ |
 | `attack.enabled`                        | Enable ATTACK module                                           | `true`                                     |
 | `attack.image.repository`               | ATTACK image repository                                        | `leukocyte-lab/argushack2/attack`          |
-| `attack.image.tag`                      | ATTACK image tag (immutable tags are recommended)              | `v0.9.0`                                   |
+| `attack.image.tag`                      | ATTACK image tag (immutable tags are recommended)              | `v0.10.0`                                  |
 | `attack.image.pullPolicy`               | ATTACK image pull policy                                       | `IfNotPresent`                             |
 | `attack.image.pullSecrets`              | Specify docker-registry secret names as an array               | `[]`                                       |
 | `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                     |
@@ -144,10 +144,10 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | `attack.service`                        | ATTACK service parameters                                      |                                            |
 | `attack.service.group.enabled`          | Enable ATTACK Group worker                                     | `true`                                     |
 | `attack.service.group.image.repository` | ATTACK Group worker image repository                           | `leukocyte-lab/argushack2/group`           |
-| `attack.service.group.image.tag`        | ATTACK Group worker image tag (immutable tags are recommended) | `v1.3.6`                                   |
+| `attack.service.group.image.tag`        | ATTACK Group worker image tag (immutable tags are recommended) | `v1.3.7`                                   |
 | `attack.service.ui.enabled`             | Enable ATTACK UI                                               | `true`                                     |
 | `attack.service.ui.image.repository`    | ATTACK UI image repository                                     | `leukocyte-lab/argushack2/attack-frontend` |
-| `attack.service.ui.image.tag`           | ATTACK UI image tag (immutable tags are recommended)           | `v0.3.0`                                   |
+| `attack.service.ui.image.tag`           | ATTACK UI image tag (immutable tags are recommended)           | `v0.3.1`                                   |
 | `attack.service.ui.image.pullPolicy`    | ATTACK UI image pull policy                                    | `IfNotPresent`                             |
 | `attack.service.ui.image.pullSecrets`   | Specify docker-registry secret names as an array               | `[]`                                       |
 | `attack.service.redis.enabled`          | Enable redis                                                   | `true`                                     |
@@ -161,7 +161,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Blender
 
 | Name                            | Description                                        | Value                              |
 | ------------------------------- | -------------------------------------------------- | ---------------------------------- |
-| `blender.enabled`               | Enable Blender module                              | `true`                             |
+| `blender.enabled`               | Enable Blender module                              | `false`                            |
 | `blender.image.repository`      | Blender image repository                           | `leukocyte-lab/argushack2/blender` |
 | `blender.image.tag`             | Blender image tag (immutable tags are recommended) | `v1.1.0`                           |
 | `blender.image.pullPolicy`      | Blender image pull policy                          | `IfNotPresent`                     |
@@ -180,7 +180,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Captain
 | ------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------- |
 | `captain.enabled`                                 | Enable Captain module                                     | `true`                                    |
 | `captain.image.repository`                        | Captain image repository                                  | `leukocyte-lab/argushack2/captain`        |
-| `captain.image.tag`                               | Captain image tag (immutable tags are recommended)        | `v0.19.0`                                 |
+| `captain.image.tag`                               | Captain image tag (immutable tags are recommended)        | `v0.20.1-rc.0`                            |
 | `captain.image.pullPolicy`                        | Captain image pull policy                                 | `IfNotPresent`                            |
 | `captain.image.pullSecrets`                       | Specify docker-registry secret names as an array          | `[]`                                      |
 | `captain.secret.enabled`                          | Enable secret generate for Captain                        | `true`                                    |
@@ -220,7 +220,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Core
 | ------------------------------ | ------------------------------------------------ | ------------------------------- |
 | `core.enabled`                 | Enable Core module                               | `true`                          |
 | `core.image.repository`        | Core image repository                            | `leukocyte-lab/argushack2/core` |
-| `core.image.tag`               | Core image tag (immutable tags are recommended)  | `v1.17.0`                       |
+| `core.image.tag`               | Core image tag (immutable tags are recommended)  | `v1.18.1-rc.0`                  |
 | `core.image.pullPolicy`        | Core image pull policy                           | `IfNotPresent`                  |
 | `core.image.pullSecrets`       | Specify docker-registry secret names as an array | `[]`                            |
 | `core.secret.enabled`          | Enable secret generate for Core                  | `true`                          |
@@ -249,7 +249,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
 | ------------------------------------ | ---------------------------------------------------------- | ------------------------------------- |
 | `exploitmgr.enabled`                 | Enable Exploit-Manager module                              | `true`                                |
 | `exploitmgr.image.repository`        | Exploit-Manager image repository                           | `leukocyte-lab/argushack2/exploitmgr` |
-| `exploitmgr.image.tag`               | Exploit-Manager image tag (immutable tags are recommended) | `v0.12.0`                             |
+| `exploitmgr.image.tag`               | Exploit-Manager image tag (immutable tags are recommended) | `v0.14.0-rc.0`                        |
 | `exploitmgr.image.pullPolicy`        | Exploit-Manager image pull policy                          | `IfNotPresent`                        |
 | `exploitmgr.image.pullSecrets`       | Specify docker-registry secret names as an array           | `[]`                                  |
 | `exploitmgr.secret.enabled`          | Enable secret generate for Exploit-Manager                 | `true`                                |
@@ -274,7 +274,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Matcher
 
 | Name                        | Description                                        | Value                              |
 | --------------------------- | -------------------------------------------------- | ---------------------------------- |
-| `matcher.enabled`           | Enable Matcher module                              | `true`                             |
+| `matcher.enabled`           | Enable Matcher module                              | `false`                            |
 | `matcher.image.repository`  | Matcher image repository                           | `leukocyte-lab/argushack2/matcher` |
 | `matcher.image.tag`         | Matcher image tag (immutable tags are recommended) | `v1.2.2`                           |
 | `matcher.image.pullPolicy`  | Matcher image pull policy                          | `IfNotPresent`                     |
@@ -289,7 +289,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Template
 
 | Name                               | Description                                         | Value                               |
 | ---------------------------------- | --------------------------------------------------- | ----------------------------------- |
-| `template.enabled`                 | Enable Template module                              | `true`                              |
+| `template.enabled`                 | Enable Template module                              | `false`                             |
 | `template.image.repository`        | Template image repository                           | `leukocyte-lab/argushack2/template` |
 | `template.image.tag`               | Template image tag (immutable tags are recommended) | `v0.2.5`                            |
 | `template.image.pullPolicy`        | Template image pull policy                          | `IfNotPresent`                      |
@@ -314,7 +314,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Transformer
 
 | Name                                | Description                                            | Value                                  |
 | ----------------------------------- | ------------------------------------------------------ | -------------------------------------- |
-| `transformer.enabled`               | Enable Transformer module                              | `true`                                 |
+| `transformer.enabled`               | Enable Transformer module                              | `false`                                |
 | `transformer.image.repository`      | Transformer image repository                           | `leukocyte-lab/argushack2/transformer` |
 | `transformer.image.tag`             | Transformer image tag (immutable tags are recommended) | `v1.1.0`                               |
 | `transformer.image.pullPolicy`      | Transformer image pull policy                          | `IfNotPresent`                         |
@@ -333,7 +333,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-UI
 | ---------------------- | ------------------------------------------------ | ----------------------------------- |
 | `ui.enabled`           | Enable UI module                                 | `true`                              |
 | `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack2/frontend` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v2.19.0`                           |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v2.20.1`                           |
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                      |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                                |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                                |
