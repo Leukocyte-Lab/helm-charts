@@ -31,8 +31,20 @@ data:
       {{- if and $module.enabled (hasKey $module "secret") (hasKey $module.secret "db") }}
         {{- if and (hasKey $module.secret.db "user") (hasKey $module.secret.db "password") }}
           {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
-          {{- $password := coalesce $module.secret.db.password $global.db.connection.password }}
-          {{- if and (ne $user $global.db.connection.user) (ne $password $global.db.connection.password ) }}
+          {{- $password := coalesce
+            $module.secret.db.password
+            $global.db.connection.password
+            (
+              include "specify-password"
+                (
+                  dict
+                    "domain" (default $global.ingress.host "app.argushack.com")
+                    "token" $global.captain.secret.keygen.apiToken
+                    "prefix" $module.secret.db.secretName
+                )
+            )
+          }}
+          {{- if ne $user $global.db.connection.user }}
     CREATE ROLE "{{ $user }}" WITH
       LOGIN
       NOSUPERUSER

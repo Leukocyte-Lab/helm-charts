@@ -118,11 +118,18 @@ postgresql:
     tag: v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian
     pullPolicy: IfNotPresent
     pullSecrets: []
+  ## @param postgresql.auth.enabled Enable postgresql auth secret generate
   ## @param postgresql.auth.username Internal database initial user
   ## @param postgresql.auth.password Internal database initial password
   ## @param postgresql.auth.postgresPassword Internal database initial postgres admin password
   ##
   auth:
+    ## @skip postgresql.auth.existingSecret
+    ## Name of the generated/existed db secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+    ##
+    existingSecret: "agh-db-secret"
+    enabled: true
     username: argushack
     password: ""
     postgresPassword: ""
@@ -288,7 +295,7 @@ attack:
       secretName: attack-db-secret
       enabled: true
       name: attack-db
-      user: ""
+      user: "agh-attack"
       password: ""
   ## @extra attack.service ATTACK service parameters
   ##
@@ -397,7 +404,7 @@ captain:
       secretName: capt-db-secret
       enabled: true
       name: captain-db
-      user: ""
+      user: "agh-captain"
       password: ""
     ## @param captain.secret.minio.enabled Enable secret generate for Minio
     ## @param captain.secret.minio.secretName Secret name for Minio
@@ -492,7 +499,7 @@ core:
       secretName: core-db-secret
       enabled: true
       name: core-db
-      user: ""
+      user: "agh-core"
       password: ""
     ## @param core.secret.minio.enabled Enable secret generate for Minio
     ## @param core.secret.minio.secretName Secret name for Minio
@@ -557,7 +564,7 @@ exploitmgr:
       secretName: expmgr-db-secret
       enabled: true
       name: exploitmgr-db
-      user: ""
+      user: "agh-exploit"
       password: ""
   ## @extra exploitmgr.service Exploit-Manager service parameters
   ##
@@ -631,7 +638,7 @@ template:
       secretName: template-db-secret
       enabled: true
       name: template-db
-      user: ""
+      user: "agh-template"
       password: ""
     ## @param template.secret.minio.enabled Enable secret generate for Minio
     ## @param template.secret.minio.secretName Secret name for Minio
