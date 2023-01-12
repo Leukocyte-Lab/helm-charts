@@ -13,7 +13,11 @@ data:
       -H 'Authorization: Bearer {{ .Values.captain.secret.keygen.apiToken }}' \
       -H 'Accept: application/vnd.api+json' | jq '.data.links.redirect' | cut -d, -f 3 | xargs curl > /tmp/attack.sql.tgz
     tar -xzf /tmp/attack.sql.tgz -C /tmp
-    sed -i '1s/^/\\c {{ .Values.captain.secret.db.name }}\n /' /tmp/attack.sql
+
+    {{- if .Values.captain.secret.db.user }}
+    sed -i '1s/^/SET ROLE {{ .Values.captain.secret.db.user | quote }};\n\n /' /tmp/attack.sql
+    {{- end }}
+    sed -i '1s/^/\\c {{ .Values.captain.secret.db.name }}\n\n\n /' /tmp/attack.sql
     {{- end }}
 
     cat <<EOF > /tmp/init.sql
