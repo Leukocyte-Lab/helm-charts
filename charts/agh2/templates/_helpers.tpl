@@ -65,10 +65,13 @@ Create the name of the service account to use
 {{/*
 Return DB connection string
 Usage:
-{{ include "connection-string" (dict "db" (merge .Values.path.to.secret.db .Values.db.connection)) }}
+{{ include "connection-string" (dict "db" (merge .Values.path.to.secret.db .Values.db.connection) "context" $) }}
 */}}
 {{- define "connection-string" -}}
-{{- $connStr := printf "%v://%v:%v@%v:%v/%v" .db.driver .db.user .db.password .db.host .db.port .db.name }}
+
+{{- $iDBHost := printf "db.%v.svc.cluster.local" .context.Release.Namespace }}
+{{- $connStr := printf "%v://%v:%v@%v:%v/%v" .db.driver .db.user .db.password (eq .db.type "internal" | ternary $iDBHost .db.host) .db.port .db.name }}
+
 {{- if and .db.options (default .disableSSL true) }}
   {{- printf "%v?sslmode=disable" $connStr | b64enc | quote }}
 {{- else }}
