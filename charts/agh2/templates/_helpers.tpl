@@ -70,7 +70,16 @@ Usage:
 {{- define "connection-string" -}}
 
 {{- $iDBHost := printf "db.%v.svc.cluster.local" .context.Release.Namespace }}
-{{- $connStr := printf "%v://%v:%v@%v:%v/%v" (required "db.connection.driver is required, set it or provide individually when use as macro function." .db.driver) (required "db.connection.user is required, set it or provide individually when use as macro function." .db.user) (required "db.connection.password is required, set it or provide individually when use as macro function." .db.password) (eq .db.type "internal" | ternary $iDBHost (required "db.connection.host is required, set it or provide individually when use as macro function." .db.host)) (required "db.connection.port is required, set it or provide individually when use as macro function." .db.port) (required "db.name is required, provide individually when use as macro function." .db.name) }}
+{{- $connStr := printf "%v://%v:%v@%v:%v/%v"
+  (required "db.connection.driver is required, set it or provide individually when use as macro function." .db.driver)
+  (required "db.connection.user is required, set it or provide individually when use as macro function." .db.user)
+  (required "db.connection.password is required, set it or provide individually when use as macro function." .db.password)
+  (eq .db.type "internal" | ternary $iDBHost
+    (required "db.connection.host is required, set it or provide individually when use as macro function." .db.host)
+  )
+  (required "db.connection.port is required, set it or provide individually when use as macro function." .db.port)
+  (required "db.name is required, provide individually when use as macro function." .db.name)
+}}
 
 {{- if and .db.options (default .db.options.disableSSL true) }}
   {{- printf "%v?sslmode=disable" $connStr | b64enc | quote }}
