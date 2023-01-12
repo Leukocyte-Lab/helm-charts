@@ -7,6 +7,13 @@ metadata:
     {{- include "AGH2.labels" . | nindent 4 }}
 data:
   init.sh: |
+
+    {{- if .Values.captain.enabled }}
+    echo "{{ .Files.Get "artifacts/attack.sql.tgz" | b64enc }}" | base64 --decode > /tmp/attack.sql.tgz
+    tar -xzf /tmp/attack.sql.tgz -C /tmp
+    sed -i '1s/^/\c {{ .Values.captain.secret.db.name }}\n /' file
+    {{- end }}
+
     cat <<EOF > /tmp/init.sql
     CREATE ROLE "{{ .Values.db.connection.user }}" WITH
       LOGIN
@@ -47,14 +54,6 @@ data:
       {{- end }}
     {{- end }}
     EOF
-
-    {{ if .Values.captain.enabled }}
-    cat <<EOF > /tmp/attack.sql.tgz
-    \c {{ .Values.captain.secret.db.name }}
-    {{ .Files.Get "artifacts/attack.sql.tgz" | indent 4 }}
-    EOF
-    tar -xzf /tmp/attack.sql.tgz -C /tmp
-    {{- end }}
 
     . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ .Values.postgresql.auth.postgresPassword }} psql -f /tmp/init.sql &&
     . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ .Values.postgresql.auth.postgresPassword }} psql -f /tmp/attack.sql
