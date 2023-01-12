@@ -24,15 +24,6 @@ jobs:
         with:
           version: v3.8.1
 
-      - name: Fetch Github Release Asset
-        uses: dsaltares/fetch-gh-release-asset@1.1.0
-        with:
-          repo: "Leukocyte-Lab/AGH2-ATTACK-Init"
-          version: "latest"
-          file: "attack.sql.tgz"
-          token: ${{ secrets.GH_TOKEN }}
-          target: "charts/agh2/artifacts/attack.sql.tgz"
-
       - name: Add Helm dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
