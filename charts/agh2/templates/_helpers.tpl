@@ -98,6 +98,49 @@ Usage:
 {{- end }}
 
 {{/*
+Specify password generator
+Usage:
+{{ include "specify-password" (dict "domain" "example.com" "token" "some-token" "prefix" "some-prefix" # required) }}
+*/}}
+{{- define "specify-password" -}}
+{{- printf "%s-%s-%s-%s-%s"
+  (required "specify-password required a prefix" .prefix | upper)
+  (
+    derivePassword
+      1
+      "pin"
+      (required "specify-password required a token" .token)
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "short"
+      (required "specify-password required a token" .token)
+      (required "specify-password required prefix" .prefix | upper)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "pin"
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required a token" .token)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "basic"
+      (required "specify-password required a token" .token | upper)
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required domain" .domain)
+  )
+}}
+{{- end }}
+
+{{/*
 Return the proper redis image name
 */}}
 {{- define "redis.image" -}}
