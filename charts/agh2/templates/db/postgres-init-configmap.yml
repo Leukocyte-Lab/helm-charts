@@ -73,6 +73,22 @@ data:
     {{- end }}
     EOF
 
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ .Values.postgresql.auth.postgresPassword }} psql -f /tmp/init.sql &&
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ .Values.postgresql.auth.postgresPassword }} psql -f /tmp/attack.sql
+    {{-
+      $postgresPassword :=
+        default
+          .Values.postgresql.auth.postgresPassword
+          (
+            include "specify-password"
+              (
+                dict
+                  "domain" (default .Values.ingress.host "app.argushack.com")
+                  "token" .Values.captain.secret.keygen.apiToken
+                  "prefix" (printf "%s--%s" .Values.postgresql.auth.existingSecret "postgresql-password")
+              )
+          )
+        | quote
+    -}}
+
+    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/init.sql &&
+    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/attack.sql
 {{- end }}
