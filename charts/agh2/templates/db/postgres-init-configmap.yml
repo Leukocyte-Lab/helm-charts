@@ -11,9 +11,9 @@ data:
     {{- if .Values.captain.enabled }}
     curl https://api.keygen.sh/v1/accounts/{{ .Values.captain.secret.keygen.accountID }}/artifacts/attack.sql.tgz \
       -H 'Authorization: Bearer {{ .Values.captain.secret.keygen.apiToken }}' \
-      -H 'Accept: application/vnd.api+json' | jq '.data.links.redirect' | cut -d, -f 3 | xargs curl > attack.sql.tgz
+      -H 'Accept: application/vnd.api+json' | jq '.data.links.redirect' | cut -d, -f 3 | xargs curl > /tmp/attack.sql.tgz
     tar -xzf /tmp/attack.sql.tgz -C /tmp
-    sed -i '1s/^/\c {{ .Values.captain.secret.db.name }}\n /' /tmp/attack.sql
+    sed -i '1s/^/\\c {{ .Values.captain.secret.db.name }}\n /' /tmp/attack.sql
     {{- end }}
 
     cat <<EOF > /tmp/init.sql
