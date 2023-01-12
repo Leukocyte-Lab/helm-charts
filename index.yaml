@@ -37,6 +37,28 @@ entries:
   agh2:
   - apiVersion: v2
     appVersion: "230110"
+    created: "2023-01-12T12:29:35.841024896Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.10.19
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.2.1
+    description: A Helm chart for Kubernetes
+    digest: 0be6c5e727ab404b88411c74e20858bd3a027629d896d62874894eba85e51fa6
+    name: agh2
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh2-1.3.4/agh2-1.3.4.tgz
+    version: 1.3.4
+  - apiVersion: v2
+    appVersion: "230110"
     created: "2023-01-12T12:10:07.488565341Z"
     dependencies:
     - condition: db.internal.enabled
@@ -536,4 +558,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh2-helm-0.4.6/agh2-helm-0.4.6.tgz
     version: 0.4.6
-generated: "2023-01-12T12:10:07.488706042Z"
+generated: "2023-01-12T12:29:35.841210501Z"
