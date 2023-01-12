@@ -68,6 +68,7 @@ Leave as default if using external DB
 | `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian` |
 | `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                 |
 | `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                           |
+| `postgresql.auth.enabled`                    | Enable postgresql auth secret generate                        | `true`                                         |
 | `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                    |
 | `postgresql.auth.password`                   | Internal database initial password                            | `""`                                           |
 | `postgresql.auth.postgresPassword`           | Internal database initial postgres admin password             | `""`                                           |
@@ -137,7 +138,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                     |
 | `attack.secret.db.enabled`              | Enable secret generate for DB                                  | `true`                                     |
 | `attack.secret.db.name`                 | Database name                                                  | `attack-db`                                |
-| `attack.secret.db.user`                 | Database user                                                  | `""`                                       |
+| `attack.secret.db.user`                 | Database user                                                  | `agh-attack`                               |
 | `attack.secret.db.password`             | Database password                                              | `""`                                       |
 | `attack.service`                        | ATTACK service parameters                                      |                                            |
 | `attack.service.group.enabled`          | Enable ATTACK Group worker                                     | `true`                                     |
@@ -184,7 +185,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Captain
 | `captain.secret.enabled`                          | Enable secret generate for Captain                        | `true`                                    |
 | `captain.secret.db.enabled`                       | Enable secret generate for Captain database               | `true`                                    |
 | `captain.secret.db.name`                          | Database name                                             | `captain-db`                              |
-| `captain.secret.db.user`                          | Database user                                             | `""`                                      |
+| `captain.secret.db.user`                          | Database user                                             | `agh-captain`                             |
 | `captain.secret.db.password`                      | Database password                                         | `""`                                      |
 | `captain.secret.minio.enabled`                    | Enable secret generate for Minio                          | `true`                                    |
 | `captain.secret.minio.secretName`                 | Secret name for Minio                                     | `capt-minio-secret`                       |
@@ -223,7 +224,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Core
 | `core.secret.enabled`          | Enable secret generate for Core                  | `true`                          |
 | `core.secret.db.enabled`       | Enable secret generate for Core database         | `true`                          |
 | `core.secret.db.name`          | Database name                                    | `core-db`                       |
-| `core.secret.db.user`          | Database user                                    | `""`                            |
+| `core.secret.db.user`          | Database user                                    | `agh-core`                      |
 | `core.secret.db.password`      | Database password                                | `""`                            |
 | `core.secret.minio.enabled`    | Enable secret generate for Minio                 | `true`                          |
 | `core.secret.minio.secretName` | Secret name for Minio                            | `core-minio-secret`             |
@@ -251,7 +252,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
 | `exploitmgr.secret.enabled`        | Enable secret generate for Exploit-Manager                 | `true`                                |
 | `exploitmgr.secret.db.enabled`     | Enable secret generate for Exploit-Manager database        | `true`                                |
 | `exploitmgr.secret.db.name`        | Database name                                              | `exploitmgr-db`                       |
-| `exploitmgr.secret.db.user`        | Database user                                              | `""`                                  |
+| `exploitmgr.secret.db.user`        | Database user                                              | `agh-exploit`                         |
 | `exploitmgr.secret.db.password`    | Database password                                          | `""`                                  |
 | `exploitmgr.service`               | Exploit-Manager service parameters                         |                                       |
 | `exploitmgr.service.redis.enabled` | Enable redis                                               | `true`                                |
@@ -288,7 +289,7 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Template
 | `template.secret.enabled`          | Enable secret generate for Template                 | `true`                              |
 | `template.secret.db.enabled`       | Enable secret generate for Template database        | `true`                              |
 | `template.secret.db.name`          | Database name                                       | `template-db`                       |
-| `template.secret.db.user`          | Database user                                       | `""`                                |
+| `template.secret.db.user`          | Database user                                       | `agh-template`                      |
 | `template.secret.db.password`      | Database password                                   | `""`                                |
 | `template.secret.minio.enabled`    | Enable secret generate for Minio                    | `true`                              |
 | `template.secret.minio.secretName` | Secret name for Minio                               | `template-minio-secret`             |
