@@ -22,7 +22,9 @@ global:
 ##
 
 ## @param customRegistrySecret.enabled Enable custom registry secret generation
-## @param customRegistrySecret.secretName Name of the generated secret
+## @skip customRegistrySecret.secretName
+## Name of the generated secret
+## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
 ##
 customRegistrySecret:
   enabled: true
@@ -62,13 +64,13 @@ db:
     ## internal` or `external` in string
     ## Set `db.image` when internal is in use
     ##
-    type: external
+    type: internal
     ## @param db.connection.driver Database driver
     ##
     driver: postgresql
     ## @param db.connection.host Database host address
     ## IP or FQDN in string
-    ## Required if `db.type` is external
+    ## Required if `db.type` is external, ignored if internal
     ##
     host: database.example.com
     ## @param db.connection.port Database host port
@@ -113,7 +115,7 @@ postgresql:
   ##
   image:
     repository: leukocyte-lab/postgresql
-    tag: v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian
+    tag: v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param postgresql.auth.username Internal database initial user
@@ -144,16 +146,16 @@ minio:
     ## internal` or `external` in string
     ## Set `minio.image` when internal is in use
     ##
-    type: external
+    type: internal
     ## @param minio.connection.host Database host address
     ## IP or FQDN in string
-    ## Required if `minio.type` is external
+    ## Required if `minio.type` is external, ignored if internal
     ##
     host: database.example.com
     ## @param minio.connection.port Database host port
     ## Port in number
     ##
-    port: 5432
+    port: 9000
     ## @param minio.connection.user Database user
     ## DB User in string
     ##
@@ -176,7 +178,7 @@ minio:
   internal:
     ## @param minio.internal.enabled Enable internal minio
     ##
-    enabled: false
+    enabled: true
   ## @skip minio.fullnameOverride
   ##
   fullnameOverride: minio # remapping chart bitnami/minio -> minio
@@ -266,7 +268,7 @@ attack:
   ##
   image:
     repository: leukocyte-lab/argushack2/attack
-    tag: v0.9.0
+    tag: v0.10.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param attack.secret.enabled Enable secret generate for ATTACK
@@ -274,14 +276,17 @@ attack:
   secret:
     enabled: true # Manually create secret named as the value of `attack.secret.name` if set to false
     ## @param attack.secret.db.enabled Enable secret generate for DB
-    ## @param attack.secret.db.secretName Secret name for Captain DB
     ## @param attack.secret.db.name Database name
     ## @param attack.secret.db.user Database user
     ## @param attack.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip attack.secret.db.secretName
+      ## Secret name for Captain DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: attack-db-secret
+      enabled: true
       name: attack-db
       user: ""
       password: ""
@@ -333,7 +338,7 @@ attack:
 blender:
   ## @param blender.enabled Enable Blender module
   ##
-  enabled: true
+  enabled: false
   ## @param blender.image.repository Blender image repository
   ## @param blender.image.tag Blender image tag (immutable tags are recommended)
   ## @param blender.image.pullPolicy Blender image pull policy
@@ -380,14 +385,17 @@ captain:
   secret:
     enabled: true # Manually create secrets named as the value of `captain.secret.name` if set to false
     ## @param captain.secret.db.enabled Enable secret generate for Captain database
-    ## @param captain.secret.db.secretName Secret name for Captain DB
     ## @param captain.secret.db.name Database name
     ## @param captain.secret.db.user Database user
     ## @param captain.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip captain.secret.db.secretName
+      ## Secret name for Captain DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: capt-db-secret
+      enabled: true
       name: captain-db
       user: ""
       password: ""
@@ -472,14 +480,17 @@ core:
   secret:
     enabled: true # Manually create secrets named as the value of `core.secret.name` if set to false
     ## @param core.secret.db.enabled Enable secret generate for Core database
-    ## @param core.secret.db.secretName Secret name for Core DB
     ## @param core.secret.db.name Database name
     ## @param core.secret.db.user Database user
     ## @param core.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip core.secret.db.secretName
+      ## Secret name for Core DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: core-db-secret
+      enabled: true
       name: core-db
       user: ""
       password: ""
@@ -534,25 +545,18 @@ exploitmgr:
   secret:
     enabled: true # Manually create secrets named as the value of `exploitmgr.secret.name` if set to false
     ## @param exploitmgr.secret.db.enabled Enable secret generate for Exploit-Manager database
-    ## @param exploitmgr.secret.db.secretName Secret name for Exploit-Manager DB
     ## @param exploitmgr.secret.db.name Database name
     ## @param exploitmgr.secret.db.user Database user
     ## @param exploitmgr.secret.db.password Database password
     ##
     db:
+      ## @skip exploitmgr.secret.db.secretName
+      ## Secret name for Exploit-Manager DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
+      secretName: expmgr-db-secret
       enabled: true
-      secretName: exploitmgr-db-secret
       name: exploitmgr-db
-      user: ""
-      password: ""
-    ## @param exploitmgr.secret.minio.enabled Enable secret generate for Minio
-    ## @param exploitmgr.secret.minio.secretName Secret name for Minio
-    ## @param exploitmgr.secret.minio.user Minio user
-    ## @param exploitmgr.secret.minio.password Minio password
-    ##
-    minio:
-      enabled: true
-      secretName: exploitmgr-minio-secret
       user: ""
       password: ""
   ## @extra exploitmgr.service Exploit-Manager service parameters
@@ -565,12 +569,6 @@ exploitmgr:
   ## @param exploitmgr.extraEnv Exploit-Manager additional environment variables
   ##
   extraEnv: {}
-# frontend:
-#   enabled: true
-#   image:
-#     repository: registry.lkc-lab.com/leukocyte-lab/argushack2/frontend
-#     tag: v2.18.2
-#     pullPolicy: IfNotPresent
 
 ## @section AGH2-Matcher parameters
 ## @descriptionStart
@@ -581,7 +579,7 @@ exploitmgr:
 matcher:
   ## @param matcher.enabled Enable Matcher module
   ##
-  enabled: true
+  enabled: false
   ## @param matcher.image.repository Matcher image repository
   ## @param matcher.image.tag Matcher image tag (immutable tags are recommended)
   ## @param matcher.image.pullPolicy Matcher image pull policy
@@ -605,7 +603,7 @@ matcher:
 template:
   ## @param template.enabled Enable Template module
   ##
-  enabled: true
+  enabled: false
   ## @param template.image.repository Template image repository
   ## @param template.image.tag Template image tag (immutable tags are recommended)
   ## @param template.image.pullPolicy Template image pull policy
@@ -621,14 +619,17 @@ template:
   secret:
     enabled: true # Manually create secrets named as the value of `template.secret.name` if set to false
     ## @param template.secret.db.enabled Enable secret generate for Template database
-    ## @param template.secret.db.secretName Secret name for Template DB
     ## @param template.secret.db.name Database name
     ## @param template.secret.db.user Database user
     ## @param template.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip template.secret.db.secretName
+      ## Secret name for Template DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: template-db-secret
+      enabled: true
       name: template-db
       user: ""
       password: ""
@@ -655,7 +656,7 @@ template:
 transformer:
   ## @param transformer.enabled Enable Transformer module
   ##
-  enabled: true
+  enabled: false
   ## @param transformer.image.repository Transformer image repository
   ## @param transformer.image.tag Transformer image tag (immutable tags are recommended)
   ## @param transformer.image.pullPolicy Transformer image pull policy

@@ -65,15 +65,79 @@ Create the name of the service account to use
 {{/*
 Return DB connection string
 Usage:
-{{ include "connection-string" (dict "db" (merge .Values.path.to.secret.db .Values.db.connection)) }}
+{{ include "connection-string" (dict "db" (merge .Values.path.to.secret.db .Values.db.connection) "context" $) }}
 */}}
 {{- define "connection-string" -}}
-{{- $connStr := printf "%v://%v:%v@%v:%v/%v" .db.driver .db.user .db.password .db.host .db.port .db.name }}
-{{- if and .db.options (default .disableSSL true) }}
-  {{- printf "%v?sslmode=disable" $connStr | b64enc | quote }}
+
+{{- $iDBHost := printf "db.%v.svc.cluster.local" .context.Release.Namespace }}
+{{- $connStr := printf "%v://%v:%v@%v:%v/%v"
+  (required "db.connection.driver is required, set it or provide individually when use as macro function." .db.driver)
+  (required "db.connection.user is required, set it or provide individually when use as macro function." .db.user)
+  (required "db.connection.password is required, set it or provide individually when use as macro function." .db.password)
+  (eq .db.type "internal" | ternary $iDBHost
+    (required "db.connection.host is required, set it or provide individually when use as macro function." .db.host)
+  )
+  (required "db.connection.port is required, set it or provide individually when use as macro function." .db.port)
+  (required "db.name is required, provide individually when use as macro function." .db.name)
+}}
+
+{{- if and .db.options (default .db.options.disableSSL true) }}
+  {{- printf "%v?sslmode=disable" $connStr }}
 {{- else }}
-  {{- printf $connStr | b64enc | quote }}
+  {{- printf $connStr }}
 {{- end }}
+{{- end }}
+
+{{/*
+Random password generator
+Usage:
+{{ include "random-password" (dict "prefix" "some-prefix" # optional "len" 24 # optional ) }}
+*/}}
+{{- define "random-password" -}}
+{{- printf "%s%s" (default (printf "%s-" .prefix) "") (randAlphaNum (default .len 24) | nospace) }}
+{{- end }}
+
+{{/*
+Specify password generator
+Usage:
+{{ include "specify-password" (dict "domain" "example.com" "token" "some-token" "prefix" "some-prefix" # required) }}
+*/}}
+{{- define "specify-password" -}}
+{{- printf "%s-%s-%s-%s-%s"
+  (required "specify-password required a prefix" .prefix | upper)
+  (
+    derivePassword
+      1
+      "pin"
+      (required "specify-password required a token" .token)
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "short"
+      (required "specify-password required a token" .token)
+      (required "specify-password required prefix" .prefix | upper)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "pin"
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required a token" .token)
+      (required "specify-password required domain" .domain)
+  )
+  (
+    derivePassword
+      1
+      "basic"
+      (required "specify-password required a token" .token | upper)
+      (required "specify-password required prefix" .prefix)
+      (required "specify-password required domain" .domain)
+  )
+}}
 {{- end }}
 
 {{/*

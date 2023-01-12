@@ -92,13 +92,13 @@ spec:
             - name: MINIO_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-user
+                  name: {{ .Values.core.secret.minio.secretName }}
+                  key: core-minio-user
             - name: MINIO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-password
+                  name: {{ .Values.core.secret.minio.secretName }}
+                  key: core-minio-password
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
