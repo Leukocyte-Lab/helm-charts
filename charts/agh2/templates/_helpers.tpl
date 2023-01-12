@@ -72,7 +72,7 @@ Usage:
 {{- $iDBHost := printf "db.%v.svc.cluster.local" .context.Release.Namespace }}
 {{- $connStr := printf "%v://%v:%v@%v:%v/%v" .db.driver .db.user .db.password (eq .db.type "internal" | ternary $iDBHost .db.host) .db.port .db.name }}
 
-{{- if and .db.options (default .disableSSL true) }}
+{{- if and .db.options (default .db.options.disableSSL true) }}
   {{- printf "%v?sslmode=disable" $connStr | b64enc | quote }}
 {{- else }}
   {{- printf $connStr | b64enc | quote }}
