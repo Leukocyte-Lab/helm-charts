@@ -22,7 +22,9 @@ global:
 ##
 
 ## @param customRegistrySecret.enabled Enable custom registry secret generation
-## @param customRegistrySecret.secretName Name of the generated secret
+## @skip customRegistrySecret.secretName
+## Name of the generated secret
+## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
 ##
 customRegistrySecret:
   enabled: true
@@ -274,14 +276,17 @@ attack:
   secret:
     enabled: true # Manually create secret named as the value of `attack.secret.name` if set to false
     ## @param attack.secret.db.enabled Enable secret generate for DB
-    ## @param attack.secret.db.secretName Secret name for Captain DB
     ## @param attack.secret.db.name Database name
     ## @param attack.secret.db.user Database user
     ## @param attack.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip attack.secret.db.secretName
+      ## Secret name for Captain DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: attack-db-secret
+      enabled: true
       name: attack-db
       user: ""
       password: ""
@@ -380,14 +385,17 @@ captain:
   secret:
     enabled: true # Manually create secrets named as the value of `captain.secret.name` if set to false
     ## @param captain.secret.db.enabled Enable secret generate for Captain database
-    ## @param captain.secret.db.secretName Secret name for Captain DB
     ## @param captain.secret.db.name Database name
     ## @param captain.secret.db.user Database user
     ## @param captain.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip captain.secret.db.secretName
+      ## Secret name for Captain DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: capt-db-secret
+      enabled: true
       name: captain-db
       user: ""
       password: ""
@@ -472,14 +480,17 @@ core:
   secret:
     enabled: true # Manually create secrets named as the value of `core.secret.name` if set to false
     ## @param core.secret.db.enabled Enable secret generate for Core database
-    ## @param core.secret.db.secretName Secret name for Core DB
     ## @param core.secret.db.name Database name
     ## @param core.secret.db.user Database user
     ## @param core.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip core.secret.db.secretName
+      ## Secret name for Core DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: core-db-secret
+      enabled: true
       name: core-db
       user: ""
       password: ""
@@ -534,14 +545,17 @@ exploitmgr:
   secret:
     enabled: true # Manually create secrets named as the value of `exploitmgr.secret.name` if set to false
     ## @param exploitmgr.secret.db.enabled Enable secret generate for Exploit-Manager database
-    ## @param exploitmgr.secret.db.secretName Secret name for Exploit-Manager DB
     ## @param exploitmgr.secret.db.name Database name
     ## @param exploitmgr.secret.db.user Database user
     ## @param exploitmgr.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip exploitmgr.secret.db.secretName
+      ## Secret name for Exploit-Manager DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: expmgr-db-secret
+      enabled: true
       name: exploitmgr-db
       user: ""
       password: ""
@@ -605,14 +619,17 @@ template:
   secret:
     enabled: true # Manually create secrets named as the value of `template.secret.name` if set to false
     ## @param template.secret.db.enabled Enable secret generate for Template database
-    ## @param template.secret.db.secretName Secret name for Template DB
     ## @param template.secret.db.name Database name
     ## @param template.secret.db.user Database user
     ## @param template.secret.db.password Database password
     ##
     db:
-      enabled: true
+      ## @skip template.secret.db.secretName
+      ## Secret name for Template DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
       secretName: template-db-secret
+      enabled: true
       name: template-db
       user: ""
       password: ""
