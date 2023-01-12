@@ -25,7 +25,6 @@ helm install agh2 lkclab/agh2
 | Name                                 | Description                                       | Value                  |
 | ------------------------------------ | ------------------------------------------------- | ---------------------- |
 | `customRegistrySecret.enabled`       | Enable custom registry secret generation          | `true`                 |
-| `customRegistrySecret.secretName`    | Name of the generated secret                      | `lkc-registry`         |
 | `customRegistrySecret.auth.registry` | URL of the registry server                        | `registry.lkc-lab.com` |
 | `customRegistrySecret.auth.username` | Username to authenticate with the registry server | `""`                   |
 | `customRegistrySecret.auth.password` | Password to authenticate with the registry server | `""`                   |
@@ -137,7 +136,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK
 | `attack.image.pullSecrets`              | Specify docker-registry secret names as an array               | `[]`                                       |
 | `attack.secret.enabled`                 | Enable secret generate for ATTACK                              | `true`                                     |
 | `attack.secret.db.enabled`              | Enable secret generate for DB                                  | `true`                                     |
-| `attack.secret.db.secretName`           | Secret name for Captain DB                                     | `attack-db-secret`                         |
 | `attack.secret.db.name`                 | Database name                                                  | `attack-db`                                |
 | `attack.secret.db.user`                 | Database user                                                  | `""`                                       |
 | `attack.secret.db.password`             | Database password                                              | `""`                                       |
@@ -185,7 +183,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Captain
 | `captain.image.pullSecrets`                       | Specify docker-registry secret names as an array          | `[]`                                      |
 | `captain.secret.enabled`                          | Enable secret generate for Captain                        | `true`                                    |
 | `captain.secret.db.enabled`                       | Enable secret generate for Captain database               | `true`                                    |
-| `captain.secret.db.secretName`                    | Secret name for Captain DB                                | `capt-db-secret`                          |
 | `captain.secret.db.name`                          | Database name                                             | `captain-db`                              |
 | `captain.secret.db.user`                          | Database user                                             | `""`                                      |
 | `captain.secret.db.password`                      | Database password                                         | `""`                                      |
@@ -225,7 +222,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Core
 | `core.image.pullSecrets`       | Specify docker-registry secret names as an array | `[]`                            |
 | `core.secret.enabled`          | Enable secret generate for Core                  | `true`                          |
 | `core.secret.db.enabled`       | Enable secret generate for Core database         | `true`                          |
-| `core.secret.db.secretName`    | Secret name for Core DB                          | `core-db-secret`                |
 | `core.secret.db.name`          | Database name                                    | `core-db`                       |
 | `core.secret.db.user`          | Database user                                    | `""`                            |
 | `core.secret.db.password`      | Database password                                | `""`                            |
@@ -245,26 +241,21 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Core
 Exploit-Manager module for AGH2.
 ref: https://github.com/Leukocyte-Lab/AGH2-Exploit-Manager
 
-| Name                                 | Description                                                | Value                                 |
-| ------------------------------------ | ---------------------------------------------------------- | ------------------------------------- |
-| `exploitmgr.enabled`                 | Enable Exploit-Manager module                              | `true`                                |
-| `exploitmgr.image.repository`        | Exploit-Manager image repository                           | `leukocyte-lab/argushack2/exploitmgr` |
-| `exploitmgr.image.tag`               | Exploit-Manager image tag (immutable tags are recommended) | `v0.14.0-rc.0`                        |
-| `exploitmgr.image.pullPolicy`        | Exploit-Manager image pull policy                          | `IfNotPresent`                        |
-| `exploitmgr.image.pullSecrets`       | Specify docker-registry secret names as an array           | `[]`                                  |
-| `exploitmgr.secret.enabled`          | Enable secret generate for Exploit-Manager                 | `true`                                |
-| `exploitmgr.secret.db.enabled`       | Enable secret generate for Exploit-Manager database        | `true`                                |
-| `exploitmgr.secret.db.secretName`    | Secret name for Exploit-Manager DB                         | `exploitmgr-db-secret`                |
-| `exploitmgr.secret.db.name`          | Database name                                              | `exploitmgr-db`                       |
-| `exploitmgr.secret.db.user`          | Database user                                              | `""`                                  |
-| `exploitmgr.secret.db.password`      | Database password                                          | `""`                                  |
-| `exploitmgr.secret.minio.enabled`    | Enable secret generate for Minio                           | `true`                                |
-| `exploitmgr.secret.minio.secretName` | Secret name for Minio                                      | `exploitmgr-minio-secret`             |
-| `exploitmgr.secret.minio.user`       | Minio user                                                 | `""`                                  |
-| `exploitmgr.secret.minio.password`   | Minio password                                             | `""`                                  |
-| `exploitmgr.service`                 | Exploit-Manager service parameters                         |                                       |
-| `exploitmgr.service.redis.enabled`   | Enable redis                                               | `true`                                |
-| `exploitmgr.extraEnv`                | Exploit-Manager additional environment variables           | `{}`                                  |
+| Name                               | Description                                                | Value                                 |
+| ---------------------------------- | ---------------------------------------------------------- | ------------------------------------- |
+| `exploitmgr.enabled`               | Enable Exploit-Manager module                              | `true`                                |
+| `exploitmgr.image.repository`      | Exploit-Manager image repository                           | `leukocyte-lab/argushack2/exploitmgr` |
+| `exploitmgr.image.tag`             | Exploit-Manager image tag (immutable tags are recommended) | `v0.14.0-rc.0`                        |
+| `exploitmgr.image.pullPolicy`      | Exploit-Manager image pull policy                          | `IfNotPresent`                        |
+| `exploitmgr.image.pullSecrets`     | Specify docker-registry secret names as an array           | `[]`                                  |
+| `exploitmgr.secret.enabled`        | Enable secret generate for Exploit-Manager                 | `true`                                |
+| `exploitmgr.secret.db.enabled`     | Enable secret generate for Exploit-Manager database        | `true`                                |
+| `exploitmgr.secret.db.name`        | Database name                                              | `exploitmgr-db`                       |
+| `exploitmgr.secret.db.user`        | Database user                                              | `""`                                  |
+| `exploitmgr.secret.db.password`    | Database password                                          | `""`                                  |
+| `exploitmgr.service`               | Exploit-Manager service parameters                         |                                       |
+| `exploitmgr.service.redis.enabled` | Enable redis                                               | `true`                                |
+| `exploitmgr.extraEnv`              | Exploit-Manager additional environment variables           | `{}`                                  |
 
 
 ### AGH2-Matcher parameters
@@ -296,7 +287,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Template
 | `template.image.pullSecrets`       | Specify docker-registry secret names as an array    | `[]`                                |
 | `template.secret.enabled`          | Enable secret generate for Template                 | `true`                              |
 | `template.secret.db.enabled`       | Enable secret generate for Template database        | `true`                              |
-| `template.secret.db.secretName`    | Secret name for Template DB                         | `template-db-secret`                |
 | `template.secret.db.name`          | Database name                                       | `template-db`                       |
 | `template.secret.db.user`          | Database user                                       | `""`                                |
 | `template.secret.db.password`      | Database password                                   | `""`                                |
