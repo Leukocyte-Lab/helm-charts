@@ -89,6 +89,15 @@ Usage:
 {{- end }}
 
 {{/*
+Random password generator
+Usage:
+{{ include "random-password" (dict "prefix" "some-prefix" # optional "len" 24 # optional ) }}
+*/}}
+{{- define "random-password" -}}
+{{- printf "%s%s" (default (printf "%s-" .prefix) "") (randAlphaNum (default .len 24) | nospace) }}
+{{- end }}
+
+{{/*
 Return the proper redis image name
 */}}
 {{- define "redis.image" -}}
