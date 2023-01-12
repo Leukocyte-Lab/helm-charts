@@ -62,13 +62,13 @@ db:
     ## internal` or `external` in string
     ## Set `db.image` when internal is in use
     ##
-    type: external
+    type: internal
     ## @param db.connection.driver Database driver
     ##
     driver: postgresql
     ## @param db.connection.host Database host address
     ## IP or FQDN in string
-    ## Required if `db.type` is external
+    ## Required if `db.type` is external, ignored if internal
     ##
     host: database.example.com
     ## @param db.connection.port Database host port
@@ -113,7 +113,7 @@ postgresql:
   ##
   image:
     repository: leukocyte-lab/postgresql
-    tag: v0.1.0-postgres-15.1.0-pgroonga-2.4.2-debian
+    tag: v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param postgresql.auth.username Internal database initial user
@@ -144,16 +144,16 @@ minio:
     ## internal` or `external` in string
     ## Set `minio.image` when internal is in use
     ##
-    type: external
+    type: internal
     ## @param minio.connection.host Database host address
     ## IP or FQDN in string
-    ## Required if `minio.type` is external
+    ## Required if `minio.type` is external, ignored if internal
     ##
     host: database.example.com
     ## @param minio.connection.port Database host port
     ## Port in number
     ##
-    port: 5432
+    port: 9000
     ## @param minio.connection.user Database user
     ## DB User in string
     ##
@@ -176,7 +176,7 @@ minio:
   internal:
     ## @param minio.internal.enabled Enable internal minio
     ##
-    enabled: false
+    enabled: true
   ## @skip minio.fullnameOverride
   ##
   fullnameOverride: minio # remapping chart bitnami/minio -> minio
@@ -266,7 +266,7 @@ attack:
   ##
   image:
     repository: leukocyte-lab/argushack2/attack
-    tag: v0.9.0
+    tag: v0.10.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param attack.secret.enabled Enable secret generate for ATTACK
@@ -333,7 +333,7 @@ attack:
 blender:
   ## @param blender.enabled Enable Blender module
   ##
-  enabled: true
+  enabled: false
   ## @param blender.image.repository Blender image repository
   ## @param blender.image.tag Blender image tag (immutable tags are recommended)
   ## @param blender.image.pullPolicy Blender image pull policy
@@ -581,7 +581,7 @@ exploitmgr:
 matcher:
   ## @param matcher.enabled Enable Matcher module
   ##
-  enabled: true
+  enabled: false
   ## @param matcher.image.repository Matcher image repository
   ## @param matcher.image.tag Matcher image tag (immutable tags are recommended)
   ## @param matcher.image.pullPolicy Matcher image pull policy
@@ -605,7 +605,7 @@ matcher:
 template:
   ## @param template.enabled Enable Template module
   ##
-  enabled: true
+  enabled: false
   ## @param template.image.repository Template image repository
   ## @param template.image.tag Template image tag (immutable tags are recommended)
   ## @param template.image.pullPolicy Template image pull policy
@@ -655,7 +655,7 @@ template:
 transformer:
   ## @param transformer.enabled Enable Transformer module
   ##
-  enabled: true
+  enabled: false
   ## @param transformer.image.repository Transformer image repository
   ## @param transformer.image.tag Transformer image tag (immutable tags are recommended)
   ## @param transformer.image.pullPolicy Transformer image pull policy
