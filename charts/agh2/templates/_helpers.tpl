@@ -82,9 +82,9 @@ Usage:
 }}
 
 {{- if and .db.options (default .db.options.disableSSL true) }}
-  {{- printf "%v?sslmode=disable" $connStr | b64enc | quote }}
+  {{- printf "%v?sslmode=disable" $connStr }}
 {{- else }}
-  {{- printf $connStr | b64enc | quote }}
+  {{- printf $connStr }}
 {{- end }}
 {{- end }}
 
