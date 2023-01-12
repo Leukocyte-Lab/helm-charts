@@ -545,16 +545,6 @@ exploitmgr:
       name: exploitmgr-db
       user: ""
       password: ""
-    ## @param exploitmgr.secret.minio.enabled Enable secret generate for Minio
-    ## @param exploitmgr.secret.minio.secretName Secret name for Minio
-    ## @param exploitmgr.secret.minio.user Minio user
-    ## @param exploitmgr.secret.minio.password Minio password
-    ##
-    minio:
-      enabled: true
-      secretName: exploitmgr-minio-secret
-      user: ""
-      password: ""
   ## @extra exploitmgr.service Exploit-Manager service parameters
   ##
   service:
