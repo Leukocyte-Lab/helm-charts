@@ -129,6 +129,11 @@ db:
     init:
       dbs:
         enabled: true
+        ## @skip db.helpers.init.dbs.forceProvision
+        ## Force provision the DB
+        ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+        ##
+        forceProvision: false
         installPgroongaExtensions: true
       attack:
         enabled: true
