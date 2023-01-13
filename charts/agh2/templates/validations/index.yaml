@@ -1,0 +1,81 @@
+{{- $errorMsg := "" -}}
+
+{{- if .Values.keygen.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "keygen"
+            "fields" (list "accountID" "apiToken")
+            "msg" "Must provide when keygen.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if .Values.customRegistrySecret.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "customRegistrySecret.auth"
+            "fields" (list "registry" "username" "password")
+            "msg" "Must provide when customRegistrySecret.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if .Values.ingress.tls.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "ingress.tls"
+            "fields" (list "cert" "key")
+            "msg" "Must provide when ingress.tls.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if eq .Values.db.connection.type "external" -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "db.connection"
+            "fields" (list "host" "port")
+            "msg" "Must provide when db.connection is external"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if eq .Values.minio.connection.type "external" -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "minio.connection"
+            "fields" (list "host" "port")
+            "msg" "Must provide when db.connection is external"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- $errorMsg = (trimAll "\n" $errorMsg) -}}
+{{- if not (empty $errorMsg) -}}
+  {{- fail (print "\n\nValidation Failed:\n" $errorMsg) -}}
+{{- end -}}
