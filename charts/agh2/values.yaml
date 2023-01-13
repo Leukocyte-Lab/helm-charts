@@ -22,13 +22,14 @@ global:
 ##
 
 ## @param customRegistrySecret.enabled Enable custom registry secret generation
-## @skip customRegistrySecret.secretName
-## Name of the generated secret
-## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
 ##
 customRegistrySecret:
-  enabled: true
+  ## @skip customRegistrySecret.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
   secretName: lkc-registry
+  enabled: true
   ## @param customRegistrySecret.auth.registry URL of the registry server
   ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
   ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
@@ -113,6 +114,24 @@ db:
   ##
   internal:
     enabled: true
+
+  ## @section Helper parameters
+  ## @descriptionStart
+  ## Control the DB Helper behaviors.
+  ## @descriptionEnd
+  ##
+
+  ## @param db.helpers.init.dbs.enabled Enable dbs init feature
+  ## @param db.helpers.init.dbs.installPgroongaExtensions Install pgroonga extensions
+  ## @param db.helpers.init.attack.enabled Enable attack-datasets feature
+  ##
+  helpers:
+    init:
+      dbs:
+        enabled: true
+        installPgroongaExtensions: true
+      attack:
+        enabled: true
 
 ## @section Internal PostgreSQL database provisioning parameters
 ## @descriptionStart
