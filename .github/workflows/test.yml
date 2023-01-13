@@ -31,6 +31,7 @@ jobs:
 
       - name: 🧪 Run chart-testing (helm template, default)
         run: |
+          helm dependency build charts/agh2
           helm template agh charts/agh2 \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
@@ -40,6 +41,7 @@ jobs:
 
       - name: 🧪 Run chart-testing (helm template, external mode)
         run: |
+          helm dependency build charts/agh2
           helm template agh charts/agh2 \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
