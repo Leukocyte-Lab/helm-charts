@@ -1,0 +1,52 @@
+name: 🧪 Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: 🪝 Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.1
+
+      - name: 📦 Add Helm dependency repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: 🧪 Run chart-testing (helm template, default)
+        run: |
+          helm template agh charts/agh2 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            -n agh
+
+      - name: 🧪 Run chart-testing (helm template, external mode)
+        run: |
+          helm template agh charts/agh2 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            --set db.connection.type=external \
+            --set db.internal.enabled=false \
+            --set minio.connection.type=external \
+            --set minio.internal.enabled=false \
+            -n agh
