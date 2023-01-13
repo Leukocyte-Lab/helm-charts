@@ -67,6 +67,17 @@ helm install agh2 lkclab/agh2
 | `db.internal.enabled`              | Enable internal database                 | `true`                 |
 
 
+### Helper parameters
+
+Control the DB Helper behaviors.
+
+| Name                                            | Description                    | Value  |
+| ----------------------------------------------- | ------------------------------ | ------ |
+| `db.helpers.init.dbs.enabled`                   | Enable dbs init feature        | `true` |
+| `db.helpers.init.dbs.installPgroongaExtensions` | Install pgroonga extensions    | `true` |
+| `db.helpers.init.attack.enabled`                | Enable attack-datasets feature | `true` |
+
+
 ### Internal PostgreSQL database provisioning parameters
 
 Leave as default if using external DB
