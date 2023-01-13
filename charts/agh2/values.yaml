@@ -37,6 +37,25 @@ customRegistrySecret:
     username: ""
     password: ""
 
+## @section Keygen parameters
+##
+
+## @param keygen.enabled Enable secret generate for keygen
+## @param keygen.secretName Secret name for keygen
+## @param keygen.apiToken Keygen API Token
+## @param keygen.accountID Keygen Account ID
+## ref: https://keygen.sh/docs/api
+##
+keygen:
+  ## @skip keygen.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
+  secretName: keygen-secret
+  enabled: true
+  apiToken: ""
+  accountID: ""
+
 ## @param ingress.enabled Enable ingress controller
 ## @param ingress.host Ingress hostname
 ##
@@ -416,17 +435,6 @@ captain:
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
-    ## @param captain.secret.keygen.enabled Enable secret generate for keygen
-    ## @param captain.secret.keygen.secretName Secret name for keygen
-    ## @param captain.secret.keygen.apiToken Keygen API Token
-    ## @param captain.secret.keygen.accountID Keygen Account ID
-    ## ref: https://keygen.sh/docs/api
-    ##
-    keygen:
-      enabled: true
-      secretName: capt-keygen-secret
-      apiToken: ""
-      accountID: ""
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret

@@ -9,8 +9,8 @@ data:
   init.sh: |
 
     {{- if .Values.captain.enabled }}
-    curl https://api.keygen.sh/v1/accounts/{{ .Values.captain.secret.keygen.accountID }}/artifacts/attack.sql.tgz \
-      -H 'Authorization: Bearer {{ .Values.captain.secret.keygen.apiToken }}' \
+    curl https://api.keygen.sh/v1/accounts/{{ .Values.keygen.accountID }}/artifacts/attack.sql.tgz \
+      -H 'Authorization: Bearer {{ .Values.keygen.apiToken }}' \
       -H 'Accept: application/vnd.api+json' | jq '.data.links.redirect' | cut -d, -f 3 | xargs curl > /tmp/attack.sql.tgz
     tar -xzf /tmp/attack.sql.tgz -C /tmp
 
@@ -43,7 +43,7 @@ data:
                 (
                   dict
                     "domain" (default $global.ingress.host "app.argushack.com")
-                    "token" $global.captain.secret.keygen.apiToken
+                    "token" $global.keygen.apiToken
                     "prefix" $module.secret.db.secretName
                 )
             )
@@ -82,13 +82,20 @@ data:
               (
                 dict
                   "domain" (default .Values.ingress.host "app.argushack.com")
-                  "token" .Values.captain.secret.keygen.apiToken
+                  "token" .Values.keygen.apiToken
                   "prefix" (printf "%s--%s" .Values.postgresql.auth.existingSecret "postgresql-password")
               )
           )
         | quote
     }}
 
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/init.sql &&
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/attack.sql
+
+    . /opt/bitnami/scripts/libpostgresql.sh && \
+      postgresql_enable_nss_wrapper && \
+      PGPASSWORD={{ $postgresPassword }} \
+      psql \
+        -f /tmp/init.sql
+        {{- if .Values.captain.enabled }} \
+        -f /tmp/attack.sql
+        {{- end }}
 {{- end }}

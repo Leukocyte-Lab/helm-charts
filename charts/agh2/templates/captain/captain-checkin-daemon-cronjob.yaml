@@ -48,12 +48,12 @@ spec:
                 - name: "KEYGEN_ACCOUNT_ID"
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.captain.secret.keygen.secretName }}
+                      name: {{ .Values.keygen.secretName }}
                       key: account-id
                 - name: "KEYGEN_API_TOKEN"
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.captain.secret.keygen.secretName }}
+                      name: {{ .Values.keygen.secretName }}
                       key: api-token
               resources:
                 requests:

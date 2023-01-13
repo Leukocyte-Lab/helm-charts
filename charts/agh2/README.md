@@ -28,8 +28,18 @@ helm install agh2 lkclab/agh2
 | `customRegistrySecret.auth.registry` | URL of the registry server                        | `registry.lkc-lab.com` |
 | `customRegistrySecret.auth.username` | Username to authenticate with the registry server | `""`                   |
 | `customRegistrySecret.auth.password` | Password to authenticate with the registry server | `""`                   |
-| `ingress.enabled`                    | Enable ingress controller                         | `true`                 |
-| `ingress.host`                       | Ingress hostname                                  | `app.argushack.com`    |
+
+
+### Keygen parameters
+
+| Name                | Description                       | Value               |
+| ------------------- | --------------------------------- | ------------------- |
+| `keygen.enabled`    | Enable secret generate for keygen | `true`              |
+| `keygen.secretName` | Secret name for keygen            | `keygen-secret`     |
+| `keygen.apiToken`   | Keygen API Token                  | `""`                |
+| `keygen.accountID`  | Keygen Account ID                 | `""`                |
+| `ingress.enabled`   | Enable ingress controller         | `true`              |
+| `ingress.host`      | Ingress hostname                  | `app.argushack.com` |
 
 
 ### TLS parameters
@@ -191,10 +201,6 @@ ref: https://github.com/Leukocyte-Lab/AGH2-Captain
 | `captain.secret.minio.secretName`                 | Secret name for Minio                                     | `capt-minio-secret`                       |
 | `captain.secret.minio.user`                       | Minio user                                                | `capt-minio-user`                         |
 | `captain.secret.minio.password`                   | Minio password                                            | `""`                                      |
-| `captain.secret.keygen.enabled`                   | Enable secret generate for keygen                         | `true`                                    |
-| `captain.secret.keygen.secretName`                | Secret name for keygen                                    | `capt-keygen-secret`                      |
-| `captain.secret.keygen.apiToken`                  | Keygen API Token                                          | `""`                                      |
-| `captain.secret.keygen.accountID`                 | Keygen Account ID                                         | `""`                                      |
 | `captain.secret.jwt.enabled`                      | Enable secret generate for JWT                            | `true`                                    |
 | `captain.secret.jwt.secretName`                   | Secret name for JWT                                       | `capt-jwt-secret`                         |
 | `captain.secret.jwt.secret`                       | JWT secret                                                | `""`                                      |
