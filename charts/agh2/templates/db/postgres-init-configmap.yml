@@ -89,6 +89,13 @@ data:
         | quote
     }}
 
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/init.sql &&
-    . /opt/bitnami/scripts/libpostgresql.sh && postgresql_enable_nss_wrapper && PGPASSWORD={{ $postgresPassword }} psql -f /tmp/attack.sql
+
+    . /opt/bitnami/scripts/libpostgresql.sh && \
+      postgresql_enable_nss_wrapper && \
+      PGPASSWORD={{ $postgresPassword }} \
+      psql \
+        -f /tmp/init.sql
+        {{- if .Values.captain.enabled }} \
+        -f /tmp/attack.sql
+        {{- end }}
 {{- end }}
