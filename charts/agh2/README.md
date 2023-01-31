@@ -93,6 +93,8 @@ Leave as default if using external DB
 | `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                    |
 | `postgresql.auth.password`                   | Internal database initial password                            | `""`                                           |
 | `postgresql.auth.postgresPassword`           | Internal database initial postgres admin password             | `""`                                           |
+| `postgresql.primary.extendedConfiguration`   | Extended configuration for the primary node                   | `max_connections = 1024
+`                      |
 | `postgresql.primary.initdb.enabled`          | Enable initdb scripts generation                              | `true`                                         |
 | `postgresql.primary.initdb.scriptsConfigMap` | Name of ConfigMap containing db-init scripts                  | `db-init-scripts`                              |
 | `postgresql.primary.initdb.user`             | Specify the PostgreSQL username to execute the initdb scripts | `argushack`                                    |

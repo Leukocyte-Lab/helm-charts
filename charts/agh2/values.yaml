@@ -177,12 +177,15 @@ postgresql:
     password: ""
     postgresPassword: ""
 
+  ## @param postgresql.primary.extendedConfiguration Extended configuration for the primary node
   ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
   ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
   ## @param postgresql.primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
   ## @param postgresql.primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
   ##
   primary:
+    extendedConfiguration: |
+      max_connections = 1024
     initdb:
       enabled: true
       scriptsConfigMap: "db-init-scripts"
