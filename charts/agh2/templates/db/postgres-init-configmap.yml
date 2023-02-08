@@ -38,8 +38,9 @@ data:
     {{- end }}
 
     {{- $global := .Values }}
-    {{- range values .Values }}
-      {{- $module := . }}
+    {{- $modules := keys .Values | sortAlpha }}
+    {{- range $modules }}
+      {{- $module := first (values (pick $global .)) }}
       {{- if and ($global.db.helpers.init.dbs.forceProvision | ternary true $module.enabled) (hasKey $module "secret") (hasKey $module.secret "db") }}
         {{- if and (hasKey $module.secret.db "user") (hasKey $module.secret.db "password") }}
           {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
