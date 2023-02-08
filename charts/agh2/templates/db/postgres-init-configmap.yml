@@ -25,7 +25,7 @@ data:
     # Create init DBs
     cat <<EOF > /tmp/init.sql
 
-    {{- if .Values.db.connection.user }}
+    {{- if and .Values.db.connection.user .Values.db.connection.password }}
     -- Create DB {{ .Values.db.connection.user }}
     CREATE ROLE "{{ .Values.db.connection.user }}" WITH
       LOGIN
