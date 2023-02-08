@@ -91,10 +91,6 @@ data:
   
   {{- end }}
 
-  {{- if .Values.db.helpers.init.attack.enabled }}
-    
-  {{- end }}
-
   {{- if or .Values.db.helpers.init.dbs.enabled .Values.db.helpers.init.attack.enabled }}
     {{-
       $postgresPassword :=
