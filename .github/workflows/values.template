@@ -231,7 +231,7 @@ minio:
     ## @skip minio.provisioning.usersExistingSecrets
     ##
     policies:
-      - name: bucket-specific-policy
+      - name: agh-core-policy
         statements:
           - effect: "Allow"
             resources:
