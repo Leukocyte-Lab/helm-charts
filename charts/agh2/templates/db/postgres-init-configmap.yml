@@ -9,12 +9,17 @@ data:
   init.sh: |
 
   {{- if .Values.db.helpers.init.attack.enabled }}
-    # Download attack datasets
+    # ------------------------ #
+    # Download attack datasets #
+    # ------------------------ #
     curl https://api.keygen.sh/v1/accounts/{{ .Values.keygen.accountID }}/artifacts/attack.sql.tgz \
       -H 'Authorization: Bearer {{ .Values.keygen.apiToken }}' \
       -H 'Accept: application/vnd.api+json' | jq '.data.links.redirect' | cut -d, -f 3 | xargs curl > /tmp/attack.sql.tgz
     tar -xzf /tmp/attack.sql.tgz -C /tmp
 
+    # ------------------------- #
+    # Create attack init script #
+    # ------------------------- #
     {{- if .Values.captain.secret.db.user }}
     sed -i '1s/^/SET ROLE {{ .Values.captain.secret.db.user | quote }};\n\n /' /tmp/attack.sql
     {{- end }}
@@ -22,10 +27,12 @@ data:
   {{- end }}
 
   {{ if .Values.db.helpers.init.dbs.enabled }}
-    # Create init DBs
+    # ---------------------- #
+    # Create DBs init script #
+    # ---------------------- #
     cat <<EOF > /tmp/init.sql
 
-    {{- if .Values.db.connection.user }}
+    {{- if and .Values.db.connection.user .Values.db.connection.password }}
     -- Create DB {{ .Values.db.connection.user }}
     CREATE ROLE "{{ .Values.db.connection.user }}" WITH
       LOGIN
@@ -38,8 +45,9 @@ data:
     {{- end }}
 
     {{- $global := .Values }}
-    {{- range values .Values }}
-      {{- $module := . }}
+    {{- $modules := keys .Values | sortAlpha }}
+    {{- range $modules }}
+      {{- $module := first (values (pick $global .)) }}
       {{- if and ($global.db.helpers.init.dbs.forceProvision | ternary true $module.enabled) (hasKey $module "secret") (hasKey $module.secret "db") }}
         {{- if and (hasKey $module.secret.db "user") (hasKey $module.secret.db "password") }}
           {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
@@ -69,15 +77,17 @@ data:
       PASSWORD '{{ $password }}';
           {{- end }}
 
-          {{ if $module.secret.db.name }}
+          {{- if $module.secret.db.name }}
+
     -- Create DB {{ $module.secret.db.name }}
     CREATE DATABASE "{{ $module.secret.db.name }}" WITH 
       OWNER = '{{ $user }}'
       ENCODING = 'UTF8'
       CONNECTION LIMIT = -1;
 
-            {{ if $global.db.helpers.init.dbs.installPgroongaExtensions }}
-    -- Create PGroonga extensions      
+            {{- if $global.db.helpers.init.dbs.installPgroongaExtensions }}
+
+    -- Create PGroonga extensions for {{ $module.secret.db.name }}
     \c {{ $module.secret.db.name }}
     CREATE EXTENSION IF NOT EXISTS pgroonga;
     GRANT USAGE ON SCHEMA pgroonga TO "{{ $user }}";
@@ -88,10 +98,6 @@ data:
     {{- end }}
     EOF
   
-  {{- end }}
-
-  {{- if .Values.db.helpers.init.attack.enabled }}
-    
   {{- end }}
 
   {{- if or .Values.db.helpers.init.dbs.enabled .Values.db.helpers.init.attack.enabled }}
@@ -111,7 +117,9 @@ data:
         | quote
     }}
 
-    # Execute init scripts
+    # -------------------- #
+    # Execute init scripts #
+    # -------------------- #
     . /opt/bitnami/scripts/libpostgresql.sh && \
       postgresql_enable_nss_wrapper && \
       PGPASSWORD={{ $postgresPassword }} \
