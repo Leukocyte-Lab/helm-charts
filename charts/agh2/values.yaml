@@ -185,7 +185,8 @@ postgresql:
   ##
   primary:
     extendedConfiguration: |
-      max_connections = 1024
+      max_connections = 32768
+      shared_buffers = 4GB
     initdb:
       enabled: true
       scriptsConfigMap: "db-init-scripts"
