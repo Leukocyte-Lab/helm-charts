@@ -36,6 +36,11 @@ jobs:
           export transformer="${{ fromJson(github.event.inputs.version).transformer }}"
           export checkindaemon="${{ fromJson(github.event.inputs.version).checkin-daemon }}"
           export group="${{ fromJson(github.event.inputs.version).group }}"
+          export reporttemplate="${{ fromJson(github.event.inputs.version).report-template }}"
+          export reportinit="${{ fromJson(github.event.inputs.version).report-init }}"
+          export reportgenerator="${{ fromJson(github.event.inputs.version).reportgenerator }}"
+          export poster="${{ fromJson(github.event.inputs.version).poster }}"
+          export cronjob="${{ fromJson(github.event.inputs.version).cronjob }}"
           envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
           cat charts/agh2/values.yaml
 

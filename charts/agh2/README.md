@@ -82,23 +82,22 @@ Control the DB Helper behaviors.
 
 Leave as default if using external DB
 
-| Name                                         | Description                                                   | Value                                          |
-| -------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
-| `postgresql.enabled`                         | Enable internal database                                      | `true`                                         |
-| `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                     |
-| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian` |
-| `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                 |
-| `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                           |
-| `postgresql.auth.enabled`                    | Enable postgresql auth secret generate                        | `true`                                         |
-| `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                    |
-| `postgresql.auth.password`                   | Internal database initial password                            | `""`                                           |
-| `postgresql.auth.postgresPassword`           | Internal database initial postgres admin password             | `""`                                           |
-| `postgresql.primary.extendedConfiguration`   | Extended configuration for the primary node                   | `max_connections = 1024
-`                      |
-| `postgresql.primary.initdb.enabled`          | Enable initdb scripts generation                              | `true`                                         |
-| `postgresql.primary.initdb.scriptsConfigMap` | Name of ConfigMap containing db-init scripts                  | `db-init-scripts`                              |
-| `postgresql.primary.initdb.user`             | Specify the PostgreSQL username to execute the initdb scripts | `argushack`                                    |
-| `postgresql.primary.initdb.password`         | Specify the PostgreSQL password to execute the initdb scripts | `""`                                           |
+| Name                                         | Description                                                   | Value                                           |
+| -------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
+| `postgresql.enabled`                         | Enable internal database                                      | `true`                                          |
+| `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                      |
+| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian`  |
+| `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                  |
+| `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                            |
+| `postgresql.auth.enabled`                    | Enable postgresql auth secret generate                        | `true`                                          |
+| `postgresql.auth.username`                   | Internal database initial user                                | `argushack`                                     |
+| `postgresql.auth.password`                   | Internal database initial password                            | `""`                                            |
+| `postgresql.auth.postgresPassword`           | Internal database initial postgres admin password             | `""`                                            |
+| `postgresql.primary.extendedConfiguration`   | Extended configuration for the primary node                   | `max_connections = 32768 shared_buffers = 4GB` |
+| `postgresql.primary.initdb.enabled`          | Enable initdb scripts generation                              | `true`                                          |
+| `postgresql.primary.initdb.scriptsConfigMap` | Name of ConfigMap containing db-init scripts                  | `db-init-scripts`                               |
+| `postgresql.primary.initdb.user`             | Specify the PostgreSQL username to execute the initdb scripts | `argushack`                                     |
+| `postgresql.primary.initdb.password`         | Specify the PostgreSQL password to execute the initdb scripts | `""`                                            |
 
 
 ### Minio parameters
@@ -347,4 +346,17 @@ ref: https://github.com/Leukocyte-Lab/AGH2-UI
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                      |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                                |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                                |
+
+
+### System shared image parameters
+
+| Name                            | Description                           | Value                                                            |
+| ------------------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+| `shared.enabled`                | Enable shared image config generation | `true`                                                           |
+| `shared.configMapName`          | Shared image configMap name           | `system-image`                                                   |
+| `shared.images.poster`          | Poster image                          | `leukocyte-lab/argushack2/worker/poster:v2.0.0`                  |
+| `shared.images.cronjob`         | Cronjob image                         | `leukocyte-lab/argushack2/worker/cronjob:v1.0.0`                 |
+| `shared.images.reportInit`      | Report init image                     | `leukocyte-lab/argushack2/worker/report-init:v0.0.9`             |
+| `shared.images.reportGenerator` | Report generator image                | `leukocyte-lab/argushack2/worker/report-generator:v0.0.7`        |
+| `shared.images.reportTemplate`  | Report template image                 | `leukocyte-lab/argushack2/attack-report-template:v0.0.7-alpha.3` |
 
