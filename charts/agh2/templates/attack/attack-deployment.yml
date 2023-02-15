@@ -43,6 +43,10 @@ spec:
       containers:
         - name: attack
           image: {{ include "attack.image" . }}
+          envFrom:
+            - prefix: SYSIMG_
+              configMapRef:
+                name: {{ .Values.shared.configMapName }}
           env:
             - name: NAMESPACE
               valueFrom:

@@ -45,6 +45,10 @@ spec:
           image: {{ include "captain.image" . }}
           command:
             - ./captain
+          envFrom:
+            - prefix: SYSIMG_
+              configMapRef:
+                name: {{ .Values.shared.configMapName }}
           env:
             - name: NAMESPACE
               valueFrom:

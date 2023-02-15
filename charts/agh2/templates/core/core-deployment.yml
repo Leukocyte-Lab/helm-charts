@@ -45,6 +45,10 @@ spec:
           image: {{ include "core.image" . }}
           command:
             - ./core
+          envFrom:
+            - prefix: SYSIMG_
+              configMapRef:
+                name: {{ .Values.shared.configMapName }}
           env:
             - name: NAMESPACE
               valueFrom:
