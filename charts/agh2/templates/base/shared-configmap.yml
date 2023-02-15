@@ -1,0 +1,14 @@
+{{- if .Values.shared.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.shared.configMapName }}
+  labels:
+    {{- include "AGH2.labels" . | nindent 4 }}
+data:
+  POSTER: {{ printf "%s/%s" .Values.global.imageRegistry .Values.shared.images.poster }}
+  CRONJOB: {{ printf "%s/%s" % .Values.global.imageRegistry .Values.shared.images.cronjob }}
+  REPORT_INIT: {{ printf "%s/%s" % .Values.global.imageRegistry .Values.shared.images.reportInit }}
+  REPORT_GENERATER: {{ printf "%s/%s" % .Values.global.imageRegistry .Values.shared.images.reportGenerator }}
+  REPORT_TEMPLATE: {{ printf "%s/%s" % .Values.global.imageRegistry .Values.shared.images.reportTemplate }}
+{{- end }}
