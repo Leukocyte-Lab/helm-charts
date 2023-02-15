@@ -711,3 +711,25 @@ ui:
   ## @param ui.extraEnv UI additional environment variables
   ##
   extraEnv: {}
+
+## @section System shared image parameters
+##
+shared:
+  ## @param shared.enabled Enable shared image config generation
+  ##
+  enabled: true
+  ## @param shared.configMapName Shared image configMap name
+  ##
+  configMapName: system-image
+  ## @param shared.images.poster Poster image
+  ## @param shared.images.cronjob Cronjob image
+  ## @param shared.images.reportInit Report init image
+  ## @param shared.images.reportGenerator Report generator image
+  ## @param shared.images.reportTemplate Report template image
+  ##
+  images:
+    poster: leukocyte-lab/argushack2/worker/poster:$poster
+    cronjob: leukocyte-lab/argushack2/worker/cronjob:$cronjob
+    reportInit: leukocyte-lab/argushack2/worker/report-init:$reportinit
+    reportGenerator: leukocyte-lab/argushack2/worker/report-generator:$reportgenerator
+    reportTemplate: leukocyte-lab/argushack2/attack-report-template:$reporttemplate
