@@ -38,7 +38,7 @@ jobs:
           export group="${{ fromJson(github.event.inputs.version).group }}"
           export reporttemplate="${{ fromJson(github.event.inputs.version).report-template }}"
           export reportinit="${{ fromJson(github.event.inputs.version).report-init }}"
-          export reportgenerator="${{ fromJson(github.event.inputs.version).reportgenerator }}"
+          export reportgenerator="${{ fromJson(github.event.inputs.version).report-generator }}"
           export poster="${{ fromJson(github.event.inputs.version).poster }}"
           export cronjob="${{ fromJson(github.event.inputs.version).cronjob }}"
           envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
