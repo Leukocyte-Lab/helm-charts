@@ -22,14 +22,13 @@ global:
 ##
 
 ## @param customRegistrySecret.enabled Enable custom registry secret generation
+## @skip customRegistrySecret.secretName
+## Name of the generated secret
+## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
 ##
 customRegistrySecret:
-  ## @skip customRegistrySecret.secretName
-  ## Name of the generated secret
-  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-  ##
-  secretName: lkc-registry
   enabled: true
+  secretName: lkc-registry
   ## @param customRegistrySecret.auth.registry URL of the registry server
   ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
   ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
@@ -37,25 +36,6 @@ customRegistrySecret:
     registry: registry.lkc-lab.com
     username: ""
     password: ""
-
-## @section Keygen parameters
-##
-
-## @param keygen.enabled Enable secret generate for keygen
-## @param keygen.secretName Secret name for keygen
-## @param keygen.apiToken Keygen API Token
-## @param keygen.accountID Keygen Account ID
-## ref: https://keygen.sh/docs/api
-##
-keygen:
-  ## @skip keygen.secretName
-  ## Name of the generated secret
-  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-  ##
-  secretName: keygen-secret
-  enabled: true
-  apiToken: ""
-  accountID: ""
 
 ## @param ingress.enabled Enable ingress controller
 ## @param ingress.host Ingress hostname
@@ -115,29 +95,6 @@ db:
   internal:
     enabled: true
 
-  ## @section Helper parameters
-  ## @descriptionStart
-  ## Control the DB Helper behaviors.
-  ## @descriptionEnd
-  ##
-
-  ## @param db.helpers.init.dbs.enabled Enable dbs init feature
-  ## @param db.helpers.init.dbs.installPgroongaExtensions Install pgroonga extensions
-  ## @param db.helpers.init.attack.enabled Enable attack-datasets feature
-  ##
-  helpers:
-    init:
-      dbs:
-        enabled: true
-        ## @skip db.helpers.init.dbs.forceProvision
-        ## Force provision the DB
-        ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-        ##
-        forceProvision: false
-        installPgroongaExtensions: true
-      attack:
-        enabled: true
-
 ## @section Internal PostgreSQL database provisioning parameters
 ## @descriptionStart
 ## Leave as default if using external DB
@@ -185,8 +142,7 @@ postgresql:
   ##
   primary:
     extendedConfiguration: |
-      max_connections = 32768
-      shared_buffers = 4GB
+      max_connections = 1024
     initdb:
       enabled: true
       scriptsConfigMap: "db-init-scripts"
@@ -322,7 +278,7 @@ attack:
   ##
   image:
     repository: leukocyte-lab/argushack2/attack
-    tag: v0.10.0
+    tag: v0.11.0rc1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param attack.secret.enabled Enable secret generate for ATTACK
@@ -358,7 +314,7 @@ attack:
       ##
       image:
         repository: leukocyte-lab/argushack2/group
-        tag: v1.3.7
+        tag: v1.4.2-shawn.dev.2
     ## ATTACK UI
     ## ref: https://github.com/Leukocyte-Lab/AGH2-ATTACK-UI
     ## @param attack.service.ui.enabled Enable ATTACK UI
@@ -372,7 +328,7 @@ attack:
       ##
       image:
         repository: leukocyte-lab/argushack2/attack-frontend
-        tag: v0.3.1
+        tag: v0.3.2-rc.0
         pullPolicy: IfNotPresent
         pullSecrets: []
     ## Redis
@@ -431,7 +387,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack2/captain
-    tag: v0.20.1-rc.0
+    tag: v0.21.0rc2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -463,6 +419,17 @@ captain:
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
+    ## @param captain.secret.keygen.enabled Enable secret generate for keygen
+    ## @param captain.secret.keygen.secretName Secret name for keygen
+    ## @param captain.secret.keygen.apiToken Keygen API Token
+    ## @param captain.secret.keygen.accountID Keygen Account ID
+    ## ref: https://keygen.sh/docs/api
+    ##
+    keygen:
+      enabled: true
+      secretName: capt-keygen-secret
+      apiToken: ""
+      accountID: ""
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret
@@ -515,7 +482,7 @@ core:
   ##
   image:
     repository: leukocyte-lab/argushack2/core
-    tag: v1.18.1-rc.0
+    tag: v1.19.0rc2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param core.secret.enabled Enable secret generate for Core
@@ -580,7 +547,7 @@ exploitmgr:
   ##
   image:
     repository: leukocyte-lab/argushack2/exploitmgr
-    tag: v0.14.0-rc.0
+    tag: v0.14.0-rc.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
@@ -763,6 +730,6 @@ shared:
   images:
     poster: leukocyte-lab/argushack2/worker/poster:v2.0.0
     cronjob: leukocyte-lab/argushack2/worker/cronjob:v1.0.0
-    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.9
-    reportGenerator: leukocyte-lab/argushack2/worker/report-generator:v0.0.7
-    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.7-alpha.3
+    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.7-rc.1
+    reportGenerator: leukocyte-lab/argushack2/worker/report-generator:
+    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.7-rc.1
