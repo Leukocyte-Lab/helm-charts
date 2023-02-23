@@ -731,5 +731,5 @@ shared:
     poster: leukocyte-lab/argushack2/worker/poster:v2.0.0
     cronjob: leukocyte-lab/argushack2/worker/cronjob:v1.0.0
     reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.7-rc.1
-    reportGenerator: leukocyte-lab/argushack2/worker/report-generator:
+    reportGenerator: leukocyte-lab/argushack2/worker/report-generator:v0.0.7
     reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.7-rc.1
