@@ -22,13 +22,14 @@ global:
 ##
 
 ## @param customRegistrySecret.enabled Enable custom registry secret generation
-## @skip customRegistrySecret.secretName
-## Name of the generated secret
-## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
 ##
 customRegistrySecret:
-  enabled: true
+  ## @skip customRegistrySecret.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
   secretName: lkc-registry
+  enabled: true
   ## @param customRegistrySecret.auth.registry URL of the registry server
   ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
   ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
@@ -36,6 +37,25 @@ customRegistrySecret:
     registry: registry.lkc-lab.com
     username: ""
     password: ""
+
+## @section Keygen parameters
+##
+
+## @param keygen.enabled Enable secret generate for keygen
+## @param keygen.secretName Secret name for keygen
+## @param keygen.apiToken Keygen API Token
+## @param keygen.accountID Keygen Account ID
+## ref: https://keygen.sh/docs/api
+##
+keygen:
+  ## @skip keygen.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
+  secretName: keygen-secret
+  enabled: true
+  apiToken: ""
+  accountID: ""
 
 ## @param ingress.enabled Enable ingress controller
 ## @param ingress.host Ingress hostname
@@ -95,6 +115,29 @@ db:
   internal:
     enabled: true
 
+  ## @section Helper parameters
+  ## @descriptionStart
+  ## Control the DB Helper behaviors.
+  ## @descriptionEnd
+  ##
+
+  ## @param db.helpers.init.dbs.enabled Enable dbs init feature
+  ## @param db.helpers.init.dbs.installPgroongaExtensions Install pgroonga extensions
+  ## @param db.helpers.init.attack.enabled Enable attack-datasets feature
+  ##
+  helpers:
+    init:
+      dbs:
+        enabled: true
+        ## @skip db.helpers.init.dbs.forceProvision
+        ## Force provision the DB
+        ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+        ##
+        forceProvision: false
+        installPgroongaExtensions: true
+      attack:
+        enabled: true
+
 ## @section Internal PostgreSQL database provisioning parameters
 ## @descriptionStart
 ## Leave as default if using external DB
@@ -142,7 +185,8 @@ postgresql:
   ##
   primary:
     extendedConfiguration: |
-      max_connections = 1024
+      max_connections = 32768
+      shared_buffers = 4GB
     initdb:
       enabled: true
       scriptsConfigMap: "db-init-scripts"
@@ -419,17 +463,6 @@ captain:
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
-    ## @param captain.secret.keygen.enabled Enable secret generate for keygen
-    ## @param captain.secret.keygen.secretName Secret name for keygen
-    ## @param captain.secret.keygen.apiToken Keygen API Token
-    ## @param captain.secret.keygen.accountID Keygen Account ID
-    ## ref: https://keygen.sh/docs/api
-    ##
-    keygen:
-      enabled: true
-      secretName: capt-keygen-secret
-      apiToken: ""
-      accountID: ""
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret
