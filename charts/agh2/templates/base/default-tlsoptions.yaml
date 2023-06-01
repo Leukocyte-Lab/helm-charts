@@ -1,4 +1,4 @@
-{{- if .Values.ingress.tls.enabled }}
+{{- if and .Values.ingress.tls.enabled (not (empty .Values.ingress.host)) }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: TLSOption
 metadata:
