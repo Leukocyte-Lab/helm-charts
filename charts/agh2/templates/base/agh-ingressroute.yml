@@ -7,7 +7,7 @@ spec:
   routes:
     {{- if or .Values.ui.enabled (and .Values.attack.enabled .Values.attack.service.ui.enabled) }}
     - kind: Rule
-      match: {{ print "Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      match: {{ empty .Values.ingress.host | ternary "PathPrefix(`/`)" (print "Host(`" (.Values.ingress.host) "`)") }}
       middlewares:
         - name: https-redirectscheme
       services:
@@ -21,7 +21,7 @@ spec:
     {{- end }}
     {{- if .Values.captain.enabled }}
     - kind: Rule
-      match: {{ print "PathPrefix(`/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      match: {{ printf "%s%s" "PathPrefix(`/api`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       services:
         - kind: Service
           name: captain
@@ -29,7 +29,7 @@ spec:
     {{- end }}
     {{- if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
     - kind: Rule
-      match: {{ print "PathPrefix(`/attack`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      match: {{ printf "%s%s" "PathPrefix(`/attack`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       middlewares:
         - name: https-redirectscheme
       services:
@@ -39,7 +39,7 @@ spec:
     {{- end }}
     {{- if and .Values.attack.enabled }}
     - kind: Rule
-      match: {{ print "PathPrefix(`/attack/api`) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      match: {{ printf "%s%s" "PathPrefix(`/attack/api`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       middlewares:
         - name: attack-stripprefix
       services:
@@ -47,7 +47,7 @@ spec:
           name: attack
           port: 8080
     - kind: Rule
-      match: {{ print "(Path(`/attack/api/user`) || Path(`/attack/api/version`)) && Host(`" (.Values.ingress.host | default "app.argushack.com") "`)" }}
+      match: {{ printf "%s%s" "(Path(`/attack/api/user`) || Path(`/attack/api/version`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       middlewares:
         - name: attack-stripprefix
       services:
