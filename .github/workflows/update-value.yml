@@ -41,8 +41,11 @@ jobs:
           export reportgenerator="${{ fromJson(github.event.inputs.version).report-generator }}"
           export poster="${{ fromJson(github.event.inputs.version).poster }}"
           export cronjob="${{ fromJson(github.event.inputs.version).cronjob }}"
+          export date=$(date +%Y%m%d)
           envsubst < .github/workflows/values.template > "charts/agh2/values.yaml"
+          envsubst < .github/workflows/Chart.yaml.template > "charts/agh2/Chart.yaml"
           cat charts/agh2/values.yaml
+          cat charts/agh2/Chart.yaml
 
       - name: update chart version
         working-directory: charts/agh2
