@@ -20,4 +20,13 @@ jobs:
         uses: "pascalgn/automerge-action@v0.15.2"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
+      - uses: actions/checkout@v4
+        with:
+          repository: Leukocyte-Lab/AGH2-Manifest
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Invoke workflow Update ArgusHack in Leukocyte-Lab/ArgusHack2
+        run: |
+          cat .version.json | gh workflow -R Leukocyte-Lab/ArgusHack2 run agh2-update.yml -r develop --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
