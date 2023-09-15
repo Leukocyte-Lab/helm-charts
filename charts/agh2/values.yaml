@@ -580,7 +580,7 @@ exploitmgr:
   ##
   image:
     repository: leukocyte-lab/argushack2/exploitmgr
-    tag: v0.16.0
+    tag: v0.17.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
