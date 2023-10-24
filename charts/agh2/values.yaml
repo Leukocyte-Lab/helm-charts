@@ -473,7 +473,7 @@ captain:
       secret: ""
     ## @param captain.secret.superadmin.enabled Enable secret generate for Super Admin
     ## @param captain.secret.superadmin.secretName Secret name for Super Admin
-    ## @param captain.secret.superadmin.secret Super Admin password
+    ## @param captain.secret.superadmin.password Super Admin password
     ##
     superadmin:
       enabled: true
