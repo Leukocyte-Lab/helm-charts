@@ -70,6 +70,13 @@ spec:
             - name: TEMPLATE_URL
               value: "template.$(NAMESPACE).svc.cluster.local:50005"
             {{- end }}
+            {{- if .Values.captain.secret.superadmin.enabled }}
+            - name: SUPERADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.superadmin.secretName }}
+                  key: SUPERADMIN_PASSWORD
+            {{- end }}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
