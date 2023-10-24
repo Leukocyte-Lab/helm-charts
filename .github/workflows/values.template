@@ -471,6 +471,14 @@ captain:
       enabled: true
       secretName: capt-jwt-secret
       secret: ""
+    ## @param captain.secret.superadmin.enabled Enable secret generate for Super Admin
+    ## @param captain.secret.superadmin.secretName Secret name for Super Admin
+    ## @param captain.secret.superadmin.secret Super Admin password
+    ##
+    superadmin:
+      enabled: true
+      secretName: capt-superadmin-password
+      password: ""
   ## @extra captain.service Captain service parameters
   ##
   service:
