@@ -5,18 +5,14 @@ metadata:
   name: agh-ingressroute
 spec:
   routes:
-    {{- if or .Values.ui.enabled (and .Values.attack.enabled .Values.attack.service.ui.enabled) }}
+    {{- if .Values.ui.enabled }}
     - kind: Rule
       match: {{ empty .Values.ingress.host | ternary "PathPrefix(`/`)" (print "Host(`" (.Values.ingress.host) "`)") }}
       middlewares:
         - name: https-redirectscheme
       services:
         - kind: Service
-          {{- if .Values.ui.enabled }}
           name: ui
-          {{- else if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
-          name: attack-ui
-          {{- end }}
           port: 80
     {{- end }}
     {{- if .Values.captain.enabled }}
@@ -27,46 +23,6 @@ spec:
           name: captain
           port: 9527
     {{- end }}
-    {{- if and .Values.attack.enabled .Values.attack.service.ui.enabled }}
-    - kind: Rule
-      match: {{ printf "%s%s" "PathPrefix(`/attack`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
-      middlewares:
-        - name: https-redirectscheme
-      services:
-        - kind: Service
-          name: attack-ui
-          port: 80
-    {{- end }}
-    {{- if and .Values.attack.enabled }}
-    - kind: Rule
-      match: {{ printf "%s%s" "PathPrefix(`/attack/api`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
-      middlewares:
-        - name: attack-stripprefix
-      services:
-        - kind: Service
-          name: attack
-          port: 8080
-    - kind: Rule
-      match: {{ printf "%s%s" "(Path(`/attack/api/user`) || Path(`/attack/api/version`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
-      middlewares:
-        - name: attack-stripprefix
-      services:
-        - kind: Service
-          name: captain
-          port: 9527
-    {{- end }}
----
-{{- if .Values.attack.enabled }}
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: attack-stripprefix
-spec:
-  stripPrefix:
-    prefixes:
-      - /attack
-    forceSlash: false
-{{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware

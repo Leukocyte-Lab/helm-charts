@@ -16,7 +16,7 @@ spec:
     spec:
       {{- include "captain.imagePullSecrets" . | nindent 6 }}
       initContainers:
-        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled }}
+        {{- if .Values.redis.enabled }}
         - name: captain-init-redis
           image: {{ include "redis.image" . }}
           command:
@@ -66,10 +66,6 @@ spec:
             - name: EXPMGR_URL
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
             {{- end }}
-            {{- if .Values.template.enabled }}
-            - name: TEMPLATE_URL
-              value: "template.$(NAMESPACE).svc.cluster.local:50005"
-            {{- end }}
             {{- if .Values.captain.secret.superadmin.enabled }}
             - name: SUPERADMIN_PASSWORD
               valueFrom:
@@ -114,9 +110,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.captain.secret.minio.secretName }}
                   key: capt-minio-password
-            {{- if .Values.attack.extraEnv }}
-            {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
-            {{- end }}
           resources:
             requests:
               memory: "128Mi"

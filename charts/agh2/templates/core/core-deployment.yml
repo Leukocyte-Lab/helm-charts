@@ -16,7 +16,7 @@ spec:
     spec:
       {{- include "core.imagePullSecrets" . | nindent 6 }}
       initContainers:
-        {{- if and .Values.redis.enabled .Values.attack.service.redis.enabled }}
+        {{- if .Values.redis.enabled }}
         - name: core-init-redis
           image: {{ include "redis.image" . }}
           command:
@@ -58,13 +58,6 @@ spec:
             - name: ENV_REDIS_CONN
               value: "redis://redis.$(NAMESPACE).svc.cluster.local:6379/0"
             {{- end }}
-            {{- if .Values.attack.enabled }}
-            - name: ATTACK_DB_Conn
-              valueFrom:
-                secretKeyRef:
-                  key: DB_CONN_STR
-                  name: {{ .Values.attack.secret.db.secretName }}
-            {{- end }}
             {{- if .Values.exploitmgr.enabled }}
             - name: EXP_MGR_DB_Conn
               valueFrom:
@@ -72,21 +65,9 @@ spec:
                   name: {{ .Values.exploitmgr.secret.db.secretName }}
                   key: DB_CONN_STR
             {{- end }}
-            {{- if .Values.blender.enabled }}
-            - name: BLENDER_URL
-              value: "blender.$(NAMESPACE).svc.cluster.local:50005"
-            {{- end }}
             {{- if .Values.exploitmgr.enabled }}
             - name: EXPLOITMGR_URL
               value: "exploitmgr.$(NAMESPACE).svc.cluster.local:50005"
-            {{- end }}
-            {{- if .Values.matcher.enabled }}
-            - name: MATCHER_URL
-              value: "matcher.$(NAMESPACE).svc.cluster.local:50005"
-            {{- end }}
-            {{- if .Values.transformer.enabled }}
-            - name: TRANSFORMER_URL
-              value: "transformer.$(NAMESPACE).svc.cluster.local:50005"
             {{- end }}
             - name: MINIO_URL
               valueFrom:
