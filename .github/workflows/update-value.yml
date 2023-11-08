@@ -24,18 +24,11 @@ jobs:
         uses: actions/checkout@v3
       - name: generator values.yaml
         run: |
-          export attack="${{ fromJson(github.event.inputs.version).attack }}"
-          export blender="${{ fromJson(github.event.inputs.version).blender }}"
           export captain="${{ fromJson(github.event.inputs.version).captain }}"
           export core="${{ fromJson(github.event.inputs.version).core }}"
           export exploitmgr="${{ fromJson(github.event.inputs.version).exploitmgr }}"
           export frontend="${{ fromJson(github.event.inputs.version).frontend }}"
-          export attackfrontend="${{ fromJson(github.event.inputs.version).attack-frontend }}"
-          export matcher="${{ fromJson(github.event.inputs.version).matcher }}"
-          export template="${{ fromJson(github.event.inputs.version).template }}"
-          export transformer="${{ fromJson(github.event.inputs.version).transformer }}"
           export checkindaemon="${{ fromJson(github.event.inputs.version).checkin-daemon }}"
-          export group="${{ fromJson(github.event.inputs.version).group }}"
           export reporttemplate="${{ fromJson(github.event.inputs.version).report-template }}"
           export reportinit="${{ fromJson(github.event.inputs.version).report-init }}"
           export reportgenerator="${{ fromJson(github.event.inputs.version).report-generator }}"
