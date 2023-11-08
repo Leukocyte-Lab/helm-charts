@@ -29,6 +29,10 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
 
+      - name: 🧪 Run chart-linting
+        run: |
+          helm lint charts/agh2
+
       - name: 🧪 Run chart-testing -> internal mode (default)
         run: |
           helm dependency build charts/agh2
