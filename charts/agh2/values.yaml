@@ -322,7 +322,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack2/captain
-    tag: v0.23.0
+    tag: v0.24.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -368,7 +368,7 @@ captain:
     ##
     superadmin:
       enabled: true
-      secretName: capt-superadmin-secret
+      secretName: capt-superadmin-password
       password: ""
   ## @extra captain.service Captain service parameters
   ##
@@ -414,7 +414,7 @@ core:
   ##
   image:
     repository: leukocyte-lab/argushack2/core
-    tag: v1.20.2
+    tag: v1.21.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param core.secret.enabled Enable secret generate for Core
@@ -479,7 +479,7 @@ exploitmgr:
   ##
   image:
     repository: leukocyte-lab/argushack2/exploitmgr
-    tag: v0.17.0
+    tag: v0.18.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param exploitmgr.secret.enabled Enable secret generate for Exploit-Manager
@@ -529,7 +529,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack2/frontend
-    tag: v2.22.0
+    tag: v2.23.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
@@ -554,6 +554,6 @@ shared:
   images:
     poster: leukocyte-lab/argushack2/worker/poster:v2.0.0
     cronjob: leukocyte-lab/argushack2/worker/cronjob:v1.0.0
-    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.8
+    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.8-array-bas
     reportGenerator: leukocyte-lab/argushack2/worker/report-generator:v0.0.7
-    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.8
+    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.8-array-bas
