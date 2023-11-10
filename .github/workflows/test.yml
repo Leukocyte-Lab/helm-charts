@@ -29,6 +29,11 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
 
+      - name: 🧪 Run chart-linting
+        run: |
+          helm dependency build charts/agh2
+          helm lint charts/agh2
+
       - name: 🧪 Run chart-testing -> internal mode (default)
         run: |
           helm dependency build charts/agh2
@@ -47,7 +52,6 @@ jobs:
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set keygen.apiToken='ci-test-f9cef717fa3c' \
             --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
-            --set attack.enabled=false \
             --set captain.enabled=false \
             --set core.enabled=false \
             --set exploitmgr.enabled=false \

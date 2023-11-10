@@ -163,48 +163,6 @@ Return the proper db image name
 {{- end }}
 
 {{/*
-Return the proper ATTACK image name
-*/}}
-{{- define "attack.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.attack.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper group image name
-*/}}
-{{- define "attack.service.group.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.group.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper UI image name
-*/}}
-{{- define "attack.service.ui.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.attack.service.ui.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper Docker Image Registry Secret Names
-*/}}
-{{- define "attack.imagePullSecrets" -}}
-{{ include "common.images.pullSecrets" (dict "images" (list .Values.attack.image .Values.attack.service.group.image .Values.attack.service.ui.image) "global" .Values.global) }}
-{{- end -}}
-
-{{/*
-Return the proper Blender image name
-*/}}
-{{- define "blender.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.blender.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper Docker Image Registry Secret Names
-*/}}
-{{- define "blender.imagePullSecrets" -}}
-{{ include "common.images.pullSecrets" (dict "images" (list .Values.blender.image) "global" .Values.global) }}
-{{- end -}}
-
-{{/*
 Return the proper Captain image name
 */}}
 {{- define "captain.image" -}}
@@ -251,48 +209,6 @@ Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "exploitmgr.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.exploitmgr.image) "global" .Values.global) }}
-{{- end -}}
-
-{{/*
-Return the proper Matcher image name
-*/}}
-{{- define "matcher.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.matcher.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper Docker Image Registry Secret Names
-*/}}
-{{- define "matcher.imagePullSecrets" -}}
-{{ include "common.images.pullSecrets" (dict "images" (list .Values.matcher.image) "global" .Values.global) }}
-{{- end -}}
-
-{{/*
-Return the proper Template image name
-*/}}
-{{- define "template.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.template.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper Docker Image Registry Secret Names
-*/}}
-{{- define "template.imagePullSecrets" -}}
-{{ include "common.images.pullSecrets" (dict "images" (list .Values.template.image) "global" .Values.global) }}
-{{- end -}}
-
-{{/*
-Return the proper Transformer image name
-*/}}
-{{- define "transformer.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.transformer.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
-Return the proper Docker Image Registry Secret Names
-*/}}
-{{- define "transformer.imagePullSecrets" -}}
-{{ include "common.images.pullSecrets" (dict "images" (list .Values.transformer.image) "global" .Values.global) }}
 {{- end -}}
 
 {{/*

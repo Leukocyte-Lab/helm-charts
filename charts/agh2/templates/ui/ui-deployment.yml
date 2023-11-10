@@ -14,7 +14,7 @@ spec:
       labels:
         app: ui
     spec:
-      {{- include "attack.imagePullSecrets" . | nindent 6 }}
+      {{- include "ui.imagePullSecrets" . | nindent 6 }}
       containers:
         - name: ui
           image: {{ include "ui.image" . }}
