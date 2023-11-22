@@ -110,6 +110,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.captain.secret.minio.secretName }}
                   key: capt-minio-password
+            - name: AGH_APP_VERSION
+              value: "{{ .Chart.AppVersion }}"
           resources:
             requests:
               memory: "128Mi"
