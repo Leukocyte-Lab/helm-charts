@@ -414,7 +414,7 @@ core:
   ##
   image:
     repository: leukocyte-lab/argushack2/core
-    tag: v1.21.1
+    tag: v1.21.2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param core.secret.enabled Enable secret generate for Core
@@ -554,6 +554,6 @@ shared:
   images:
     poster: leukocyte-lab/argushack2/worker/poster:v2.0.0
     cronjob: leukocyte-lab/argushack2/worker/cronjob:v1.0.0
-    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.8
+    reportInit: leukocyte-lab/argushack2/worker/report-init:v0.0.8-array-bas
     reportGenerator: leukocyte-lab/argushack2/worker/report-generator:v0.0.7
-    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.8
+    reportTemplate: leukocyte-lab/argushack2/attack-report-template:v0.0.8-array-bas
