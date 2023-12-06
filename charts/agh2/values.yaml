@@ -414,7 +414,7 @@ core:
   ##
   image:
     repository: leukocyte-lab/argushack2/core
-    tag: v1.21.1
+    tag: v1.21.2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param core.secret.enabled Enable secret generate for Core
