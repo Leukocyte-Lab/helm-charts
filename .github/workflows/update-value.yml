@@ -45,7 +45,8 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: build/auto-update-tags-${{ steps.sha.outputs.sha }}
+          branch: build/auto-update-tags
+          branch-suffix: short-commit-hash
           commit-message: |
             auto-build: values.yaml update
 
