@@ -529,7 +529,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack2/frontend
-    tag: v2.24.1
+    tag: v2.24.3
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
