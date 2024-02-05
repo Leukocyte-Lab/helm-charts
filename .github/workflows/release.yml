@@ -33,3 +33,10 @@ jobs:
         uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Invoke workflow Update ArgusHack in Leukocyte-Lab/ArgusHack2
+        run: |
+         echo '{"version": ${{ toJson(steps.versions.outputs.version) }}}' | gh workflow -R Leukocyte-Lab/ArgusHack2 run agh2-update.yml -r develop --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
