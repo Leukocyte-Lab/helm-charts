@@ -24,8 +24,3 @@ jobs:
         with:
           repository: Leukocyte-Lab/AGH2-Manifest
           token: ${{ secrets.GH_TOKEN }}
-      - name: dump .version.json
-        id: versions
-        run: |
-          VERSION=$(cat .version.json)
-          echo "::set-output name=version::${VERSION}"
