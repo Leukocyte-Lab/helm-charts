@@ -345,21 +345,40 @@ rabbitmq:
     pullPolicy: IfNotPresent
     pullSecrets: []
 
-  ## @param minio.auth.rootUser Internal database root user
-  ## @param minio.auth.rootPassword Internal database root password
+  ## @skip rabbitmq.auth.existingPasswordSecret
+  ## @skip rabbitmq.auth.existingSecretPasswordKey
+  ## @skip rabbitmq.auth.securePassword
+  ## @skip rabbitmq.auth.username
+  ## Name of the generated/existed rabbitmq secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
   ##
   auth:
-    ## @skip rabbitmq.auth.existingPasswordSecret
-    ## @skip rabbitmq.auth.existingSecretPasswordKey
-    ## @skip rabbitmq.auth.securePassword
-    ## @skip rabbitmq.auth.username
-    ## Name of the generated/existed rabbitmq secret
-    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-    ##
     existingPasswordSecret: "agh-rabbitmq-secret"
     existingSecretPasswordKey: "password"
     securePassword: false
     username: argushack
+
+  ## @section RabbitMQ service provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using external RabbitMQ
+  ## @descriptionEnd
+  ##
+  service:
+    ## Service ports
+    ## @param rabbitmq.service.ports.amqp Amqp service port
+    ## @param rabbitmq.service.ports.amqpTls Amqp TLS service port
+    ## @param rabbitmq.service.ports.dist Erlang distribution service port
+    ## @param rabbitmq.service.ports.manager RabbitMQ Manager service port
+    ## @param rabbitmq.service.ports.metrics RabbitMQ Prometheues metrics service port
+    ## @param rabbitmq.service.ports.epmd EPMD Discovery service port
+    ##
+    ports:
+      amqp: 5672
+      amqpTls: 5671
+      dist: 25672
+      manager: 15672
+      metrics: 9419
+      epmd: 4369
   ## @section Helper parameters
   ## @descriptionStart
   ## Control the DB Helper behaviors.
