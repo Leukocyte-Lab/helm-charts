@@ -13,11 +13,12 @@ helm install agh2 lkclab/agh2
 
 ### Global parameters
 
-| Name                      | Description                                     | Value                  |
-| ------------------------- | ----------------------------------------------- | ---------------------- |
-| `global.imageRegistry`    | Global Docker Image registry                    | `registry.lkc-lab.com` |
-| `global.imagePullSecrets` | Global Docker registry secret names as an array | `["lkc-registry"]`     |
-| `global.storageClass`     | Global storage class for dynamic provisioning   | `""`                   |
+| Name                               | Description                                                                                                          | Value                  |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `global.imageRegistry`             | Global Docker Image registry                                                                                         | `registry.lkc-lab.com` |
+| `global.imagePullSecrets`          | Global Docker registry secret names as an array                                                                      | `["lkc-registry"]`     |
+| `global.storageClass`              | Global storage class for dynamic provisioning                                                                        | `""`                   |
+| `global.volumePermissions.enabled` | Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup` | `true`                 |
 
 ### Common parameters
 
@@ -66,11 +67,9 @@ helm install agh2 lkclab/agh2
 
 Control the DB Helper behaviors.
 
-| Name                                            | Description                    | Value  |
-| ----------------------------------------------- | ------------------------------ | ------ |
-| `db.helpers.init.dbs.enabled`                   | Enable dbs init feature        | `true` |
-| `db.helpers.init.dbs.installPgroongaExtensions` | Install pgroonga extensions    | `true` |
-| `db.helpers.init.attack.enabled`                | Enable attack-datasets feature | `true` |
+| Name                          | Description             | Value  |
+| ----------------------------- | ----------------------- | ------ |
+| `db.helpers.init.dbs.enabled` | Enable dbs init feature | `true` |
 
 ### Internal PostgreSQL database provisioning parameters
 
@@ -127,124 +126,119 @@ Leave as default if using external DB
 | `minio.provisioning.enabled`      | Enable minio provisioning                                 | `true`                        |
 | `minio.provisioning.generateUser` | Enable minio user generation                              | `true`                        |
 
-### Redis parameters
+### RabbitMQ parameters
 
-| Name                      | Description                                      | Value                  |
-| ------------------------- | ------------------------------------------------ | ---------------------- |
-| `redis.enabled`           | Enable redis                                     | `true`                 |
-| `redis.image.repository`  | Redis image repository                           | `docker/library/redis` |
-| `redis.image.tag`         | Redis image tag (immutable tags are recommended) | `6-alpine`             |
-| `redis.image.pullPolicy`  | Redis image pull policy                          | `IfNotPresent`         |
-| `redis.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                   |
+| Name                           | Description                                          | Value                 |
+| ------------------------------ | ---------------------------------------------------- | --------------------- |
+| `rabbitmq.connection.type`     | Choose to use external RabbitMQ or internal RabbitMQ | `internal`            |
+| `rabbitmq.connection.protocol` | RabbitMQ protocol                                    | `amqp`                |
+| `rabbitmq.connection.host`     | RabbitMQ host address                                | `mq.example.com`      |
+| `rabbitmq.connection.port`     | RabbitMQ host port                                   | `5672`                |
+| `rabbitmq.connection.user`     | RabbitMQ user                                        | `argushack`           |
+| `rabbitmq.connection.password` | RabbitMQ password                                    | `""`                  |
+| `rabbitmq.secret.enabled`      | Enable rabbitmq secret generation                    | `true`                |
+| `rabbitmq.secret.secretName`   | Name of the generated secret                         | `agh-rabbitmq-secret` |
+
+### Internal RabbitMQ provisioning parameters
+
+Leave as default if using external RabbitMQ
+
+| Name                         | Description                                                  | Value                     |
+| ---------------------------- | ------------------------------------------------------------ | ------------------------- |
+| `rabbitmq.internal.enabled`  | Enable internal rabbitmq                                     | `true`                    |
+| `rabbitmq.image.repository`  | Internal RabbitMQ image repository                           | `docker/bitnami/rabbitmq` |
+| `rabbitmq.image.tag`         | Internal RabbitMQ image tag (immutable tags are recommended) | `3.12.13-debian-12-r2`    |
+| `rabbitmq.image.pullPolicy`  | Internal RabbitMQ image pull policy                          | `IfNotPresent`            |
+| `rabbitmq.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                      |
+| `minio.auth.rootUser`        | Internal database root user                                  | `argushack`               |
+| `minio.auth.rootPassword`    | Internal database root password                              | `""`                      |
+
+### Helper parameters
+
+Control the DB Helper behaviors.
+
+| Name                                      | Description                                                         | Value                    |
+| ----------------------------------------- | ------------------------------------------------------------------- | ------------------------ |
+| `rabbitmq.helpers.test.image.repository`  | RabbitMQ Connection Test image repository                           | `docker/curlimages/curl` |
+| `rabbitmq.helpers.test.image.tag`         | RabbitMQ Connection Test image tag (immutable tags are recommended) | `7.78.0`                 |
+| `rabbitmq.helpers.test.image.pullPolicy`  | RabbitMQ Connection Test image pull policy                          | `IfNotPresent`           |
+| `rabbitmq.helpers.test.image.pullSecrets` | Specify docker-registry secret names as an array                    | `[]`                     |
 
 ### AGH3-Captain parameters
 
 Captain module for AGH3.
 ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 
-| Name                                              | Description                                               | Value                                     |
-| ------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------- |
-| `captain.enabled`                                 | Enable Captain module                                     | `true`                                    |
-| `captain.image.repository`                        | Captain image repository                                  | `leukocyte-lab/argushack2/captain`        |
-| `captain.image.tag`                               | Captain image tag (immutable tags are recommended)        | `v0.23.0`                                 |
-| `captain.image.pullPolicy`                        | Captain image pull policy                                 | `IfNotPresent`                            |
-| `captain.image.pullSecrets`                       | Specify docker-registry secret names as an array          | `[]`                                      |
-| `captain.secret.enabled`                          | Enable secret generate for Captain                        | `true`                                    |
-| `captain.secret.db.enabled`                       | Enable secret generate for Captain database               | `true`                                    |
-| `captain.secret.db.name`                          | Database name                                             | `captain-db`                              |
-| `captain.secret.db.user`                          | Database user                                             | `agh-captain`                             |
-| `captain.secret.db.password`                      | Database password                                         | `""`                                      |
-| `captain.secret.minio.enabled`                    | Enable secret generate for Minio                          | `true`                                    |
-| `captain.secret.minio.secretName`                 | Secret name for Minio                                     | `capt-minio-secret`                       |
-| `captain.secret.minio.user`                       | Minio user                                                | `capt-minio-user`                         |
-| `captain.secret.minio.password`                   | Minio password                                            | `""`                                      |
-| `captain.secret.jwt.enabled`                      | Enable secret generate for JWT                            | `true`                                    |
-| `captain.secret.jwt.secretName`                   | Secret name for JWT                                       | `capt-jwt-secret`                         |
-| `captain.secret.jwt.secret`                       | JWT secret                                                | `""`                                      |
-| `captain.secret.superadmin.enabled`               | Enable secret generate for Super Admin                    | `true`                                    |
-| `captain.secret.superadmin.secretName`            | Secret name for Super Admin                               | `capt-superadmin-secret`                  |
-| `captain.secret.superadmin.password`              | Super Admin password                                      | `""`                                      |
-| `captain.service`                                 | Captain service parameters                                |                                           |
-| `captain.service.redis.enabled`                   | Enable redis                                              | `true`                                    |
-| `captain.service.checkinDaemon.enabled`           | Enable checkin-daemon                                     | `true`                                    |
-| `captain.service.checkinDaemon.image.repository`  | Checkin-Daemon image repository                           | `leukocyte-lab/argushack2/checkin-daemon` |
-| `captain.service.checkinDaemon.image.tag`         | Checkin-Daemon image tag (immutable tags are recommended) | `v0.1.0`                                  |
-| `captain.service.checkinDaemon.image.pullPolicy`  | Checkin-Daemon image pull policy                          | `IfNotPresent`                            |
-| `captain.service.checkinDaemon.image.pullSecrets` | Specify docker-registry secret names as an array          | `[]`                                      |
-| `captain.service.checkinDaemon.schedule`          | Checkin-Daemon cronjob schedule                           | `0 0 * * *`                               |
-| `captain.extraEnv`                                | Captain additional environment variables                  | `{}`                                      |
+| Name                                   | Description                                        | Value                                  |
+| -------------------------------------- | -------------------------------------------------- | -------------------------------------- |
+| `captain.enabled`                      | Enable Captain module                              | `true`                                 |
+| `captain.image.repository`             | Captain image repository                           | `leukocyte-lab/argushack3/ctr-captain` |
+| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.1.3-test.8`                        |
+| `captain.image.pullPolicy`             | Captain image pull policy                          | `IfNotPresent`                         |
+| `captain.image.pullSecrets`            | Specify docker-registry secret names as an array   | `[]`                                   |
+| `captain.secret.enabled`               | Enable secret generate for Captain                 | `true`                                 |
+| `captain.secret.db.enabled`            | Enable secret generate for Captain database        | `true`                                 |
+| `captain.secret.db.name`               | Database name                                      | `captain-db`                           |
+| `captain.secret.db.user`               | Database user                                      | `agh-captain`                          |
+| `captain.secret.db.password`           | Database password                                  | `""`                                   |
+| `captain.secret.minio.enabled`         | Enable secret generate for Minio                   | `true`                                 |
+| `captain.secret.minio.secretName`      | Secret name for Minio                              | `capt-minio-secret`                    |
+| `captain.secret.minio.user`            | Minio user                                         | `capt-minio-user`                      |
+| `captain.secret.minio.password`        | Minio password                                     | `""`                                   |
+| `captain.secret.jwt.enabled`           | Enable secret generate for JWT                     | `true`                                 |
+| `captain.secret.jwt.secretName`        | Secret name for JWT                                | `capt-jwt-secret`                      |
+| `captain.secret.jwt.secret`            | JWT secret                                         | `""`                                   |
+| `captain.secret.superadmin.enabled`    | Enable secret generate for Super Admin             | `true`                                 |
+| `captain.secret.superadmin.secretName` | Secret name for Super Admin                        | `capt-superadmin-password`             |
+| `captain.secret.superadmin.password`   | Super Admin password                               | `""`                                   |
+| `captain.extraEnv`                     | Captain additional environment variables           | `{}`                                   |
 
-### AGH3-Core parameters
+### AGH3-Controller parameters
 
-Core module for AGH3.
-ref: https://github.com/Leukocyte-Lab/AGH3-Core
+Controller module for AGH3.
+ref: https://github.com/Leukocyte-Lab/AGH3-Controller
 
-| Name                           | Description                                      | Value                           |
-| ------------------------------ | ------------------------------------------------ | ------------------------------- |
-| `controller.enabled`                 | Enable Core module                               | `true`                          |
-| `controller.image.repository`        | Core image repository                            | `leukocyte-lab/argushack2/controller` |
-| `controller.image.tag`               | Core image tag (immutable tags are recommended)  | `v1.20.2`                       |
-| `controller.image.pullPolicy`        | Core image pull policy                           | `IfNotPresent`                  |
-| `controller.image.pullSecrets`       | Specify docker-registry secret names as an array | `[]`                            |
-| `controller.secret.enabled`          | Enable secret generate for Core                  | `true`                          |
-| `controller.secret.db.enabled`       | Enable secret generate for Core database         | `true`                          |
-| `controller.secret.db.name`          | Database name                                    | `controller-db`                       |
-| `controller.secret.db.user`          | Database user                                    | `agh-controller`                      |
-| `controller.secret.db.password`      | Database password                                | `""`                            |
-| `controller.secret.minio.enabled`    | Enable secret generate for Minio                 | `true`                          |
-| `controller.secret.minio.secretName` | Secret name for Minio                            | `controller-minio-secret`             |
-| `controller.secret.minio.user`       | Minio user                                       | `controller-minio-user`               |
-| `controller.secret.minio.password`   | Minio password                                   | `""`                            |
-| `controller.service`                 | Core service parameters                          |                                 |
-| `controller.service.redis.enabled`   | Enable redis                                     | `true`                          |
-| `controller.env`                     | Core environment variables                       |                                 |
-| `controller.env.REGISTRY_URL`        | Core registry URL                                | `registry.lkc-lab.com`          |
-| `controller.extraEnv`                | Core additional environment variables            | `{}`                            |
-
-### AGH3-Exploit-Manager parameters
-
-Exploit-Manager module for AGH3.
-ref: https://github.com/Leukocyte-Lab/AGH3-Exploit-Manager
-
-| Name                               | Description                                                | Value                                 |
-| ---------------------------------- | ---------------------------------------------------------- | ------------------------------------- |
-| `exploitmgr.enabled`               | Enable Exploit-Manager module                              | `true`                                |
-| `exploitmgr.image.repository`      | Exploit-Manager image repository                           | `leukocyte-lab/argushack2/exploitmgr` |
-| `exploitmgr.image.tag`             | Exploit-Manager image tag (immutable tags are recommended) | `v0.17.0`                             |
-| `exploitmgr.image.pullPolicy`      | Exploit-Manager image pull policy                          | `IfNotPresent`                        |
-| `exploitmgr.image.pullSecrets`     | Specify docker-registry secret names as an array           | `[]`                                  |
-| `exploitmgr.secret.enabled`        | Enable secret generate for Exploit-Manager                 | `true`                                |
-| `exploitmgr.secret.db.enabled`     | Enable secret generate for Exploit-Manager database        | `true`                                |
-| `exploitmgr.secret.db.name`        | Database name                                              | `exploitmgr-db`                       |
-| `exploitmgr.secret.db.user`        | Database user                                              | `agh-exploit`                         |
-| `exploitmgr.secret.db.password`    | Database password                                          | `""`                                  |
-| `exploitmgr.service`               | Exploit-Manager service parameters                         |                                       |
-| `exploitmgr.service.redis.enabled` | Enable redis                                               | `true`                                |
-| `exploitmgr.extraEnv`              | Exploit-Manager additional environment variables           | `{}`                                  |
+| Name                                 | Description                                           | Value                                     |
+| ------------------------------------ | ----------------------------------------------------- | ----------------------------------------- |
+| `controller.enabled`                 | Enable Controller module                              | `true`                                    |
+| `controller.image.repository`        | Controller image repository                           | `leukocyte-lab/argushack3/ctr-controller` |
+| `controller.image.tag`               | Controller image tag (immutable tags are recommended) | `v0.3.3`                                  |
+| `controller.image.pullPolicy`        | Controller image pull policy                          | `IfNotPresent`                            |
+| `controller.image.pullSecrets`       | Specify docker-registry secret names as an array      | `[]`                                      |
+| `controller.secret.enabled`          | Enable secret generate for Controller                 | `true`                                    |
+| `controller.secret.minio.enabled`    | Enable secret generate for Minio                      | `true`                                    |
+| `controller.secret.minio.secretName` | Secret name for Minio                                 | `executor-minio-secret`                   |
+| `controller.secret.minio.user`       | Minio user                                            | `executor-minio-user`                     |
+| `controller.secret.minio.password`   | Minio password                                        | `""`                                      |
+| `controller.env`                     | Controller environment variables                      |                                           |
+| `controller.env.REGISTRY_URL`        | Controller registry URL                               | `registry.lkc-lab.com`                    |
+| `controller.extraEnv`                | Controller additional environment variables           | `{}`                                      |
 
 ### AGH3-UI parameters
 
 UI module for AGH3.
 ref: https://github.com/Leukocyte-Lab/AGH3-UI
 
-| Name                   | Description                                      | Value                               |
-| ---------------------- | ------------------------------------------------ | ----------------------------------- |
-| `ui.enabled`           | Enable UI module                                 | `true`                              |
-| `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack2/frontend` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v2.22.0`                           |
-| `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                      |
-| `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                                |
-| `ui.extraEnv`          | UI additional environment variables              | `{}`                                |
+| Name                   | Description                                      | Value                             |
+| ---------------------- | ------------------------------------------------ | --------------------------------- |
+| `ui.enabled`           | Enable UI module                                 | `true`                            |
+| `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack3/ctr-ui` |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v0.1.0-beta.6`                   |
+| `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                    |
+| `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                              |
+| `ui.extraEnv`          | UI additional environment variables              | `{}`                              |
 
-### System shared image parameters
+### AGH3-Report parameters
 
-| Name                            | Description                           | Value                                                     |
-| ------------------------------- | ------------------------------------- | --------------------------------------------------------- |
-| `shared.enabled`                | Enable shared image config generation | `true`                                                    |
-| `shared.configMapName`          | Shared image configMap name           | `system-image`                                            |
-| `shared.images.poster`          | Poster image                          | `leukocyte-lab/argushack2/worker/poster:v2.0.0`           |
-| `shared.images.cronjob`         | Cronjob image                         | `leukocyte-lab/argushack2/worker/cronjob:v1.0.0`          |
-| `shared.images.reportInit`      | Report init image                     | `leukocyte-lab/argushack2/worker/report-init:v0.0.8`      |
-| `shared.images.reportGenerator` | Report generator image                | `leukocyte-lab/argushack2/worker/report-generator:v0.0.7` |
-| `shared.images.reportTemplate`  | Report template image                 | `leukocyte-lab/argushack2/attack-report-template:v0.0.8`  |
+Report module for AGH3.
+ref: https://github.com/Leukocyte-Lab/AGH3-Report
+
+| Name                       | Description                                       | Value                             |
+| -------------------------- | ------------------------------------------------- | --------------------------------- |
+| `report.enabled`           | Enable Report module                              | `true`                            |
+| `report.image.repository`  | Report image repository                           | `leukocyte-lab/argushack3/report` |
+| `report.image.tag`         | Report image tag (immutable tags are recommended) | `v1.0.0-beta.4`                   |
+| `report.image.pullPolicy`  | Report image pull policy                          | `IfNotPresent`                    |
+| `report.image.pullSecrets` | Specify docker-registry secret names as an array  | `[]`                              |
+| `report.extraEnv`          | UI additional environment variables               | `{}`                              |
 
