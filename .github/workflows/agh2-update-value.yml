@@ -1,4 +1,4 @@
-name: UpdateHelmValue
+name: AGH2/UpdateHelmValue
 
 on:
   workflow_dispatch:

@@ -1,10 +1,11 @@
-name: 🧪 Test
+name: AGH2/🧪 Test
 
 on:
   pull_request:
     branches:
       - main
-
+    paths:
+      - charts/agh2
 jobs:
   test:
     runs-on: ubuntu-latest
