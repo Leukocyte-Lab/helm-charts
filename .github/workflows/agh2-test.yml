@@ -1,0 +1,80 @@
+name: AGH2/🧪 Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - charts/agh2
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: 🪝 Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.10.3
+
+      - name: 📦 Add Helm dependency repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: 🧪 Run chart-linting
+        run: |
+          helm dependency build charts/agh2
+          helm lint charts/agh2
+
+      - name: 🧪 Run chart-testing -> internal mode (default)
+        run: |
+          helm dependency build charts/agh2
+          helm template agh charts/agh2 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            -n agh
+
+      - name: 🧪 Run chart-testing -> internal mode, storage-system only
+        run: |
+          helm dependency build charts/agh2
+          helm template agh charts/agh2 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            --set captain.enabled=false \
+            --set core.enabled=false \
+            --set exploitmgr.enabled=false \
+            --set ui.enabled=false \
+            --set db.helpers.init.dbs.forceProvision=true \
+            -n agh
+
+      - name: 🧪 Run chart-testing -> external mode
+        run: |
+          helm dependency build charts/agh2
+          helm template agh charts/agh2 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            --set db.connection.type=external \
+            --set db.internal.enabled=false \
+            --set db.connection.host='db.ci-test.example.com' \
+            --set db.connection.password='ci-test-b29cb508-15e6-4a08-a389-1e1f21cbc911' \
+            --set minio.connection.type=external \
+            --set minio.internal.enabled=false \
+            --set minio.connection.host='minio.ci-test.example.com' \
+            --set captain.secret.minio.password='ci-test-db6fb8ad' \
+            --set core.secret.minio.password='ci-test-5b5b9b5c' \
+            -n agh

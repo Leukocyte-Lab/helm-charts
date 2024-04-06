@@ -1,0 +1,35 @@
+{{- if and .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: report
+  template:
+    metadata:
+      labels:
+        app: report
+    spec:
+      {{- include "report.imagePullSecrets" . | nindent 6 }}
+      containers:
+        - name: report
+          image: {{ include "report.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- if .Values.captain.enabled }}
+            - name: API_ENDPOINT
+              value: "captain.$(NAMESPACE).svc.cluster.local:8080"
+            {{- end }}
+          ports:
+            - name: web
+              containerPort: 80
+          imagePullPolicy: {{ .Values.report.image.pullPolicy }}
+      restartPolicy: Always
+{{- end }}

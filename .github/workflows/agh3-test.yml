@@ -1,9 +1,11 @@
-name: 🧪 Test
+name: AGH3/🧪 Test
 
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - charts/agh3
 
 jobs:
   test:
@@ -31,13 +33,13 @@ jobs:
 
       - name: 🧪 Run chart-linting
         run: |
-          helm dependency build charts/agh2
-          helm lint charts/agh2
+          helm dependency build charts/agh3
+          helm lint charts/agh3
 
       - name: 🧪 Run chart-testing -> internal mode (default)
         run: |
-          helm dependency build charts/agh2
-          helm template agh charts/agh2 \
+          helm dependency build charts/agh3
+          helm template agh charts/agh3 \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set keygen.apiToken='ci-test-f9cef717fa3c' \
@@ -46,23 +48,23 @@ jobs:
 
       - name: 🧪 Run chart-testing -> internal mode, storage-system only
         run: |
-          helm dependency build charts/agh2
-          helm template agh charts/agh2 \
+          helm dependency build charts/agh3
+          helm template agh charts/agh3 \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set keygen.apiToken='ci-test-f9cef717fa3c' \
             --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
             --set captain.enabled=false \
-            --set core.enabled=false \
-            --set exploitmgr.enabled=false \
+            --set controller.enabled=false \
             --set ui.enabled=false \
+            --set report.enabled=false \
             --set db.helpers.init.dbs.forceProvision=true \
             -n agh
 
       - name: 🧪 Run chart-testing -> external mode
         run: |
-          helm dependency build charts/agh2
-          helm template agh charts/agh2 \
+          helm dependency build charts/agh3
+          helm template agh charts/agh3 \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set keygen.apiToken='ci-test-f9cef717fa3c' \
@@ -71,6 +73,10 @@ jobs:
             --set db.internal.enabled=false \
             --set db.connection.host='db.ci-test.example.com' \
             --set db.connection.password='ci-test-b29cb508-15e6-4a08-a389-1e1f21cbc911' \
+            --set rabbitmq.connection.type=external \
+            --set rabbitmq.internal.enabled=false \
+            --set rabbitmq.connection.host='rabbitmq.ci-test.example.com' \
+            --set rabbitmq.connection.password='ci-test-b29cb508-15e6-4a08-a389-1e1f21cbc911' \
             --set minio.connection.type=external \
             --set minio.internal.enabled=false \
             --set minio.connection.host='minio.ci-test.example.com' \

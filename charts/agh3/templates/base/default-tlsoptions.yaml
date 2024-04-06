@@ -1,0 +1,13 @@
+{{- if and .Values.ingress.tls.enabled (not (empty .Values.ingress.host)) }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: default
+  namespace: default
+spec:
+  cipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  curvePreferences:
+    - CurveP521
+    - CurveP384
+{{- end }}

@@ -1,9 +1,11 @@
-name: Release Charts
+name: AGH2/Release Charts
 
 on:
   push:
     branches:
       - main
+    paths:
+      - charts/agh2
 
 jobs:
   release:

@@ -1,0 +1,119 @@
+{{- if .Values.captain.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: captain
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: captain
+  template:
+    metadata:
+      labels:
+        app: captain
+    spec:
+      {{- include "captain.imagePullSecrets" . | nindent 6 }}
+      initContainers:
+        - name: captain-init-rabbitmq
+          image: {{ include "rabbitmq-test-client.image" . }}
+          env:
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: manager-uri
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: password
+            - name: RABBITMQ_API_ENDPOINT
+              value: "$(RABBITMQ_URI)/api/health/checks/virtual-hosts"
+          command:
+            [
+              "sh",
+              "-c",
+              "until curl -f --user $RABBITMQ_USERNAME:$RABBITMQ_PASSWORD $RABBITMQ_API_ENDPOINT ; do echo waiting for rabbitmq; sleep 1; done",
+            ]
+        - name: captain-init-postgresql
+          image: {{ include "db.image" . }}
+          env:
+            - name: PG_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: DB_CONN_STR
+          command:
+            [
+              "sh",
+              "-c",
+              "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
+            ]
+      containers:
+        - name: captain
+          image: {{ include "captain.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- if .Values.captain.secret.superadmin.enabled }}
+            - name: SUPERADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.superadmin.secretName }}
+                  key: SUPERADMIN_PASSWORD
+            {{- end }}
+            {{- if .Values.report.enabled }}
+            - name: REPORT_URL
+              value: "http://report.$(NAMESPACE).svc.cluster.local:80"
+            {{- end }}
+            - name: DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: DB_CONN_STR
+            - name: Web_Host_Port
+              value: "0.0.0.0:8080"
+            - name: SECRET_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.jwt.secretName }}
+                  key: jwt-secret
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.minio.secret.secretName }}
+                  key: url
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-password
+            - name: RABBITMQ_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}-connection
+                  key: "RABBITMQ_CONN_STR"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: http
+              containerPort: 8080
+          imagePullPolicy: {{ .Values.captain.image.pullPolicy }}
+      restartPolicy: "Always"
+{{- end }}
