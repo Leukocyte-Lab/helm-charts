@@ -535,6 +535,6 @@ report:
     tag: v1.0.0-beta.4
     pullPolicy: IfNotPresent
     pullSecrets: []
-  ## @param ui.extraEnv UI additional environment variables
+  ## @param report.extraEnv UI additional environment variables
   ##
   extraEnv: {}
