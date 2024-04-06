@@ -1,0 +1,102 @@
+{{- if and .Values.db.internal.enabled .Values.postgresql.enabled .Values.postgresql.primary.initdb.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.postgresql.primary.initdb.scriptsConfigMap }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+data:
+  init.sh: |
+
+  {{ if .Values.db.helpers.init.dbs.enabled }}
+    # ---------------------- #
+    # Create DBs init script #
+    # ---------------------- #
+    cat <<EOF > /tmp/init.sql
+
+    {{- if and .Values.db.connection.user .Values.db.connection.password }}
+    -- Create DB {{ .Values.db.connection.user }}
+    CREATE ROLE "{{ .Values.db.connection.user }}" WITH
+      LOGIN
+      NOSUPERUSER
+      INHERIT
+      NOCREATEDB
+      NOCREATEROLE
+      NOREPLICATION
+      PASSWORD '{{ .Values.db.connection.password }}';
+    {{- end }}
+
+    {{- $global := .Values }}
+    {{- $modules := keys .Values | sortAlpha }}
+    {{- range $modules }}
+      {{- $module := first (values (pick $global .)) }}
+      {{- if and ($global.db.helpers.init.dbs.forceProvision | ternary true $module.enabled) (hasKey $module "secret") (hasKey $module.secret "db") }}
+        {{- if and (hasKey $module.secret.db "user") (hasKey $module.secret.db "password") }}
+          {{- $user := coalesce $module.secret.db.user $global.db.connection.user }}
+          {{- $password := coalesce
+            $module.secret.db.password
+            $global.db.connection.password
+            (
+              include "specify-password"
+                (
+                  dict
+                    "domain" (default $global.ingress.host "app.argushack.com")
+                    "token" $global.keygen.apiToken
+                    "prefix" $module.secret.db.secretName
+                )
+            )
+          }}
+
+          {{ if ne $user $global.db.connection.user }}
+    -- Create Role {{ $user }}
+    CREATE ROLE "{{ $user }}" WITH
+      LOGIN
+      NOSUPERUSER
+      INHERIT
+      NOCREATEDB
+      NOCREATEROLE
+      NOREPLICATION
+      PASSWORD '{{ $password }}';
+          {{- end }}
+
+          {{- if $module.secret.db.name }}
+
+    -- Create DB {{ $module.secret.db.name }}
+    CREATE DATABASE "{{ $module.secret.db.name }}" WITH 
+      OWNER = '{{ $user }}'
+      ENCODING = 'UTF8'
+      CONNECTION LIMIT = -1;
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    EOF
+  
+    {{-
+      $postgresPassword :=
+        default
+          .Values.postgresql.auth.postgresPassword
+          (
+            include "specify-password"
+              (
+                dict
+                  "domain" (default .Values.ingress.host "app.argushack.com")
+                  "token" .Values.keygen.apiToken
+                  "prefix" (printf "%s--%s" .Values.postgresql.auth.existingSecret "postgresql-password")
+              )
+          )
+        | quote
+    }}
+
+    # -------------------- #
+    # Execute init scripts #
+    # -------------------- #
+    . /opt/bitnami/scripts/libpostgresql.sh && \
+      postgresql_enable_nss_wrapper && \
+      PGPASSWORD={{ $postgresPassword }} \
+      psql
+      {{- if .Values.db.helpers.init.dbs.enabled }} \
+        -f /tmp/init.sql
+      {{- end }}
+  {{- end }}
+{{- end }}
