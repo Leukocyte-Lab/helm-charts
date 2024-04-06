@@ -1,0 +1,540 @@
+## Default values for AGH3.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
+
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
+
+## @param global.imageRegistry Global Docker Image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global storage class for dynamic provisioning
+## @param global.volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`
+##
+global:
+  imageRegistry: "registry.lkc-lab.com"
+  imagePullSecrets:
+    - lkc-registry
+  storageClass: ""
+  volumePermissions:
+    enabled: true
+
+## @section Common parameters
+##
+
+## @param customRegistrySecret.enabled Enable custom registry secret generation
+##
+customRegistrySecret:
+  ## @skip customRegistrySecret.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
+  secretName: lkc-registry
+  enabled: true
+  ## @param customRegistrySecret.auth.registry URL of the registry server
+  ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
+  ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
+  auth:
+    registry: registry.lkc-lab.com
+    username: ""
+    password: ""
+
+## @section Keygen parameters
+##
+
+## @param keygen.enabled Enable secret generate for keygen
+## @param keygen.secretName Secret name for keygen
+## @param keygen.apiToken Keygen API Token
+## @param keygen.accountID Keygen Account ID
+## ref: https://keygen.sh/docs/api
+##
+keygen:
+  ## @skip keygen.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
+  secretName: keygen-secret
+  enabled: true
+  apiToken: ""
+  accountID: ""
+
+## @param ingress.enabled Enable ingress controller
+## @param ingress.host Ingress hostname
+##
+ingress:
+  enabled: true
+  host: app.argushack.com
+
+  ## @section TLS parameters
+  ##
+  tls:
+    ## @param ingress.tls.enabled Enable TLS certificate generation
+    ## @param ingress.tls.secretName Name of the generated secret
+    ## @param ingress.tls.cert Server certificate content
+    ## @param ingress.tls.key Server private key content
+    ##
+    enabled: false
+    secretName: agh-tls
+    cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUUwakNDQkhpZ0F3SUJBZ0lSQU5jRVNiK2E0M0NQeE85Sm9rWVdUcWt3Q2dZSUtvWkl6ajBFQXdJd2dZOHgKQ3pBSkJnTlZCQVlUQWtkQ01Sc3dHUVlEVlFRSUV4SkhjbVZoZEdWeUlFMWhibU5vWlhOMFpYSXhFREFPQmdOVgpCQWNUQjFOaGJHWnZjbVF4R0RBV0JnTlZCQW9URDFObFkzUnBaMjhnVEdsdGFYUmxaREUzTURVR0ExVUVBeE11ClUyVmpkR2xuYnlCRlEwTWdSRzl0WVdsdUlGWmhiR2xrWVhScGIyNGdVMlZqZFhKbElGTmxjblpsY2lCRFFUQWUKRncweU1qQTFNVEV3TURBd01EQmFGdzB5TXpBME1URXlNelU1TlRsYU1Cd3hHakFZQmdOVkJBTVRFV0Z3Y0M1aApjbWQxYzJoaFkyc3VZMjl0TUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUUwR0N3LzRkeHR1Y1U5Z0hXCmorc2xCcHlvVDY1MHF6b2s2bVhxbUIwL3IxbGtqVE1ydVkvbnhyd2p4ZXFYZTlZejJtSkVjazBFZTdYcWV4Y2YKL0FPVXg0bUlrQmJyTTZUZHp3UVJtcUxabUl1SjFEYWI3bkk0UXNwdXZ2U3RQV3dmbzRJRENEQ0NBd1F3SHdZRApWUjBqQkJnd0ZvQVU5b1VLT3hHRzRRUjlEcW9MTE5MdXpHUjdlNjR3SFFZRFZSME9CQllFRkJVUDh1RHZaK042Ci9qUFJsa2hzZWFQMDRLeVlNQTRHQTFVZER3RUIvd1FFQXdJSGdEQU1CZ05WSFJNQkFmOEVBakFBTUIwR0ExVWQKSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakJKQmdOVkhTQUVRakJBTURRR0N5c0dBUVFCc2pFQgpBZ0lITUNVd0l3WUlLd1lCQlFVSEFnRVdGMmgwZEhCek9pOHZjMlZqZEdsbmJ5NWpiMjB2UTFCVE1BZ0dCbWVCCkRBRUNBVENCaEFZSUt3WUJCUVVIQVFFRWVEQjJNRThHQ0NzR0FRVUZCekFDaGtOb2RIUndPaTh2WTNKMExuTmwKWTNScFoyOHVZMjl0TDFObFkzUnBaMjlGUTBORWIyMWhhVzVXWVd4cFpHRjBhVzl1VTJWamRYSmxVMlZ5ZG1WeQpRMEV1WTNKME1DTUdDQ3NHQVFVRkJ6QUJoaGRvZEhSd09pOHZiMk56Y0M1elpXTjBhV2R2TG1OdmJUQXpCZ05WCkhSRUVMREFxZ2hGaGNIQXVZWEpuZFhOb1lXTnJMbU52YllJVmQzZDNMbUZ3Y0M1aGNtZDFjMmhoWTJzdVkyOXQKTUlJQmZBWUtLd1lCQkFIV2VRSUVBZ1NDQVd3RWdnRm9BV1lBZFFDdDk3NzZmUDhReUl1ZFBad2VQaGhxdEdjcApYYyt4RENUS2hZWTA2OXlDaWdBQUFZQ3lYcUdRQUFBRUF3QkdNRVFDSUgwK3g4ZFR6YXEvaUJaeUU3L2pBSW5lCjJnSGhyT0tiYjBvZnZnMkYzKzhuQWlCaVZIZFV6cWZVL21vR0RyNEJLZk9BbWM0MHJWc0plSHZWWFVycjYrcGEKVUFCMUFIb3lqRlRZdHkyMklPbzQ0RkllNllRV2NESVRoVTA3MGl2Qk9sZWpVdXRTQUFBQmdMSmVvYmdBQUFRRApBRVl3UkFJZ085czRoV1U5cTZTZXBKZ0d5L21CN2xjejBqUmFBVVRtcmdocnhYYXgvZkFDSUJzSnNHeDJkaTExCnV6SEhxbUNUMXpBNUdkem9QTnlQbGxTK3hqWEl5WEpuQUhZQTZEN1EyajcxQmpVeTUxY292SWxyeVFQVHk5RVIKYSt6cmFlRjNmVzBHdlc0QUFBR0FzbDZoY2dBQUJBTUFSekJGQWlCb1FwT1BvUjVuWEpDMW95VjJseDRqK2hCagpxSnRjVW5sRll6d1lOSklDS0FJaEFMdDVTUjlXNGpKbitlNjhINEl4eU9ab1Evd2RlZEVaNVNUYUpzUHA3dDdKCk1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lRRGNwQ0RqZjdwSEN4ekxNNW5XclpqQzMxS1MzanB5eVFreXNnbFEKZng0cG9BSWdKZE5qR2hsYkZqaHRWTFRCK1cyNkFNRVMveUMxSFZjeTh6STY4RWwzREdnPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t
+    key: ""
+
+## @section Database parameters
+db:
+  connection:
+    ## @param db.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `db.image` when internal is in use
+    ##
+    type: internal
+    ## @param db.connection.driver Database driver
+    ##
+    driver: postgresql
+    ## @param db.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `db.type` is external, ignored if internal
+    ##
+    host: database.example.com
+    ## @param db.connection.port Database host port
+    ## Port in number
+    ##
+    port: 5432
+    ## @param db.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+    ## @param db.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+    ## @extra db.connection.options Database connection options
+    ## @param db.connection.options.disableSSL Disable SSL connection
+    ##
+    options:
+      disableSSL: true
+  ## @param db.internal.enabled Enable internal database
+  ##
+  internal:
+    enabled: true
+
+  ## @section Helper parameters
+  ## @descriptionStart
+  ## Control the DB Helper behaviors.
+  ## @descriptionEnd
+  ##
+
+  ## @param db.helpers.init.dbs.enabled Enable dbs init feature
+  ##
+  helpers:
+    init:
+      dbs:
+        enabled: true
+        ## @skip db.helpers.init.dbs.forceProvision
+        ## Force provision the DB
+        ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+        ##
+        forceProvision: false
+
+## @section Internal PostgreSQL database provisioning parameters
+## @descriptionStart
+## Leave as default if using external DB
+## @descriptionEnd
+##
+postgresql:
+  ## @param postgresql.enabled Enable internal database
+  ##
+  enabled: true
+  ## @skip postgresql.fullnameOverride
+  fullnameOverride: db # remapping chart bitnami/postgresql -> db
+  ## Internal database image
+  ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
+  ## @param postgresql.image.repository Internal database image repository
+  ## @param postgresql.image.tag Internal database image tag (immutable tags are recommended)
+  ## @param postgresql.image.pullPolicy Internal database image pull policy
+  ## @param postgresql.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/postgresql
+    tag: v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param postgresql.auth.enabled Enable postgresql auth secret generate
+  ## @param postgresql.auth.username Internal database initial user
+  ## @param postgresql.auth.password Internal database initial password
+  ## @param postgresql.auth.postgresPassword Internal database initial postgres admin password
+  ##
+  auth:
+    ## @skip postgresql.auth.existingSecret
+    ## Name of the generated/existed db secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+    ##
+    existingSecret: "agh-db-secret"
+    enabled: true
+    username: argushack
+    password: ""
+    postgresPassword: ""
+
+  ## @param postgresql.primary.extendedConfiguration Extended configuration for the primary node
+  ## @param postgresql.primary.initdb.enabled Enable initdb scripts generation
+  ## @param postgresql.primary.initdb.scriptsConfigMap Name of ConfigMap containing db-init scripts
+  ## @param postgresql.primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
+  ## @param postgresql.primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
+  ##
+  primary:
+    extendedConfiguration: |
+      max_connections = 32768
+      shared_buffers = 4GB
+    initdb:
+      enabled: true
+      scriptsConfigMap: "db-init-scripts"
+      user: argushack
+      password: ""
+
+## @section Minio parameters
+##
+minio:
+  connection:
+    ## @param minio.connection.type Choose to use external DB or internal DB
+    ## internal` or `external` in string
+    ## Set `minio.image` when internal is in use
+    ##
+    type: internal
+    ## @param minio.connection.host Database host address
+    ## IP or FQDN in string
+    ## Required if `minio.type` is external, ignored if internal
+    ##
+    host: database.example.com
+    ## @param minio.connection.port Database host port
+    ## Port in number
+    ##
+    port: 9000
+    ## @param minio.connection.user Database user
+    ## DB User in string
+    ##
+    user: argushack
+    ## @param minio.connection.password Database password
+    ## DB Password in string
+    ##
+    password: ""
+  ## @param minio.secret.enabled Enable minio secret generation
+  ## @param minio.secret.secretName Name of the generated secret
+  ##
+  secret:
+    enabled: true
+    secretName: minio-secret
+  ## @section Internal minio provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using external DB
+  ## @descriptionEnd
+  ##
+  internal:
+    ## @param minio.internal.enabled Enable internal minio
+    ##
+    enabled: true
+  ## @skip minio.fullnameOverride
+  ##
+  fullnameOverride: minio # remapping chart bitnami/minio -> minio
+  ## MinIO image
+  ## @param minio.image.repository Internal MinIO image repository
+  ## @param minio.image.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.image.pullPolicy Internal MinIO image pull policy
+  ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: docker/bitnami/minio
+    tag: 2023.3.24
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+
+  # MinIO Client image
+  ## @param minio.clientImage.repository Internal MinIO image repository
+  ## @param minio.clientImage.tag Internal MinIO image tag (immutable tags are recommended)
+  ## @param minio.clientImage.pullPolicy Internal MinIO image pull policy
+  ## @param minio.clientImage.pullSecrets Specify docker-registry secret names as an array
+  ##
+  clientImage:
+    repository: docker/bitnami/minio-client
+    tag: 2023.4.12
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param minio.auth.rootUser Internal database root user
+  ## @param minio.auth.rootPassword Internal database root password
+  ##
+  auth:
+    rootUser: argushack
+    rootPassword: ""
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  provisioning:
+    enabled: true
+    generateUser: true
+    ## @skip minio.provisioning.policies
+    ## @skip minio.provisioning.usersExistingSecrets
+    ##
+    policies:
+      - name: agh-controller-policy
+        statements:
+          - effect: "Allow"
+            resources:
+              - "arn:aws:s3:::*"
+            actions:
+              - "s3:GetBucketLocation"
+              - "s3:ListBucket"
+              - "s3:GetObject"
+    usersExistingSecrets:
+      - agh-minio-users-secret
+
+## @section RabbitMQ parameters
+##
+rabbitmq:
+  connection:
+    ## @param rabbitmq.connection.type Choose to use external RabbitMQ or internal RabbitMQ
+    ## internal` or `external` in string
+    ## Set `rabbitmq.image` when internal is in use
+    ##
+    type: internal
+    ## @param rabbitmq.connection.protocol RabbitMQ protocol
+    ##
+    protocol: amqp
+    ## @param rabbitmq.connection.host RabbitMQ host address
+    ## IP or FQDN in string
+    ## Required if `rabbitmq.type` is external, ignored if internal
+    ##
+    host: mq.example.com
+    ## @param rabbitmq.connection.port RabbitMQ host port
+    ## Port in number
+    ##
+    port: 5672
+    ## @param rabbitmq.connection.user RabbitMQ user
+    ## RabbitMQ User in string
+    ##
+    user: argushack
+    ## @param rabbitmq.connection.password RabbitMQ password
+    ## RabbitMQ Password in string
+    ##
+    password: ""
+  ## @param rabbitmq.secret.enabled Enable rabbitmq secret generation
+  ## @param rabbitmq.secret.secretName Name of the generated secret
+  ##
+  secret:
+    enabled: true
+    secretName: agh-rabbitmq-secret
+  ## @section Internal RabbitMQ provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using external RabbitMQ
+  ## @descriptionEnd
+  ##
+  internal:
+    ## @param rabbitmq.internal.enabled Enable internal rabbitmq
+    ##
+    enabled: true
+  ## @skip rabbitmq.fullnameOverride
+  ##
+  fullnameOverride: rabbitmq # remapping chart bitnami/rabbitmq -> rabbitmq
+  ## RabbitMQ image
+  ## @param rabbitmq.image.repository Internal RabbitMQ image repository
+  ## @param rabbitmq.image.tag Internal RabbitMQ image tag (immutable tags are recommended)
+  ## @param rabbitmq.image.pullPolicy Internal RabbitMQ image pull policy
+  ## @param rabbitmq.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: docker/bitnami/rabbitmq
+    tag: 3.12.13-debian-12-r2
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+
+  ## @param minio.auth.rootUser Internal database root user
+  ## @param minio.auth.rootPassword Internal database root password
+  ##
+  auth:
+    ## @skip rabbitmq.auth.existingPasswordSecret
+    ## @skip rabbitmq.auth.existingSecretPasswordKey
+    ## @skip rabbitmq.auth.securePassword
+    ## @skip rabbitmq.auth.username
+    ## Name of the generated/existed rabbitmq secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+    ##
+    existingPasswordSecret: "agh-rabbitmq-secret"
+    existingSecretPasswordKey: "password"
+    securePassword: false
+    username: argushack
+  ## @section Helper parameters
+  ## @descriptionStart
+  ## Control the DB Helper behaviors.
+  ## @descriptionEnd
+  ##
+  helpers:
+    test:
+      ## RabbitMQ Connection Test image
+      ## @param rabbitmq.helpers.test.image.repository RabbitMQ Connection Test image repository
+      ## @param rabbitmq.helpers.test.image.tag RabbitMQ Connection Test image tag (immutable tags are recommended)
+      ## @param rabbitmq.helpers.test.image.pullPolicy RabbitMQ Connection Test image pull policy
+      ## @param rabbitmq.helpers.test.image.pullSecrets Specify docker-registry secret names as an array
+      ##
+      image:
+        repository: docker/curlimages/curl
+        tag: 7.78.0
+        pullPolicy: IfNotPresent
+        pullSecrets: []
+
+## @section AGH3-Captain parameters
+## @descriptionStart
+## Captain module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-Captain
+## @descriptionEnd
+##
+captain:
+  ## @param captain.enabled Enable Captain module
+  ##
+  enabled: true
+  ## @param captain.image.repository Captain image repository
+  ## @param captain.image.tag Captain image tag (immutable tags are recommended)
+  ## @param captain.image.pullPolicy Captain image pull policy
+  ## @param captain.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/ctr-captain
+    tag: v1.1.3-test.8
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param captain.secret.enabled Enable secret generate for Captain
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `captain.secret.name` if set to false
+    ## @param captain.secret.db.enabled Enable secret generate for Captain database
+    ## @param captain.secret.db.name Database name
+    ## @param captain.secret.db.user Database user
+    ## @param captain.secret.db.password Database password
+    ##
+    db:
+      ## @skip captain.secret.db.secretName
+      ## Secret name for Captain DB
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
+      secretName: capt-db-secret
+      enabled: true
+      name: captain-db
+      user: "agh-captain"
+      password: ""
+    ## @param captain.secret.minio.enabled Enable secret generate for Minio
+    ## @param captain.secret.minio.secretName Secret name for Minio
+    ## @param captain.secret.minio.user Minio user
+    ## @param captain.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: capt-minio-secret
+      user: "capt-minio-user"
+      password: ""
+    ## @param captain.secret.jwt.enabled Enable secret generate for JWT
+    ## @param captain.secret.jwt.secretName Secret name for JWT
+    ## @param captain.secret.jwt.secret JWT secret
+    ##
+    jwt:
+      enabled: true
+      secretName: capt-jwt-secret
+      secret: ""
+    ## @param captain.secret.superadmin.enabled Enable secret generate for Super Admin
+    ## @param captain.secret.superadmin.secretName Secret name for Super Admin
+    ## @param captain.secret.superadmin.password Super Admin password
+    ##
+    superadmin:
+      enabled: true
+      secretName: capt-superadmin-password
+      password: ""
+  ## @param captain.extraEnv Captain additional environment variables
+  ##
+  extraEnv: {}
+
+## @section AGH3-Controller parameters
+## @descriptionStart
+## Controller module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-Controller
+## @descriptionEnd
+##
+controller:
+  ## @param controller.enabled Enable Controller module
+  ##
+  enabled: true
+  ## @param controller.image.repository Controller image repository
+  ## @param controller.image.tag Controller image tag (immutable tags are recommended)
+  ## @param controller.image.pullPolicy Controller image pull policy
+  ## @param controller.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/ctr-controller
+    tag: v0.3.3
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param controller.secret.enabled Enable secret generate for Controller
+  ##
+  secret:
+    enabled: true # Manually create secrets named as the value of `controller.secret.name` if set to false
+    ## @param controller.secret.minio.enabled Enable secret generate for Minio
+    ## @param controller.secret.minio.secretName Secret name for Minio
+    ## @param controller.secret.minio.user Minio user
+    ## @param controller.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: executor-minio-secret
+      user: "executor-minio-user"
+      password: ""
+  ## @extra controller.env Controller environment variables
+  ## @param controller.env.REGISTRY_URL Controller registry URL
+  ##
+  env:
+    REGISTRY_URL: "registry.lkc-lab.com"
+  ## @param controller.extraEnv Controller additional environment variables
+  ##
+  extraEnv: {}
+
+## @section AGH3-UI parameters
+## @descriptionStart
+## UI module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-UI
+## @descriptionEnd
+##
+ui:
+  ## @param ui.enabled Enable UI module
+  ##
+  enabled: true
+  ## @param ui.image.repository UI image repository
+  ## @param ui.image.tag UI image tag (immutable tags are recommended)
+  ## @param ui.image.pullPolicy UI image pull policy
+  ## @param ui.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/ctr-ui
+    tag: v0.1.0-beta.6
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param ui.extraEnv UI additional environment variables
+  ##
+  extraEnv: {}
+
+## @section AGH3-Report parameters
+## @descriptionStart
+## Report module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-Report
+## @descriptionEnd
+##
+report:
+  ## @param report.enabled Enable Report module
+  ##
+  enabled: true
+  ## @param report.image.repository Report image repository
+  ## @param report.image.tag Report image tag (immutable tags are recommended)
+  ## @param report.image.pullPolicy Report image pull policy
+  ## @param report.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/report
+    tag: v1.0.0-beta.4
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param ui.extraEnv UI additional environment variables
+  ##
+  extraEnv: {}
