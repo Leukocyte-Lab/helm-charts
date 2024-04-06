@@ -1,0 +1,45 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: agh-ingressroute
+spec:
+  routes:
+    {{- if .Values.ui.enabled }}
+    - kind: Rule
+      match: {{ empty .Values.ingress.host | ternary "PathPrefix(`/`)" (print "Host(`" (.Values.ingress.host) "`)") }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: ui
+          port: 80
+    {{- end }}
+    {{- if .Values.captain.enabled }}
+    - kind: Rule
+      match: {{ printf "%s%s" "PathPrefix(`/api`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      services:
+        - kind: Service
+          name: captain
+          port: 8080
+    {{- end }}
+    {{- if .Values.ui.enabled }}
+    - kind: Rule
+      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: ui
+          port: 80
+    {{- end }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+{{- end }}
