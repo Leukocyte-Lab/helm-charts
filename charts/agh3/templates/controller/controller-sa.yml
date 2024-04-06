@@ -1,0 +1,8 @@
+{{- if .Values.controller.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: controller-sa
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+{{- end }}

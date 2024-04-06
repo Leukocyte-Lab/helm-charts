@@ -1,0 +1,86 @@
+{{- if .Values.controller.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: controller
+  template:
+    metadata:
+      labels:
+        app: controller
+    spec:
+      {{- include "controller.imagePullSecrets" . | nindent 6 }}
+      initContainers:
+        - name: controller-init-rabbitmq
+          image: {{ include "rabbitmq-test-client.image" . }}
+          env:
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: manager-uri
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: password
+            - name: RABBITMQ_API_ENDPOINT
+              value: "$(RABBITMQ_URI)/api/health/checks/virtual-hosts"
+          command:
+            [
+              "sh",
+              "-c",
+              "until curl -f --user $RABBITMQ_USERNAME:$RABBITMQ_PASSWORD $RABBITMQ_API_ENDPOINT ; do echo waiting for rabbitmq; sleep 1; done",
+            ]
+      containers:
+        - name: controller
+          image: {{ include "controller.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.minio.secret.secretName }}
+                  key: url
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.controller.secret.minio.secretName }}
+                  key: executor-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.controller.secret.minio.secretName }}
+                  key: executor-minio-password
+            - name: RABBITMQ_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}-connection
+                  key: "RABBITMQ_CONN_STR"
+            - name: REGISTRY_URL
+              value: {{ required "at least one of controller.env.REGISTRY_URL or global.imageRegistry is required" (coalesce .Values.controller.env.REGISTRY_URL .Values.global.imageRegistry) }}
+            {{- if .Values.controller.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.controller.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+          imagePullPolicy: {{ .Values.controller.image.pullPolicy }}
+      restartPolicy: Always
+      automountServiceAccountToken: true
+      serviceAccountName: controller-sa
+{{- end }}
