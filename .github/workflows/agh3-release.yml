@@ -41,7 +41,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update version tags for Apps
+      - name: 🖍️ Update version tags for Apps
         uses: mikefarah/yq@v4.43.1
         with:
           cmd: |
@@ -54,7 +54,7 @@ jobs:
               yq '.' > charts/agh3/values.yaml
             rm charts/agh3/values.yaml.tmp
 
-      - name: Install Tools for parsing semver
+      - name: 📦 Install Tools for parsing semver
         run: |
           sudo apt update
           sudo apt install gettext-base
@@ -62,42 +62,43 @@ jobs:
           sudo chmod +x /usr/local/bin/semver
           semver --version
 
-      - name: Update Chart versions
+      - name: 🔎 Get Chart versions
+        run: |
+          export APP_VERSION="$(yq '.appVersion' charts/agh3/Chart.yaml | xargs semver bump patch)"
+          export CHART_VERSION="$(yq '.version' charts/agh3/Chart.yaml | xargs semver bump patch)"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
+
+      - name: 🖍️ Update Chart versions
         uses: mikefarah/yq@v4.43.1
         with:
           cmd: |
             cp charts/agh3/Chart.yaml charts/agh3/Chart.yaml.tmp
-            export APP_VERSION="$(yq '.appVersion' charts/agh3/Chart.yaml | xargs semver bump patch)"
-            export CHART_VERSION="$(yq '.version' charts/agh3/Chart.yaml | xargs semver bump patch)"
-            echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
-            echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
-
             cat charts/agh3/Chart.yaml.tmp | \
-              yq ".version = \"$CHART_VERSION\"" | \
-              yq ".appVersion = \"v$APP_VERSION\"" | \
+              yq '.version = "${{ env.CHART_VERSION }}"' | \
+              yq '.appVersion = "v${{ env.APP_VERSION }}"' | \
               yq '.' > charts/agh3/Chart.yaml
             rm charts/agh3/Chart.yaml.tmp
-      
+
       - name: 🙌 Create PR
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GH_TOKEN }}
-          base: release
-          branch: build/release-chart-agh3-${{ github.env.CHART_VERSION }}
+          branch: build/release-chart-agh3-${{ env.CHART_VERSION }}
           commit-message: |
-            build: Release chart/agh3 ${{ github.env.CHART_VERSION }}
+            build: Release chart/agh3 ${{ env.CHART_VERSION }}
 
-            - Chart Version: ${{ github.env.CHART_VERSION }}
-            - App Version: ${{ github.env.APP_VERSION }}
-              - Captain: ${{ steps.captain.outputs.tag }}
-              - Controller: ${{ steps.controller.outputs.tag }}
-              - UI: ${{ steps.ui.outputs.tag }}
-              - Report: ${{ steps.report.outputs.tag }}
-          title: "build: Release chart/agh3 ${{ github.env.CHART_VERSION }}"
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Captain: `${{ steps.captain.outputs.tag }}`
+              - Controller: `${{ steps.controller.outputs.tag }}`
+              - UI: `${{ steps.ui.outputs.tag }}`
+              - Report: `${{ steps.report.outputs.tag }}`
+          title: "build: Release chart/agh3 `v${{ env.CHART_VERSION }}`"
           body: |
-            - Chart Version: ${{ github.env.CHART_VERSION }}
-            - App Version: ${{ github.env.APP_VERSION }}
-              - Captain: ${{ steps.captain.outputs.tag }}
-              - Controller: ${{ steps.controller.outputs.tag }}
-              - UI: ${{ steps.ui.outputs.tag }}
-              - Report: ${{ steps.report.outputs.tag }}
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Captain: `${{ steps.captain.outputs.tag }}`
+              - Controller: `${{ steps.controller.outputs.tag }}`
+              - UI: `${{ steps.ui.outputs.tag }}`
+              - Report: `${{ steps.report.outputs.tag }}`
