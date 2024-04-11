@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - charts/agh2
+      - charts/agh2/**
 
 jobs:
   release:

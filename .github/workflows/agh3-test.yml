@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - charts/agh3
+      - charts/agh3/**
 
 jobs:
   test:
