@@ -1,4 +1,4 @@
-name: AGH2/AutoMerge
+name: ⚙️ [AGH2] Auto Merge
 
 on:
   pull_request:
