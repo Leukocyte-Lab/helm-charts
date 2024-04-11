@@ -3,7 +3,7 @@ name: ⚙️ [AGH3] Auto Release Chart
 on:
   push:
     branches:
-      - release
+      - main
     paths:
       - charts/agh3/**
 
