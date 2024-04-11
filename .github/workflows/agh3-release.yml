@@ -1,0 +1,103 @@
+name: 🔧 [AGH3] Fetch & Create Chart for Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏷️ Get latest Captain tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: captain
+        with:
+          repository: Leukocyte-Lab/AGH3-Captain
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+      - name: 🏷️ Get latest Controller tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: controller
+        with:
+          repository: Leukocyte-Lab/AGH3-Controller
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+      - name: 🏷️ Get latest UI tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: ui
+        with:
+          repository: Leukocyte-Lab/AGH3-CTR-UI
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+          regex: '^v\d+\.\d+\.\d+$'
+      - name: 🏷️ Get latest Report tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: report
+        with:
+          repository: Leukocyte-Lab/AGH3-Report
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update version tags for Apps
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/agh3/values.yaml charts/agh3/values.yaml.tmp
+            cat charts/agh3/values.yaml.tmp | \
+              yq '.captain.image.tag = "${{ steps.captain.outputs.tag }}"' | \
+              yq '.controller.image.tag = "${{ steps.controller.outputs.tag }}"' | \
+              yq '.ui.image.tag = "${{ steps.ui.outputs.tag }}"' | \
+              yq '.report.image.tag = "${{ steps.report.outputs.tag }}"' | \
+              yq '.' > charts/agh3/values.yaml
+            rm charts/agh3/values.yaml.tmp
+
+      - name: Install Tools for parsing semver
+        run: |
+          sudo apt update
+          sudo apt install gettext-base
+          sudo wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          sudo chmod +x /usr/local/bin/semver
+          semver --version
+
+      - name: Update Chart versions
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/agh3/Chart.yaml charts/agh3/Chart.yaml.tmp
+            export APP_VERSION="$(yq '.appVersion' charts/agh3/Chart.yaml | xargs semver bump patch)"
+            export CHART_VERSION="$(yq '.version' charts/agh3/Chart.yaml | xargs semver bump patch)"
+            echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+            echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
+
+            cat charts/agh3/Chart.yaml.tmp | \
+              yq ".version = \"$CHART_VERSION\"" | \
+              yq ".appVersion = \"v$APP_VERSION\"" | \
+              yq '.' > charts/agh3/Chart.yaml
+            rm charts/agh3/Chart.yaml.tmp
+      
+      - name: 🙌 Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          base: release
+          branch: build/release-chart-agh3-${{ github.env.CHART_VERSION }}
+          commit-message: |
+            build: Release chart/agh3 ${{ github.env.CHART_VERSION }}
+
+            - Chart Version: ${{ github.env.CHART_VERSION }}
+            - App Version: ${{ github.env.APP_VERSION }}
+              - Captain: ${{ steps.captain.outputs.tag }}
+              - Controller: ${{ steps.controller.outputs.tag }}
+              - UI: ${{ steps.ui.outputs.tag }}
+              - Report: ${{ steps.report.outputs.tag }}
+          title: "build: Release chart/agh3 ${{ github.env.CHART_VERSION }}"
+          body: |
+            - Chart Version: ${{ github.env.CHART_VERSION }}
+            - App Version: ${{ github.env.APP_VERSION }}
+              - Captain: ${{ steps.captain.outputs.tag }}
+              - Controller: ${{ steps.controller.outputs.tag }}
+              - UI: ${{ steps.ui.outputs.tag }}
+              - Report: ${{ steps.report.outputs.tag }}
