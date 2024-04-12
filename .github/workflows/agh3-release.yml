@@ -2,6 +2,24 @@ name: 🔧 [AGH3] Fetch & Create Chart for Release
 
 on:
   workflow_dispatch:
+    inputs:
+      chart_version_increment:
+        description: "Chart Version Increment (Semver)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+      app_version_increment:
+        description: "App Version Increment (Semver or Use Existing)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+          - "use-existing"
 
 jobs:
   release:
@@ -64,8 +82,8 @@ jobs:
 
       - name: 🔎 Get Chart versions
         run: |
-          export APP_VERSION="$(yq '.appVersion' charts/agh3/Chart.yaml | xargs semver bump patch)"
-          export CHART_VERSION="$(yq '.version' charts/agh3/Chart.yaml | xargs semver bump patch)"
+          export APP_VERSION="$(yq '.appVersion' charts/agh3/Chart.yaml | ${{ inputs.app_version_increment == 'use-existing' && 'sed "s/^v//g"' || format('xargs semver bump {0}', inputs.app_version_increment) }})"
+          export CHART_VERSION="$(yq '.version' charts/agh3/Chart.yaml | xargs semver bump ${{ inputs.chart_version_increment }})"
           echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
           echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
 
