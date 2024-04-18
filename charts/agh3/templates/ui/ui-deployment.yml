@@ -22,5 +22,9 @@ spec:
             - name: web
               containerPort: 80
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+          env:
+            {{- if .Values.ui.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.ui.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
       restartPolicy: Always
 {{- end }}

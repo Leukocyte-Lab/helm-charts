@@ -27,6 +27,9 @@ spec:
             - name: API_ENDPOINT
               value: "captain.$(NAMESPACE).svc.cluster.local:8080"
             {{- end }}
+            {{- if .Values.report.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.report.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
           ports:
             - name: web
               containerPort: 80
