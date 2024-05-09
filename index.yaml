@@ -1242,6 +1242,32 @@ entries:
     version: 0.4.6
   agh3:
   - apiVersion: v2
+    appVersion: v3.1.7
+    created: "2024-05-09T13:25:34.090351474Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.4
+    - condition: rabbitmq.internal.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    description: A Helm chart for ArgusHack3
+    digest: 85e63208cf447eaf094231bd5dfd2d208489aa8f8cce17a4c815025e189845eb
+    name: agh3
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-3.2.7/agh3-3.2.7.tgz
+    version: 3.2.7
+  - apiVersion: v2
     appVersion: v3.1.6
     created: "2024-04-27T04:25:53.596021134Z"
     dependencies:
@@ -1735,4 +1761,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-3.0.1/agh3-3.0.1.tgz
     version: 3.0.1
-generated: "2024-04-27T04:25:53.596237128Z"
+generated: "2024-05-09T13:25:34.090636475Z"
