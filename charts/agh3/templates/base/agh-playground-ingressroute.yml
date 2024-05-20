@@ -1,0 +1,35 @@
+{{- if and .Values.ingress.enabled .Values.playground.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: agh-playground-ingressroute
+spec:
+  routes:
+    {{- if .Values.playground.enabled }}
+    - kind: Rule
+      match: PathPrefix(`/`) && Host(`agh3-playground.rdt.lkc-lab.com`)
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: playground
+          port: 80
+    - kind: Rule
+      match: (PathPrefix(`/api/static`) || PathPrefix(`/api/template`)) && Host(`agh3-playground.rdt.lkc-lab.com`)
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: playground
+          port: 80
+    {{- end }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+{{- end }}
