@@ -1,0 +1,83 @@
+{{- $errorMsg := "" -}}
+
+{{- if .Values.customRegistrySecret.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "customRegistrySecret.auth"
+            "fields" (list "registry" "username" "password")
+            "msg" "Must provide when customRegistrySecret.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if .Values.ingress.tls.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "ingress.tls"
+            "fields" (list "cert" "key")
+            "msg" "Must provide when ingress.tls.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
+{{- if and .Values.playground.enabled -}}
+  {{- if eq (print .Values.playground.service.backendRef.kind) "ExternalService" -}}
+    {{- $errorMsg = printf "%s\n%s"
+        $errorMsg
+        (
+          include "validations.required" (
+            dict
+              "path" "playground.service.backendRef"
+              "fields" (list "endpoint")
+              "msg" "Must provide when playground.service.backendRef.kind is ExternalService"
+              "context" $
+          )
+        )
+    -}}
+    {{- if .Values.playground.service.backendRef.endpoint | hasPrefix "/" -}}
+      {{- $errorMsg = printf "%s\n%s"
+          $errorMsg
+          "playground.service.backendRef.endpoint must be full URL when playground.service.backendRef.kind is ExternalService"
+      -}}
+    {{- end -}}
+  {{- else if eq (print .Values.playground.service.backendRef.kind) "Service" -}}
+    {{- $errorMsg = printf "%s\n%s"
+        $errorMsg
+        (
+          include "validations.required" (
+            dict
+              "path" "playground.service.backendRef"
+              "fields" (list "name" "port" "protocol")
+              "msg" "Must provide when playground.service.backendRef.kind is Service"
+              "context" $
+          )
+        )
+    -}}
+    {{- if and .Values.playground.service.backendRef.endpoint (not (.Values.playground.service.backendRef.endpoint | hasPrefix "/")) -}}
+      {{- $errorMsg = printf "%s\n%s"
+          $errorMsg
+          "playground.service.backendRef.endpoint must be empty or just path when playground.service.backendRef.kind is Service"
+      -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $errorMsg = printf "%s\n%s"
+        $errorMsg
+        (printf "Invalid value for playground.service.backendRef.kind (available options: Service, ExternalService), got: %v" .Values.playground.service.backendRef.kind)
+    -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $errorMsg = (trimAll "\n" $errorMsg) -}}
+{{- if not (empty $errorMsg) -}}
+  {{- fail (print "\n\nValidation Failed:\n" $errorMsg) -}}
+{{- end -}}

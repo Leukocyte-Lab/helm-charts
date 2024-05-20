@@ -1,0 +1,36 @@
+{{- if and .Values.playground.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playground
+  labels:
+    {{- include "AGH3-Playground.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: playground
+  template:
+    metadata:
+      labels:
+        app: playground
+    spec:
+      {{- include "playground.imagePullSecrets" . | nindent 6 }}
+      containers:
+        - name: playground
+          image: {{ include "playground.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: API_ENDPOINT
+              value: {{ include "playground.apiEndpoint" . }}
+            {{- if .Values.playground.extraEnv }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.playground.extraEnv "context" $) | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: web
+              containerPort: 80
+          imagePullPolicy: {{ .Values.playground.image.pullPolicy }}
+      restartPolicy: Always
+{{- end }}

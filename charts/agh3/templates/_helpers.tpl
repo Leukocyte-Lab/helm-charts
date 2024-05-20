@@ -237,3 +237,17 @@ Return the proper Docker Image Registry Secret Names
 {{- define "report.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.report.image) "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Return the proper UI image name
+*/}}
+{{- define "playground.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.playground.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "playground.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.playground.image) "global" .Values.global) }}
+{{- end -}}
