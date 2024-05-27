@@ -18,13 +18,10 @@ spec:
       labels:
         {{- include "postfix.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "imagePullSecrets" . | nindent 6 }}
       containers:
         - name: postfix
-          image: leukocyte-lab/argushack3/postfix:latest
+          image: {{ include "image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: smtp
@@ -34,12 +31,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: mydomain
-              value: {{ .Values.mydomain }}
+              value: {{ .Values.mydomian }}
             - name: mail_myhostname
               value: {{ .Values.mail_myhostname }}
         - name: dkim
-          image: leukocyte-lab/argushack3/opendkim:latest
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ include "dkim.image" . }}
+          imagePullPolicy: {{ .Values.dkim.image.pullPolicy }}
           volumeMounts:
             - name: domainkey
               readOnly: true
