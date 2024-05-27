@@ -75,6 +75,12 @@ spec:
             - name: REPORT_URL
               value: "http://report.$(NAMESPACE).svc.cluster.local:80"
             {{- end }}
+            {{- if .Values.postfix.enabled }}
+            - name: SMTP_HOST
+              value: "postfix.$(NAMESPACE).svc.cluster.local"
+            - name: SMTP_PORT
+              value: {{ .Values.postfix.service.port | quote }}
+            {{- end }}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:

@@ -129,6 +129,56 @@ db:
         ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
         ##
         forceProvision: false
+## @section Internal Postfix provisioning parameters
+## @descriptionStart
+## Leave as default if using external Postfix Server
+## @descriptionEnd
+##
+postfix:
+  ## @param postfix.enabled Enable internal postfix
+  ##
+  enabled: true
+  ## @skip postfix.fullnameOverride
+  fullnameOverride: postfix # remapping chart agh/postfix -> postfix
+  ## Internal postfix image
+  ## ref: https://github.com/Leukocyte-Lab/helm-charts/tree/main/charts/postfix
+  ## @param postfix.image.repository Internal postfix image repository
+  ## @param postfix.image.tag Internal postfix image tag (immutable tags are recommended)
+  ## @param postfix.image.pullPolicy Internal postfix image pull policy
+  ## @param postfix.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/postfix
+    tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @section Postfix service provisioning parameters
+  ## @descriptionStart
+  ## Leave as default if using internal Postfix
+  ## @descriptionEnd
+  ##
+  ## @param postfix.service.type Postfix service type
+  ## @param postfix.service.port Postfix service port
+  ##
+  service:
+    type: ClusterIP
+    port: 25
+  ## @param postfix.dkim.image.repository Internal DKIM image repository
+  ## @param postfix.dkim.image.tag Internal DKIM image tag (immutable tags are recommended)
+  ## @param postfix.dkim.image.pullPolicy Internal DKIM image pull policy
+  ##
+  dkim:
+    image:
+      repository: leukocyte-lab/argushack3/opendkim
+      tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+      pullPolicy: IfNotPresent
+  ## @param postfix.mydomian Postfix mydomain
+  ## @param postfix.mail_myhostname Postfix mail_myhostname
+  ## @param postfix.domain Postfix domain
+  ##
+  mydomian: bas.com
+  mail_myhostname: mail.bas.com
+  domain: bas.com
 ## @section Internal PostgreSQL database provisioning parameters
 ## @descriptionStart
 ## Leave as default if using external DB
