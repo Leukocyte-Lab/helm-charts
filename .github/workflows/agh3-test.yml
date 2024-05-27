@@ -29,6 +29,7 @@ jobs:
       - name: 📦 Add Helm dependency repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add lkclab https://charts.lkc-lab.com
           helm repo update
 
       - name: 🧪 Run chart-linting
