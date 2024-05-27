@@ -1842,6 +1842,20 @@ entries:
   postfix:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-05-27T11:27:12.932336024Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    description: Postifx server
+    digest: 80652df2c7f78bfc61c70209d18be89546c6ac9d180b94dd9134b2362233673e
+    name: postfix
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.1/postfix-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-05-27T09:58:44.933298587Z"
     dependencies:
     - name: common
@@ -1854,4 +1868,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-27T09:58:44.933489182Z"
+generated: "2024-05-27T11:27:12.932639332Z"
