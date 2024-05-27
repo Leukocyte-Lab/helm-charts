@@ -1839,4 +1839,19 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-3.0.1/agh3-3.0.1.tgz
     version: 3.0.1
-generated: "2024-05-27T09:47:42.632115042Z"
+  postfix:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-27T09:58:44.933298587Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    description: Postifx server
+    digest: 744ff16038bec43cfea99c4472185965796e1aa52879fcfe3ebbb24fe46e646d
+    name: postfix
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-27T09:58:44.933489182Z"
