@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "postfix.fullname" . }}
+  labels:
+    {{- include "postfix.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "postfix.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "postfix.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- include "imagePullSecrets" . | nindent 6 }}
+      containers:
+        - name: postfix
+          image: {{ include "image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: smtp
+              containerPort: 25
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: mydomain
+              value: {{ .Values.mydomian }}
+            - name: mail_myhostname
+              value: {{ .Values.mail_myhostname }}
+        - name: dkim
+          image: {{ include "dkim.image" . }}
+          imagePullPolicy: {{ .Values.dkim.image.pullPolicy }}
+          volumeMounts:
+            - name: domainkey
+              readOnly: true
+              mountPath: /etc/domainkey
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: domain
+              value: {{ .Values.domain }}
+      volumes:
+        - name: domainkey
+          secret:
+            secretName: rsa-private-key
