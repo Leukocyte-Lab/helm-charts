@@ -37,16 +37,37 @@ spec:
         - name: dkim
           image: {{ include "dkim.image" . }}
           imagePullPolicy: {{ .Values.dkim.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p /etc/domainkey
+              cp /tmp/key.private /etc/domainkey
+              chown opendkim:opendkim /etc/domainkey/key.private
+              chmod 600 /etc/domainkey/key.private
+
+              erb domain="$domain" /opendkim.conf.erb > /etc/opendkim.conf
+              opendkim -f 
           volumeMounts:
+            - name: opendkim-config
+              mountPath: /opendkim.conf.erb
+              subPath: opendkim.conf.erb
             - name: domainkey
-              readOnly: true
-              mountPath: /etc/domainkey
+              readOnly: false
+              mountPath: /tmp/key.private
+              subPath: key.private
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: domain
               value: {{ .Values.domain }}
       volumes:
+        - name: opendkim-config
+          configMap:
+            name: opendkim-config
+            items:
+              - key: opendkim.conf.erb
+                path: opendkim.conf.erb
         - name: domainkey
           secret:
             secretName: rsa-private-key
