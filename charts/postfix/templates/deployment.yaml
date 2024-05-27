@@ -48,4 +48,5 @@ spec:
               value: {{ .Values.domain }}
       volumes:
         - name: domainkey
-          secretName: rsa-private-key
+          secret:
+            secretName: rsa-private-key
