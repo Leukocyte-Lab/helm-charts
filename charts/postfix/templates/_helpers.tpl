@@ -51,12 +51,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Return the proper Postfix image name
 */}}
-{{- define "postfix.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "postfix.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- define "image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the proper Postfix image name
+*/}}
+{{- define "dkim.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.dkim.image "global" .Values.global) }}
 {{- end }}
