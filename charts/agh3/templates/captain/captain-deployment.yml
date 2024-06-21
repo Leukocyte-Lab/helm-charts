@@ -125,4 +125,6 @@ spec:
               containerPort: 8080
           imagePullPolicy: {{ .Values.captain.image.pullPolicy }}
       restartPolicy: "Always"
+      automountServiceAccountToken: true
+      serviceAccountName: captain-sa
 {{- end }}
