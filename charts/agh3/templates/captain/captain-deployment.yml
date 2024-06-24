@@ -113,6 +113,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.rabbitmq.secret.secretName }}-connection
                   key: "RABBITMQ_CONN_STR"
+            - name: "APP_VERSION"
+              value: {{ .Chart.AppVersion | quote }}
             {{- if .Values.captain.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
             {{- end }}
