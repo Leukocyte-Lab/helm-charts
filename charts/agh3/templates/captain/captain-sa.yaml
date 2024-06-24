@@ -1,0 +1,8 @@
+{{- if .Values.captain.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: captain-sa
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+{{- end }}
