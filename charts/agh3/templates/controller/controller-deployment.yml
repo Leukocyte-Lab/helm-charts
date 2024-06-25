@@ -75,6 +75,14 @@ spec:
             {{- if .Values.controller.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.controller.extraEnv "context" $) | nindent 12 }}
             {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /mq_health_check
+              port: 9050
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               memory: "256Mi"

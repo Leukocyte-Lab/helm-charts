@@ -120,6 +120,14 @@ spec:
             {{- if .Values.captain.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
             {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               memory: "128Mi"
