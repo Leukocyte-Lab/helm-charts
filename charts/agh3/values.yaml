@@ -584,7 +584,7 @@ report:
   ##
   image:
     repository: leukocyte-lab/argushack3/report
-    tag: v1.0.5
+    tag: v1.0.6
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param report.extraEnv UI additional environment variables
