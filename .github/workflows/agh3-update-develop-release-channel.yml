@@ -1,0 +1,36 @@
+name: ⚙️ [AGH3] Auto Update Develop Release Channel
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - build/release-chart-agh3-**
+
+jobs:
+  trigger-develop-release-channel-update:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 👁️ Lookup Chart Version
+        id: chartVersion
+        uses: mikefarah/yq@v4
+        with:
+          cmd: yq '.version' charts/agh3/Chart.yaml
+      - name: 👁️ Lookup App Version
+        id: appVersion
+        uses: mikefarah/yq@v4
+        with:
+          cmd: yq '.appVersion' charts/agh3/Chart.yaml
+
+      - name: 📢 Invoke workflow to update Release Channel
+        run: |
+          echo '{"chart_version": "${{ steps.chartVersion.outputs.result }}", "app_veresion": "${{ steps.appVersion.outputs.result }}"}' | \
+            gh workflow run agh3-ctr-update-release.yaml -R Leukocyte-Lab/ArgusHack3 -r develop --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
