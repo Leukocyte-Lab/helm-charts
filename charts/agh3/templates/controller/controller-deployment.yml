@@ -90,5 +90,5 @@ spec:
           imagePullPolicy: {{ .Values.controller.image.pullPolicy }}
       restartPolicy: Always
       automountServiceAccountToken: true
-      serviceAccountName: controller-sa
+      serviceAccountName: {{ include "controller.serviceAccountName" . }}
 {{- end }}

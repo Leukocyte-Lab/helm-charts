@@ -158,5 +158,5 @@ spec:
           imagePullPolicy: {{ .Values.captain.image.pullPolicy }}
       restartPolicy: "Always"
       automountServiceAccountToken: true
-      serviceAccountName: captain-sa
+      serviceAccountName: {{ include "captain.serviceAccountName" . }}
 {{- end }}

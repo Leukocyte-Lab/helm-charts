@@ -12,17 +12,17 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "AGH3.fullname" -}}
-{{- if .Values.fullnameOverride }}
-  {{ .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-  {{ $name := default .Chart.Name .Values.nameOverride }}
-  {{- if contains $name .Release.Name }}
-    {{ .Release.Name | trunc 63 | trimSuffix "-" }}
-  {{- else }}
-    {{ printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-  {{- end }}
-{{- end }}
-{{- end }}
+{{- if .Values.fullnameOverride -}}
+  {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+  {{- $name := default .Chart.Name .Values.nameOverride -}}
+  {{- if contains $name .Release.Name -}}
+    {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+  {{- else -}}
+    {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
@@ -197,6 +197,17 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
+Return the name of the service account to use for the Captain
+*/}}
+{{- define "captain.serviceAccountName" -}}
+  {{- if .Values.captain.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.captain.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.captain.serviceAccount.name }}
+{{- end }}
+{{- end -}}
+
+{{/*
 Return the proper Core image name
 */}}
 {{- define "controller.image" -}}
@@ -208,6 +219,17 @@ Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "controller.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.controller.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the name of the service account to use for the Controller
+*/}}
+{{- define "controller.serviceAccountName" -}}
+  {{- if .Values.controller.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.controller.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.controller.serviceAccount.name }}
+  {{- end }}
 {{- end -}}
 
 {{/*

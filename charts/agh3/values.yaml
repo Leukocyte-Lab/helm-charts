@@ -513,6 +513,17 @@ captain:
       clientID: ""
       clientSecret: ""
       realm: ""
+  ## @param captain.serviceAccount.create Create serviceAccount for Captain
+  ## @param captain.serviceAccount.name Name of the serviceAccount for Captain
+  ##
+  serviceAccount:
+    create: true
+    name: captain-sa
+  ## @param captain.rbac.create Create RBAC for Captain
+  ##
+  rbac:
+    create: true
+
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
@@ -550,6 +561,16 @@ controller:
       secretName: executor-minio-secret
       user: "executor-minio-user"
       password: ""
+  ## @param controller.serviceAccount.create Create serviceAccount for Controller
+  ## @param controller.serviceAccount.name Name of the serviceAccount for Controller
+  ##
+  serviceAccount:
+    create: true
+    name: controller-sa
+  ## @param controller.rbac.create Create RBAC for Controller
+  ##
+  rbac:
+    create: true
   ## @extra controller.env Controller environment variables
   ## @param controller.env.REGISTRY_URL Controller registry URL
   ##
