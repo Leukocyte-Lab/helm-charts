@@ -197,6 +197,17 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
+Return the name of the service account to use for the Captain
+*/}}
+{{- define "captain.serviceAccountName" -}}
+  {{- if .Values.captain.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.captain.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.captain.serviceAccount.name }}
+{{- end }}
+{{- end -}}
+
+{{/*
 Return the proper Core image name
 */}}
 {{- define "controller.image" -}}
@@ -208,6 +219,17 @@ Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "controller.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.controller.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the name of the service account to use for the Controller
+*/}}
+{{- define "controller.serviceAccountName" -}}
+  {{- if .Values.controller.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.controller.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.controller.serviceAccount.name }}
+  {{- end }}
 {{- end -}}
 
 {{/*
