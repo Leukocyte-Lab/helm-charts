@@ -122,21 +122,25 @@ spec:
                 secretKeyRef:
                   key: url
                   name: {{ .Values.captain.secret.oidc.secretName }}
+                  optional: true
             - name: OIDC_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   key: client-id
                   name: {{ .Values.captain.secret.oidc.secretName }}
+                  optional: true
             - name: OIDC_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   key: client-secret
                   name: {{ .Values.captain.secret.oidc.secretName }}
+                  optional: true
             - name: OIDC_REALM
               valueFrom:
                 secretKeyRef:
                   key: realm
                   name: {{ .Values.captain.secret.oidc.secretName }}
+                  optional: true
             {{- if .Values.captain.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
             {{- end }}
