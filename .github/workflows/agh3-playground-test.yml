@@ -1,0 +1,65 @@
+name: ⚙️ [AGH3-Playground] 🧪 Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - charts/playground/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: 🪝 Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.4
+
+      - name: 📦 Add Helm dependency repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: 🧪 Run chart-linting
+        run: |
+          helm dependency build charts/playground
+          helm lint charts/playground
+
+      - name: 🧪 Run chart-testing -> internal mode (default)
+        run: |
+          helm dependency build charts/playground
+          helm template agh charts/playground \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            -n agh3-playground
+
+      - name: 🧪 Run chart-testing -> internal mode with custom namespace
+        run: |
+          helm dependency build charts/playground
+          helm template agh charts/playground \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set playground.service.backendRef.namespace='agh3-prod' \
+            --set playground.service.backendRef.kind='Service' \
+            -n agh3-playground
+
+      - name: 🧪 Run chart-testing -> external mode
+        run: |
+          helm dependency build charts/playground
+          helm template agh charts/playground \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set playground.service.backendRef.kind='ExternalService' \
+            --set playground.service.backendRef.endpoint='example.com/api/v1' \
+            -n agh3-playground

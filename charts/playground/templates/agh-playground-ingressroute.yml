@@ -1,0 +1,36 @@
+{{- if and .Values.ingress.enabled .Values.playground.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: agh-playground-ingressroute
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - kind: Rule
+      match: {{ empty .Values.ingress.host | ternary "PathPrefix(`/`)" (print "Host(`" (.Values.ingress.host) "`)") }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: playground
+          port: 80
+    - kind: Rule
+      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: playground
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+{{- end }}

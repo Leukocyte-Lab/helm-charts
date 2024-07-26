@@ -1,0 +1,93 @@
+name: 🔧 [AGH3-Playground] Fetch & Create Chart for Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_version_increment:
+        description: "Chart Version Increment (Semver)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+      app_version_increment:
+        description: "App Version Increment (Semver or Use Existing)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+          - "use-existing"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏷️ Get latest Playground tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: ui
+        with:
+          repository: Leukocyte-Lab/AGH3-CTR-Playground
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+          regex: '^v\d+\.\d+\.\d+$'
+
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🖍️ Update version tags for Apps
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/playground/values.yaml charts/playground/values.yaml.tmp
+            cat charts/playground/values.yaml.tmp | \
+              yq '.playground.image.tag = "${{ steps.ui.outputs.tag }}"' | \
+              yq '.' > charts/playground/values.yaml
+            rm charts/playground/values.yaml.tmp
+
+      - name: 📦 Install Tools for parsing semver
+        run: |
+          sudo apt update
+          sudo apt install gettext-base
+          sudo wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          sudo chmod +x /usr/local/bin/semver
+          semver --version
+
+      - name: 🔎 Get Chart versions
+        run: |
+          export APP_VERSION="$(yq '.appVersion' charts/playground/Chart.yaml | ${{ inputs.app_version_increment == 'use-existing' && 'sed "s/^v//g"' || format('xargs semver bump {0}', inputs.app_version_increment) }})"
+          export CHART_VERSION="$(yq '.version' charts/playground/Chart.yaml | xargs semver bump ${{ inputs.chart_version_increment }})"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
+
+      - name: 🖍️ Update Chart versions
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/playground/Chart.yaml charts/playground/Chart.yaml.tmp
+            cat charts/playground/Chart.yaml.tmp | \
+              yq '.version = "${{ env.CHART_VERSION }}"' | \
+              yq '.appVersion = "v${{ env.APP_VERSION }}"' | \
+              yq '.' > charts/playground/Chart.yaml
+            rm charts/playground/Chart.yaml.tmp
+
+      - name: 🙌 Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          branch: build/release-chart-agh3-playground-${{ env.CHART_VERSION }}
+          commit-message: |
+            build: Release chart/agh3-playground ${{ env.CHART_VERSION }}
+
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Playground: `${{ steps.ui.outputs.tag }}`
+          title: "build: Release chart/agh3-playground `v${{ env.CHART_VERSION }}`"
+          body: |
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Playground: `${{ steps.ui.outputs.tag }}`
