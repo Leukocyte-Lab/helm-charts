@@ -1,0 +1,37 @@
+name: ⚙️ [AGH3-Playground] Auto Publish Chart
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - charts/playground/**
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: 📦 Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.4
+
+      - name: 📦 Add Helm dependency repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: 🎁 Release Chart
+        uses: helm/chart-releaser-action@v1
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
