@@ -32,7 +32,7 @@ jobs:
 
       - name: 📢 Invoke workflow to update Release Channel
         run: |
-          echo '{"chart_version": "${{ steps.chartVersion.outputs.result }}", "app_version": "${{ steps.appVersion.outputs.result }}"}' | \
+          echo '{"chart_version": "${{ steps.chartVersion.outputs.result }}", "app_version": "${{ steps.appVersion.outputs.result }}", "release_channel": "develop"}' | \
             gh workflow run agh3-ctr-update-release.yaml -R Leukocyte-Lab/release -r develop --json
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
