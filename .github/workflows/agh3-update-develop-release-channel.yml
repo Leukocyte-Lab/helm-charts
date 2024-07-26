@@ -5,7 +5,9 @@ on:
     types:
       - closed
     branches:
-      - build/release-chart-agh3-**
+      - main
+    paths:
+      - charts/agh3/Chart.yaml
 
 jobs:
   trigger-develop-release-channel-update:
