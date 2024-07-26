@@ -150,8 +150,19 @@ Leave as default if using external RabbitMQ
 | `rabbitmq.image.tag`         | Internal RabbitMQ image tag (immutable tags are recommended) | `3.12.13-debian-12-r2`    |
 | `rabbitmq.image.pullPolicy`  | Internal RabbitMQ image pull policy                          | `IfNotPresent`            |
 | `rabbitmq.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                      |
-| `minio.auth.rootUser`        | Internal database root user                                  | `argushack`               |
-| `minio.auth.rootPassword`    | Internal database root password                              | `""`                      |
+
+### RabbitMQ service provisioning parameters
+
+Leave as default if using external RabbitMQ
+
+| Name                             | Description                               | Value   |
+| -------------------------------- | ----------------------------------------- | ------- |
+| `rabbitmq.service.ports.amqp`    | Amqp service port                         | `5672`  |
+| `rabbitmq.service.ports.amqpTls` | Amqp TLS service port                     | `5671`  |
+| `rabbitmq.service.ports.dist`    | Erlang distribution service port          | `25672` |
+| `rabbitmq.service.ports.manager` | RabbitMQ Manager service port             | `15672` |
+| `rabbitmq.service.ports.metrics` | RabbitMQ Prometheues metrics service port | `9419`  |
+| `rabbitmq.service.ports.epmd`    | EPMD Discovery service port               | `4369`  |
 
 ### Helper parameters
 
@@ -173,7 +184,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | -------------------------------------- | -------------------------------------------------- | -------------------------------------- |
 | `captain.enabled`                      | Enable Captain module                              | `true`                                 |
 | `captain.image.repository`             | Captain image repository                           | `leukocyte-lab/argushack3/ctr-captain` |
-| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.1.3-test.8`                        |
+| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.5.9`                               |
 | `captain.image.pullPolicy`             | Captain image pull policy                          | `IfNotPresent`                         |
 | `captain.image.pullSecrets`            | Specify docker-registry secret names as an array   | `[]`                                   |
 | `captain.secret.enabled`               | Enable secret generate for Captain                 | `true`                                 |
@@ -191,6 +202,12 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | `captain.secret.superadmin.enabled`    | Enable secret generate for Super Admin             | `true`                                 |
 | `captain.secret.superadmin.secretName` | Secret name for Super Admin                        | `capt-superadmin-password`             |
 | `captain.secret.superadmin.password`   | Super Admin password                               | `""`                                   |
+| `captain.secret.oidc.enabled`          | Enable secret generate for OIDC                    | `false`                                |
+| `captain.secret.oidc.secretName`       | Secret name for OIDC                               | `capt-oidc-secret`                     |
+| `captain.secret.oidc.url`              | OIDC user                                          | `""`                                   |
+| `captain.secret.oidc.clientID`         | OIDC user                                          | `""`                                   |
+| `captain.secret.oidc.clientSecret`     | OIDC password                                      | `""`                                   |
+| `captain.secret.oidc.realm`            | OIDC realm                                         | `""`                                   |
 | `captain.extraEnv`                     | Captain additional environment variables           | `{}`                                   |
 
 ### AGH3-Controller parameters
@@ -202,7 +219,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Controller
 | ------------------------------------ | ----------------------------------------------------- | ----------------------------------------- |
 | `controller.enabled`                 | Enable Controller module                              | `true`                                    |
 | `controller.image.repository`        | Controller image repository                           | `leukocyte-lab/argushack3/ctr-controller` |
-| `controller.image.tag`               | Controller image tag (immutable tags are recommended) | `v0.3.3`                                  |
+| `controller.image.tag`               | Controller image tag (immutable tags are recommended) | `v0.7.1`                                  |
 | `controller.image.pullPolicy`        | Controller image pull policy                          | `IfNotPresent`                            |
 | `controller.image.pullSecrets`       | Specify docker-registry secret names as an array      | `[]`                                      |
 | `controller.secret.enabled`          | Enable secret generate for Controller                 | `true`                                    |
@@ -223,7 +240,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-UI
 | ---------------------- | ------------------------------------------------ | --------------------------------- |
 | `ui.enabled`           | Enable UI module                                 | `true`                            |
 | `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack3/ctr-ui` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v0.1.0-beta.6`                   |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.3.9`                          |
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                    |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                              |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                              |
@@ -237,7 +254,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Report
 | -------------------------- | ------------------------------------------------- | --------------------------------- |
 | `report.enabled`           | Enable Report module                              | `true`                            |
 | `report.image.repository`  | Report image repository                           | `leukocyte-lab/argushack3/report` |
-| `report.image.tag`         | Report image tag (immutable tags are recommended) | `v1.0.0-beta.4`                   |
+| `report.image.tag`         | Report image tag (immutable tags are recommended) | `v1.0.9`                          |
 | `report.image.pullPolicy`  | Report image pull policy                          | `IfNotPresent`                    |
 | `report.image.pullSecrets` | Specify docker-registry secret names as an array  | `[]`                              |
 | `report.extraEnv`          | UI additional environment variables               | `{}`                              |
