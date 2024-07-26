@@ -176,9 +176,9 @@ postfix:
   ## @param postfix.mail_myhostname Postfix mail_myhostname
   ## @param postfix.domain Postfix domain
   ##
-  mydomian: bas.com
-  mail_myhostname: mail.bas.com
-  domain: bas.com
+  mydomian: bas-mail-test.com
+  mail_myhostname: smtp.bas-mail-test.com
+  domain: bas-mail-test.com
 ## @section Internal PostgreSQL database provisioning parameters
 ## @descriptionStart
 ## Leave as default if using external DB
