@@ -499,6 +499,20 @@ captain:
       enabled: true
       secretName: capt-superadmin-password
       password: ""
+    ## @param captain.secret.oidc.enabled Enable secret generate for OIDC
+    ## @param captain.secret.oidc.secretName Secret name for OIDC
+    ## @param captain.secret.oidc.url OIDC user
+    ## @param captain.secret.oidc.clientID OIDC user
+    ## @param captain.secret.oidc.clientSecret OIDC password
+    ## @param captain.secret.oidc.realm OIDC realm
+    ##
+    oidc:
+      enabled: false
+      secretName: capt-oidc-secret
+      url: ""
+      clientID: ""
+      clientSecret: ""
+      realm: ""
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
