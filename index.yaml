@@ -1242,6 +1242,36 @@ entries:
     version: 0.4.6
   agh3:
   - apiVersion: v2
+    appVersion: v3.4.0
+    created: "2024-07-26T10:07:26.889660449Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.4
+    - condition: rabbitmq.internal.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    - condition: postfix.enabled
+      name: postfix
+      repository: https://charts.lkc-lab.com
+      version: 0.1.1
+    description: A Helm chart for ArgusHack3
+    digest: 52118817da7cd6ed4d06f5bc21c5a4dd76df3debd91cac8038decc858974f8e8
+    name: agh3
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-3.6.0/agh3-3.6.0.tgz
+    version: 3.6.0
+  - apiVersion: v2
     appVersion: v3.3.14
     created: "2024-07-10T10:02:35.226322064Z"
     dependencies:
@@ -2469,6 +2499,21 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-3.0.1/agh3-3.0.1.tgz
     version: 3.0.1
+  agh3-playground:
+  - apiVersion: v2
+    appVersion: 0.0.1-beta.10
+    created: "2024-07-26T10:07:27.033463324Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    description: A Helm chart for ArgusHack3 Playground
+    digest: 000876976d39349070861b50506637278d594e34ab42ce9e01847ed65bc3f56a
+    name: agh3-playground
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-playground-0.1.0/agh3-playground-0.1.0.tgz
+    version: 0.1.0
   postfix:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -2498,4 +2543,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-10T10:02:35.226650399Z"
+generated: "2024-07-26T10:07:27.03384142Z"
