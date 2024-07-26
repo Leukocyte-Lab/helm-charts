@@ -90,6 +90,21 @@
   -}}
 {{- end -}}
 
+{{- if and .Values.captain.enabled .Values.captain.secret.oidc.enabled -}}
+  {{- $errorMsg = printf "%s\n%s"
+      $errorMsg
+      (
+        include "validations.required" (
+          dict
+            "path" "captain.secret.oidc"
+            "fields" (list "url" "clientID" "clientSecret" "realm")
+            "msg" "Must provide when captain.secret.oidc.enabled is true"
+            "context" $
+        )
+      )
+  -}}
+{{- end -}}
+
 {{- $errorMsg = (trimAll "\n" $errorMsg) -}}
 {{- if not (empty $errorMsg) -}}
   {{- fail (print "\n\nValidation Failed:\n" $errorMsg) -}}
