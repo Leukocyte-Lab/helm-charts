@@ -523,7 +523,6 @@ captain:
   ##
   rbac:
     create: true
-
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
