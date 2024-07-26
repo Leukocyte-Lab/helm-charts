@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: captain-sa
+  name: {{ .Values.captain.serviceAccount.name }}
   labels:
     {{- include "AGH3.labels" . | nindent 4 }}
 {{- end }}
