@@ -71,6 +71,33 @@ Control the DB Helper behaviors.
 | ----------------------------- | ----------------------- | ------ |
 | `db.helpers.init.dbs.enabled` | Enable dbs init feature | `true` |
 
+### Internal Postfix provisioning parameters
+
+Leave as default if using external Postfix Server
+
+| Name                        | Description                                                 | Value                                      |
+| --------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| `postfix.enabled`           | Enable internal postfix                                     | `true`                                     |
+| `postfix.image.repository`  | Internal postfix image repository                           | `leukocyte-lab/argushack3/postfix`         |
+| `postfix.image.tag`         | Internal postfix image tag (immutable tags are recommended) | `28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8` |
+| `postfix.image.pullPolicy`  | Internal postfix image pull policy                          | `IfNotPresent`                             |
+| `postfix.image.pullSecrets` | Specify docker-registry secret names as an array            | `[]`                                       |
+
+### Postfix service provisioning parameters
+
+Leave as default if using internal Postfix
+
+| Name                            | Description                                              | Value                                      |
+| ------------------------------- | -------------------------------------------------------- | ------------------------------------------ |
+| `postfix.service.type`          | Postfix service type                                     | `ClusterIP`                                |
+| `postfix.service.port`          | Postfix service port                                     | `25`                                       |
+| `postfix.dkim.image.repository` | Internal DKIM image repository                           | `leukocyte-lab/argushack3/opendkim`        |
+| `postfix.dkim.image.tag`        | Internal DKIM image tag (immutable tags are recommended) | `28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8` |
+| `postfix.dkim.image.pullPolicy` | Internal DKIM image pull policy                          | `IfNotPresent`                             |
+| `postfix.mydomian`              | Postfix mydomain                                         | `bas-mail-test.com`                        |
+| `postfix.mail_myhostname`       | Postfix mail_myhostname                                  | `smtp.bas-mail-test.com`                   |
+| `postfix.domain`                | Postfix domain                                           | `bas-mail-test.com`                        |
+
 ### Internal PostgreSQL database provisioning parameters
 
 Leave as default if using external DB
