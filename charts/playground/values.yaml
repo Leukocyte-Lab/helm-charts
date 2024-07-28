@@ -76,7 +76,7 @@ playground:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v0.0.1-beta.10
+    tag: v0.0.1-beta.11
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @section Playground service provisioning parameters
