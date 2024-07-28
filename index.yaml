@@ -2561,6 +2561,20 @@ entries:
     version: 3.0.1
   agh3-playground:
   - apiVersion: v2
+    appVersion: 0.0.1-beta.11
+    created: "2024-07-28T16:52:44.045207977Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    description: A Helm chart for ArgusHack3 Playground
+    digest: 840b3022de880e40b79c1e81a4cc67aa82fc7a9f7c71cb8a555007133107cf4f
+    name: agh3-playground
+    type: application
+    urls:
+    - https://github.com/Leukocyte-Lab/helm-charts/releases/download/agh3-playground-0.1.1/agh3-playground-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 0.0.1-beta.10
     created: "2024-07-26T10:07:27.033463324Z"
     dependencies:
@@ -2603,4 +2617,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-26T11:17:15.066054858Z"
+generated: "2024-07-28T16:52:44.045444409Z"
