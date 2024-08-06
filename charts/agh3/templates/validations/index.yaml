@@ -1,20 +1,5 @@
 {{- $errorMsg := "" -}}
 
-{{- if .Values.keygen.enabled -}}
-  {{- $errorMsg = printf "%s\n%s"
-      $errorMsg
-      (
-        include "validations.required" (
-          dict
-            "path" "keygen"
-            "fields" (list "accountID" "apiToken")
-            "msg" "Must provide when keygen.enabled is true"
-            "context" $
-        )
-      )
-  -}}
-{{- end -}}
-
 {{- if .Values.customRegistrySecret.enabled -}}
   {{- $errorMsg = printf "%s\n%s"
       $errorMsg

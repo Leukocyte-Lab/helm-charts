@@ -42,21 +42,10 @@ customRegistrySecret:
 ## @section Keygen parameters
 ##
 
-## @param keygen.enabled Enable secret generate for keygen
-## @param keygen.secretName Secret name for keygen
-## @param keygen.apiToken Keygen API Token
-## @param keygen.accountID Keygen Account ID
-## ref: https://keygen.sh/docs/api
+## @param keygen.apiToken Specify-password required a token
 ##
 keygen:
-  ## @skip keygen.secretName
-  ## Name of the generated secret
-  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-  ##
-  secretName: keygen-secret
-  enabled: true
   apiToken: ""
-  accountID: ""
 ## @param ingress.enabled Enable ingress controller
 ## @param ingress.host Ingress hostname
 ##
