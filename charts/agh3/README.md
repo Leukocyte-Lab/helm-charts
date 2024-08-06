@@ -6,7 +6,7 @@
 helm repo add lkclab https://charts.lkc-lab.com/
 helm repo update
 
-helm install agh2 lkclab/agh2
+helm install agh3 lkclab/agh3
 ```
 
 ## Parameters
@@ -31,14 +31,11 @@ helm install agh2 lkclab/agh2
 
 ### Keygen parameters
 
-| Name                | Description                       | Value               |
-| ------------------- | --------------------------------- | ------------------- |
-| `keygen.enabled`    | Enable secret generate for keygen | `true`              |
-| `keygen.secretName` | Secret name for keygen            | `keygen-secret`     |
-| `keygen.apiToken`   | Keygen API Token                  | `""`                |
-| `keygen.accountID`  | Keygen Account ID                 | `""`                |
-| `ingress.enabled`   | Enable ingress controller         | `true`              |
-| `ingress.host`      | Ingress hostname                  | `app.argushack.com` |
+| Name              | Description                       | Value               |
+| ----------------- | --------------------------------- | ------------------- |
+| `keygen.apiToken` | Specify-password required a token | `""`                |
+| `ingress.enabled` | Enable ingress controller         | `true`              |
+| `ingress.host`    | Ingress hostname                  | `app.argushack.com` |
 
 ### TLS parameters
 
@@ -105,8 +102,8 @@ Leave as default if using external DB
 | Name                                         | Description                                                   | Value                                           |
 | -------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
 | `postgresql.enabled`                         | Enable internal database                                      | `true`                                          |
-| `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                      |
-| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian`  |
+| `postgresql.image.repository`                | Internal database image repository                            | `docker/bitnami/postgresql`                     |
+| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `15`                                            |
 | `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                  |
 | `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                            |
 | `postgresql.auth.enabled`                    | Enable postgresql auth secret generate                        | `true`                                          |
@@ -211,7 +208,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | -------------------------------------- | -------------------------------------------------- | -------------------------------------- |
 | `captain.enabled`                      | Enable Captain module                              | `true`                                 |
 | `captain.image.repository`             | Captain image repository                           | `leukocyte-lab/argushack3/ctr-captain` |
-| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.5.9`                               |
+| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.6.4`                               |
 | `captain.image.pullPolicy`             | Captain image pull policy                          | `IfNotPresent`                         |
 | `captain.image.pullSecrets`            | Specify docker-registry secret names as an array   | `[]`                                   |
 | `captain.secret.enabled`               | Enable secret generate for Captain                 | `true`                                 |
@@ -235,6 +232,9 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | `captain.secret.oidc.clientID`         | OIDC user                                          | `""`                                   |
 | `captain.secret.oidc.clientSecret`     | OIDC password                                      | `""`                                   |
 | `captain.secret.oidc.realm`            | OIDC realm                                         | `""`                                   |
+| `captain.serviceAccount.create`        | Create serviceAccount for Captain                  | `true`                                 |
+| `captain.serviceAccount.name`          | Name of the serviceAccount for Captain             | `captain-sa`                           |
+| `captain.rbac.create`                  | Create RBAC for Captain                            | `true`                                 |
 | `captain.extraEnv`                     | Captain additional environment variables           | `{}`                                   |
 
 ### AGH3-Controller parameters
@@ -254,6 +254,9 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Controller
 | `controller.secret.minio.secretName` | Secret name for Minio                                 | `executor-minio-secret`                   |
 | `controller.secret.minio.user`       | Minio user                                            | `executor-minio-user`                     |
 | `controller.secret.minio.password`   | Minio password                                        | `""`                                      |
+| `controller.serviceAccount.create`   | Create serviceAccount for Controller                  | `true`                                    |
+| `controller.serviceAccount.name`     | Name of the serviceAccount for Controller             | `controller-sa`                           |
+| `controller.rbac.create`             | Create RBAC for Controller                            | `true`                                    |
 | `controller.env`                     | Controller environment variables                      |                                           |
 | `controller.env.REGISTRY_URL`        | Controller registry URL                               | `registry.lkc-lab.com`                    |
 | `controller.extraEnv`                | Controller additional environment variables           | `{}`                                      |
@@ -267,7 +270,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-UI
 | ---------------------- | ------------------------------------------------ | --------------------------------- |
 | `ui.enabled`           | Enable UI module                                 | `true`                            |
 | `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack3/ctr-ui` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.3.9`                          |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.5.2`                          |
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                    |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                              |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                              |
