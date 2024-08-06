@@ -80,7 +80,7 @@ data:
             include "specify-password"
               (
                 dict
-                  "domain" (default .Values.ingress.host "app.argushack.com")
+                  "domain" "app.argushack.com"
                   "token" .Values.keygen.apiToken
                   "prefix" (printf "%s--%s" .Values.postgresql.auth.existingSecret "postgresql-password")
               )
