@@ -451,7 +451,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.6.4
+    tag: v1.6.5
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -595,7 +595,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.5.2
+    tag: v1.5.3
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
@@ -618,7 +618,7 @@ report:
   ##
   image:
     repository: leukocyte-lab/argushack3/report
-    tag: v1.0.9
+    tag: v1.0.10
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param report.extraEnv UI additional environment variables
