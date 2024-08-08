@@ -23,12 +23,7 @@ jobs:
           path: dest
           ref: 'gh-pages'
           fetch-depth: 0
-
-      - name: ⚙️ Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
+      
       - name: 📦 Install Helm
         uses: azure/setup-helm@v4
         with:
@@ -39,11 +34,13 @@ jobs:
         run: |
           helm dep up src/charts/agh3
           helm package src/charts/agh3 -u -d dest
-      
+                
       - name: 🎁 Release Chart
         shell: bash
         working-directory: dest
         run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
           git add $(git ls-files -o --exclude-standard)
           git add index.yaml
