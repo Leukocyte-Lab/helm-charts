@@ -117,6 +117,10 @@ spec:
               value: {{ .Chart.AppVersion | quote }}
             - name: "CHART_VERSION"
               value: {{ .Chart.Version | quote }}
+            - name: MERCHANT_ID
+              value: {{ .Values.captain.secret.point.merchantId }}
+            - name: PRODUCT_LINE_CODE
+              value: {{ .Values.captain.secret.point.productLineCode }}
             - name: OIDC_LOGIN_URL
               valueFrom:
                 secretKeyRef:

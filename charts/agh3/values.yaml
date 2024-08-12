@@ -483,6 +483,11 @@ captain:
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
+    ## @param captain.secret.point.merchantId Merchant ID for ESAAS
+    ## @param captain.secret.point.productLineCode Product Line Code for ESAAS
+    point:
+      merchantId: ""
+      productLineCode: ""
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret
