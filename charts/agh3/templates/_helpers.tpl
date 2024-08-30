@@ -259,3 +259,21 @@ Return the proper Docker Image Registry Secret Names
 {{- define "report.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.report.image) "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Global proxy settings as envs
+*/}}
+{{- define "global.proxy.envs" -}}
+{{- if .Values.global.proxy.httpProxy -}}
+- name: HTTP_PROXY
+  value: {{ .Values.global.proxy.httpProxy -}}
+{{- end }}
+{{- if .Values.global.proxy.httpsProxy }}
+- name: HTTPS_PROXY
+  value: {{ .Values.global.proxy.httpsProxy -}}
+{{- end }}
+{{- if .Values.global.proxy.noProxy }}
+- name: NO_PROXY
+  value: {{ .Values.global.proxy.noProxy -}}
+{{- end }}
+{{- end -}}
