@@ -8,15 +8,30 @@
 ## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
 ##
 
-## @param global.imageRegistry Global Docker Image registry
-## @param global.imagePullSecrets Global Docker registry secret names as an array
-## @param global.storageClass Global storage class for dynamic provisioning
-## @param global.volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`
-##
 global:
+  ## @section Image Registry parameters
+  ## @param global.imageRegistry Global Docker Image registry
+  ## @param global.imagePullSecrets Global Docker registry secret names as an array
+  ##
   imageRegistry: "registry.lkc-lab.com"
   imagePullSecrets:
     - lkc-registry
+
+  ## @section Proxy parameters
+  ## @param global.proxy.enabled Enable the use of a proxy
+  ## @param global.proxy.httpProxy HTTP Proxy server (ex: http://user:password@proxy.example.com:1080)
+  ## @param global.proxy.httpsProxy HTTPS Proxy server (ex: https://user:password@proxy.example.com:4380)
+  ## @param global.proxy.noProxy No Proxy targets (ex: 127.0.0.0/8,10.0.0.0/8)
+  ##
+  proxy:
+    enabled: false
+    httpProxy: ""
+    httpsProxy: ""
+    noProxy: ""
+
+  ## @section Common parameters
+  ## @param global.storageClass Global storage class for dynamic provisioning
+  ## @param global.volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`
   storageClass: ""
   volumePermissions:
     enabled: true
