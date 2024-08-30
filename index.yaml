@@ -1243,7 +1243,7 @@ entries:
   agh3:
   - apiVersion: v2
     appVersion: v3.4.4
-    created: "2024-08-08T08:03:42.842524402Z"
+    created: "2024-08-30T10:47:16.984132312Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1265,7 +1265,7 @@ entries:
       repository: https://charts.lkc-lab.com
       version: 0.1.1
     description: A Helm chart for ArgusHack3
-    digest: 2925e601c6d6a533be50c39476763ee6228d335a5f2d83de0035dfb5d5c763b4
+    digest: d2c0417a8bea80e699bdca793c6af2e562cec9f34e321dfe3939f43505f6369b
     name: agh3
     type: application
     urls:
@@ -1273,7 +1273,7 @@ entries:
     version: 3.6.5
   - apiVersion: v2
     appVersion: v3.4.3
-    created: "2024-08-08T08:03:42.829653304Z"
+    created: "2024-08-30T10:47:16.970732751Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2707,4 +2707,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-08T08:03:42.816144203Z"
+generated: "2024-08-30T10:47:16.958080916Z"
