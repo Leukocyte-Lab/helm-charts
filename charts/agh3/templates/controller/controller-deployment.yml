@@ -72,6 +72,7 @@ spec:
                   key: "RABBITMQ_CONN_STR"
             - name: REGISTRY_URL
               value: {{ required "at least one of controller.env.REGISTRY_URL or global.imageRegistry is required" (coalesce .Values.controller.env.REGISTRY_URL .Values.global.imageRegistry) }}
+            {{- include "global.proxy.envs" . | nindent 12 }}
             {{- if .Values.controller.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.controller.extraEnv "context" $) | nindent 12 }}
             {{- end }}
