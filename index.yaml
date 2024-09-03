@@ -1242,8 +1242,8 @@ entries:
     version: 0.4.6
   agh3:
   - apiVersion: v2
-    appVersion: v3.4.4
-    created: "2024-08-30T10:47:16.984132312Z"
+    appVersion: v3.5.0
+    created: "2024-09-03T10:50:55.217914971Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1265,7 +1265,37 @@ entries:
       repository: https://charts.lkc-lab.com
       version: 0.1.1
     description: A Helm chart for ArgusHack3
-    digest: d2c0417a8bea80e699bdca793c6af2e562cec9f34e321dfe3939f43505f6369b
+    digest: fe9a47fe675b2daddbbf6146fca1bdb0861ffca176bee3a17f8f9bcbf2587f5c
+    name: agh3
+    type: application
+    urls:
+    - https://charts.lkc-lab.com/agh3-3.7.0.tgz
+    version: 3.7.0
+  - apiVersion: v2
+    appVersion: v3.4.4
+    created: "2024-09-03T10:50:55.204309944Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.4
+    - condition: rabbitmq.internal.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    - condition: postfix.enabled
+      name: postfix
+      repository: https://charts.lkc-lab.com
+      version: 0.1.1
+    description: A Helm chart for ArgusHack3
+    digest: 2925e601c6d6a533be50c39476763ee6228d335a5f2d83de0035dfb5d5c763b4
     name: agh3
     type: application
     urls:
@@ -1273,7 +1303,7 @@ entries:
     version: 3.6.5
   - apiVersion: v2
     appVersion: v3.4.3
-    created: "2024-08-30T10:47:16.970732751Z"
+    created: "2024-09-03T10:50:55.191979186Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2707,4 +2737,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-30T10:47:16.958080916Z"
+generated: "2024-09-03T10:50:55.178942621Z"
