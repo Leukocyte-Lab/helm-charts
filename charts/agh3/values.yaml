@@ -16,7 +16,6 @@ global:
   imageRegistry: "registry.lkc-lab.com"
   imagePullSecrets:
     - lkc-registry
-
   ## @section Proxy parameters
   ## @param global.proxy.enabled Enable the use of a proxy
   ## @param global.proxy.httpProxy HTTP Proxy server (ex: http://user:password@proxy.example.com:1080)
@@ -28,7 +27,6 @@ global:
     httpProxy: ""
     httpsProxy: ""
     noProxy: ""
-
   ## @section Common parameters
   ## @param global.storageClass Global storage class for dynamic provisioning
   ## @param global.volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`
@@ -466,7 +464,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.6.5
+    tag: v1.7.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -558,7 +556,7 @@ controller:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-controller
-    tag: v0.7.1
+    tag: v0.7.2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param controller.secret.enabled Enable secret generate for Controller
@@ -610,7 +608,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.5.3
+    tag: v1.6.3
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
@@ -633,7 +631,7 @@ report:
   ##
   image:
     repository: leukocyte-lab/argushack3/report
-    tag: v1.0.10
+    tag: v1.1.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param report.extraEnv UI additional environment variables
