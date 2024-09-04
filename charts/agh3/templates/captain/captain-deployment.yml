@@ -141,7 +141,9 @@ spec:
                   key: realm
                   name: {{ .Values.captain.secret.oidc.secretName }}
                   optional: true
+            {{- if .Values.global.proxy.enabled}}
             {{- include "global.proxy.envs" . | nindent 12 }}
+            {{- end }}
             {{- if .Values.captain.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
             {{- end }}
