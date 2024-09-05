@@ -1243,7 +1243,37 @@ entries:
   agh3:
   - apiVersion: v2
     appVersion: v3.5.0
-    created: "2024-09-04T11:56:10.063737811Z"
+    created: "2024-09-05T01:23:19.070299Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.4
+    - condition: rabbitmq.internal.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    - condition: postfix.enabled
+      name: postfix
+      repository: https://charts.lkc-lab.com
+      version: 0.1.1
+    description: A Helm chart for ArgusHack3
+    digest: 0424377ca3ffbafb7ca7aaf5bfce1a2b6dccd175b373e334fb2c705b4cfb059f
+    name: agh3
+    type: application
+    urls:
+    - https://charts.lkc-lab.com/agh3-3.7.2.tgz
+    version: 3.7.2
+  - apiVersion: v2
+    appVersion: v3.5.0
+    created: "2024-09-05T01:23:19.057656556Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1273,7 +1303,7 @@ entries:
     version: 3.7.1
   - apiVersion: v2
     appVersion: v3.5.0
-    created: "2024-09-04T11:56:10.051128637Z"
+    created: "2024-09-05T01:23:19.044694041Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1303,7 +1333,7 @@ entries:
     version: 3.7.0
   - apiVersion: v2
     appVersion: v3.4.4
-    created: "2024-09-04T11:56:10.038204479Z"
+    created: "2024-09-05T01:23:19.031476883Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1333,7 +1363,7 @@ entries:
     version: 3.6.5
   - apiVersion: v2
     appVersion: v3.4.3
-    created: "2024-09-04T11:56:10.024207793Z"
+    created: "2024-09-05T01:23:19.018735423Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2767,4 +2797,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-04T11:56:10.010559892Z"
+generated: "2024-09-05T01:23:19.005902482Z"
