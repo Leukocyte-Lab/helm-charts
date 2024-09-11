@@ -16,6 +16,24 @@ spec:
     spec:
       {{- include "captain.imagePullSecrets" . | nindent 6 }}
       initContainers:
+        - name: captain-init-redis
+          image: {{ include "redis-test.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.secret.secretName }}
+                  key: password
+          command:
+            [
+              "sh",
+              "-c",
+              "until redis-cli -h redis-master.$(NAMESPACE).svc.cluster.local -a $REDIS_PASSWORD ping; do echo waiting for redis; sleep 1; done",
+            ]
         - name: captain-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
           env:
@@ -64,6 +82,15 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_URL
+              value: "redis-master.$(NAMESPACE).svc.cluster.local:6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.secret.secretName }}
+                  key: password
+            {{- end }}
             {{- if .Values.captain.secret.superadmin.enabled }}
             - name: SUPERADMIN_PASSWORD
               valueFrom:

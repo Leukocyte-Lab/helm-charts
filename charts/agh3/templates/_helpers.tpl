@@ -169,6 +169,13 @@ Return the proper db image name
 {{- end }}
 
 {{/*
+Return the proper redis-test image name
+*/}}
+{{- define "redis-test.image" -}}
+{{ include "common.images.image" (dict "imageRoot" .Values.redis.helpers.test.image "global" .Values.global) }}
+{{- end -}}
+
+{{/*
 Return the proper rabbitmq-test-client image name
 */}}
 {{- define "rabbitmq-test-client.image" -}}

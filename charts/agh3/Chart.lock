@@ -8,11 +8,14 @@ dependencies:
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 13.0.0
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 20.1.0
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 2.19.1
 - name: postfix
   repository: https://charts.lkc-lab.com
   version: 0.1.1
-digest: sha256:3b310df8d762e892d379638b90599237b16e36db6c0a48a60bd9fd5102b501cc
-generated: "2024-05-27T19:28:29.196989+08:00"
+digest: sha256:fb6ba056468f47e486b96134dccb3de190f3525da983e7413f352b5bd6051982
+generated: "2024-09-11T12:52:01.457922+08:00"
