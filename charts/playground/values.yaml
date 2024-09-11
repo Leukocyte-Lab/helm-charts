@@ -76,12 +76,12 @@ playground:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v0.0.1-beta.11
+    tag: v0.0.1-beta.25
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param playground.secret.enabled Enable secret generate for Playground
   ##
-  secrets:
+  secret:
     enabled: true # Manually create secrets named as the value of `playground.secret.name` if set to false
     ## @param playground.secret.firebase.enabled Enable secret generate for Playground Firebase
     ## @param playground.secret.firebase.apiKey Firebase API key

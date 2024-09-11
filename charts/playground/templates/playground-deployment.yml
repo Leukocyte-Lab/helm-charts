@@ -32,7 +32,7 @@ spec:
           ports:
             - name: web
               containerPort: 80
-          {{- if .Values.playground.secrets.firebase.enabled }}
+          {{- if .Values.playground.secret.firebase.enabled }}
           volumeMounts:
             - name: firebase-secrets
               mountPath: /usr/share/nginx/html/api/secrets/firebase.json
@@ -40,10 +40,10 @@ spec:
               readOnly: true
           {{- end }}
       restartPolicy: Always
-      {{- if .Values.playground.secrets.firebase.enabled }}
+      {{- if .Values.playground.secret.firebase.enabled }}
       volumes:
         - name: firebase-secrets
           secret:
-            secretName: {{ .Values.playground.secrets.firebase.secretName }}
+            secretName: {{ .Values.playground.secret.firebase.secretName }}
       {{- end }}
 {{- end }}
