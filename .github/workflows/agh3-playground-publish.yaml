@@ -1,6 +1,7 @@
 name: ⚙️ [AGH3-Playground] Auto Publish Chart
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
