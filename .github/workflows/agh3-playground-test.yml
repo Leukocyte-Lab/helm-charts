@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - charts/playground/**
+      - .github/workflows/agh3-playground-release.yml
 
 jobs:
   test:
