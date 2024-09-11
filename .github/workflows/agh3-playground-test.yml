@@ -42,6 +42,13 @@ jobs:
           helm template agh charts/playground \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set playground.secrets.firebase.apiKey='ci-test-firebase--api-key' \
+            --set playground.secrets.firebase.authDomain='ci-test-firebase.firebaseapp.com' \
+            --set playground.secrets.firebase.projectId='ci-test-firebase' \
+            --set playground.secrets.firebase.storageBucket='ci-test-firebase.appspot.com' \
+            --set playground.secrets.firebase.messagingSenderId='ci-test-firebase-sender-id' \
+            --set playground.secrets.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
+            --set playground.secrets.firebase.measurementId='G-CI_TEST_CODE' \
             -n agh3-playground
 
       - name: 🧪 Run chart-testing -> internal mode with custom namespace
@@ -52,6 +59,13 @@ jobs:
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set playground.service.backendRef.namespace='agh3-prod' \
             --set playground.service.backendRef.kind='Service' \
+            --set playground.secrets.firebase.apiKey='ci-test-firebase--api-key' \
+            --set playground.secrets.firebase.authDomain='ci-test-firebase.firebaseapp.com' \
+            --set playground.secrets.firebase.projectId='ci-test-firebase' \
+            --set playground.secrets.firebase.storageBucket='ci-test-firebase.appspot.com' \
+            --set playground.secrets.firebase.messagingSenderId='ci-test-firebase-sender-id' \
+            --set playground.secrets.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
+            --set playground.secrets.firebase.measurementId='G-CI_TEST_CODE' \
             -n agh3-playground
 
       - name: 🧪 Run chart-testing -> external mode
@@ -62,4 +76,11 @@ jobs:
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             --set playground.service.backendRef.kind='ExternalService' \
             --set playground.service.backendRef.endpoint='example.com/api/v1' \
+            --set playground.secrets.firebase.apiKey='ci-test-firebase--api-key' \
+            --set playground.secrets.firebase.authDomain='ci-test-firebase.firebaseapp.com' \
+            --set playground.secrets.firebase.projectId='ci-test-firebase' \
+            --set playground.secrets.firebase.storageBucket='ci-test-firebase.appspot.com' \
+            --set playground.secrets.firebase.messagingSenderId='ci-test-firebase-sender-id' \
+            --set playground.secrets.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
+            --set playground.secrets.firebase.measurementId='G-CI_TEST_CODE' \
             -n agh3-playground

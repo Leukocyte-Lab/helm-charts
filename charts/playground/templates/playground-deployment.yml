@@ -18,6 +18,7 @@ spec:
       containers:
         - name: playground
           image: {{ include "playground.image" . }}
+          imagePullPolicy: {{ .Values.playground.image.pullPolicy }}
           env:
             - name: NAMESPACE
               valueFrom:
@@ -31,6 +32,18 @@ spec:
           ports:
             - name: web
               containerPort: 80
-          imagePullPolicy: {{ .Values.playground.image.pullPolicy }}
+          {{- if .Values.playground.secrets.firebase.enabled }}
+          volumeMounts:
+            - name: firebase-secrets
+              mountPath: /usr/share/nginx/html/api/secrets/firebase.json
+              subPath: firebase.json
+              readOnly: true
+          {{- end }}
       restartPolicy: Always
+      {{- if .Values.playground.secrets.firebase.enabled }}
+      volumes:
+        - name: firebase-secrets
+          secret:
+            secretName: {{ .Values.playground.secrets.firebase.secretName }}
+      {{- end }}
 {{- end }}

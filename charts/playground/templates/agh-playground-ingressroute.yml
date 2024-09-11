@@ -17,7 +17,7 @@ spec:
           name: playground
           port: 80
     - kind: Rule
-      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`) || PathPrefix(`/api/secrets`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       middlewares:
         - name: https-redirectscheme
       services:

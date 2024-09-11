@@ -79,6 +79,33 @@ playground:
     tag: v0.0.1-beta.11
     pullPolicy: IfNotPresent
     pullSecrets: []
+  ## @param playground.secret.enabled Enable secret generate for Playground
+  ##
+  secrets:
+    enabled: true # Manually create secrets named as the value of `playground.secret.name` if set to false
+    ## @param playground.secret.firebase.enabled Enable secret generate for Playground Firebase
+    ## @param playground.secret.firebase.apiKey Firebase API key
+    ## @param playground.secret.firebase.authDomain Firebase auth domain
+    ## @param playground.secret.firebase.projectId Firebase project ID
+    ## @param playground.secret.firebase.storageBucket Firebase storage bucket
+    ## @param playground.secret.firebase.messagingSenderId Firebase messaging sender ID
+    ## @param playground.secret.firebase.appId Firebase app ID
+    ## @param playground.secret.firebase.measurementId Firebase measurement ID
+    ##
+    firebase:
+      ## @skip playground.secret.firebase.secretName
+      ## Secret name for Playground Firebase
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
+      secretName: playground-firebase-secrets
+      enabled: true
+      apiKey: ""
+      authDomain: ""
+      projectId: ""
+      storageBucket: ""
+      messagingSenderId: ""
+      appId: ""
+      measurementId: ""
   ## @section Playground service provisioning parameters
   ##
   ## @param playground.service.backendRef.kind Backend Service kind (available options: Service, ExternalService)
