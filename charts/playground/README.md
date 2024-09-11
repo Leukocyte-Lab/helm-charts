@@ -45,13 +45,22 @@ helm install agh3-playground lkclab/agh3-playground
 Playground module for AGH3.
 ref: https://github.com/Leukocyte-Lab/AGH3-CTR-Playground
 
-| Name                           | Description                                           | Value                                     |
-| ------------------------------ | ----------------------------------------------------- | ----------------------------------------- |
-| `playground.enabled`           | Enable Playground module                              | `true`                                    |
-| `playground.image.repository`  | Playground image repository                           | `leukocyte-lab/argushack3/ctr-playground` |
-| `playground.image.tag`         | Playground image tag (immutable tags are recommended) | `v0.0.1-beta.10`                          |
-| `playground.image.pullPolicy`  | Playground image pull policy                          | `IfNotPresent`                            |
-| `playground.image.pullSecrets` | Specify docker-registry secret names as an array      | `[]`                                      |
+| Name                                           | Description                                           | Value                                     |
+| ---------------------------------------------- | ----------------------------------------------------- | ----------------------------------------- |
+| `playground.enabled`                           | Enable Playground module                              | `true`                                    |
+| `playground.image.repository`                  | Playground image repository                           | `leukocyte-lab/argushack3/ctr-playground` |
+| `playground.image.tag`                         | Playground image tag (immutable tags are recommended) | `v0.0.1-beta.25`                          |
+| `playground.image.pullPolicy`                  | Playground image pull policy                          | `IfNotPresent`                            |
+| `playground.image.pullSecrets`                 | Specify docker-registry secret names as an array      | `[]`                                      |
+| `playground.secret.enabled`                    | Enable secret generate for Playground                 | `true`                                    |
+| `playground.secret.firebase.enabled`           | Enable secret generate for Playground Firebase        | `true`                                    |
+| `playground.secret.firebase.apiKey`            | Firebase API key                                      | `""`                                      |
+| `playground.secret.firebase.authDomain`        | Firebase auth domain                                  | `""`                                      |
+| `playground.secret.firebase.projectId`         | Firebase project ID                                   | `""`                                      |
+| `playground.secret.firebase.storageBucket`     | Firebase storage bucket                               | `""`                                      |
+| `playground.secret.firebase.messagingSenderId` | Firebase messaging sender ID                          | `""`                                      |
+| `playground.secret.firebase.appId`             | Firebase app ID                                       | `""`                                      |
+| `playground.secret.firebase.measurementId`     | Firebase measurement ID                               | `""`                                      |
 
 ### Playground service provisioning parameters
 
