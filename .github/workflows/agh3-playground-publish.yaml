@@ -26,6 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Configure Git
+        working-directory: dest
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
