@@ -14,6 +14,14 @@ jobs:
       - name: 🔔 Checkout
         uses: actions/checkout@v4
         with:
+          path: src
+          fetch-depth: 0
+
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          path: dest
+          ref: 'gh-pages'
           fetch-depth: 0
 
       - name: ⚙️ Configure Git
@@ -26,12 +34,18 @@ jobs:
         with:
           version: v3.14.4
 
-      - name: 📦 Add Helm dependency repos
+      - name: 📦 Package Helm Charts
+        shell: bash
         run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo update
+          helm dep up src/charts/playground
+          helm package src/charts/playground -u -d dest
 
       - name: 🎁 Release Chart
-        uses: helm/chart-releaser-action@v1
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        shell: bash
+        working-directory: dest
+        run: |
+          helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
+          git add $(git ls-files -o --exclude-standard)
+          git add index.yaml
+          git commit -m "Release from ref: $GITHUB_SHA"
+          git push
