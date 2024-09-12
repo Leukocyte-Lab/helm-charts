@@ -366,6 +366,12 @@ redis:
     existingSecret: "agh-redis-secret"
     existingSecretPasswordKey: "password"
   helpers:
+    ## Redis Connection Test image
+    ## @param redis.helpers.test.image.repository Redis Connection Test image repository
+    ## @param redis.helpers.test.image.tag Redis Connection Test image tag (immutable tags are recommended)
+    ## @param redis.helpers.test.image.pullPolicy Redis Connection Test image pull policy
+    ## @param redis.helpers.test.image.pullSecrets Specify docker-registry secret names as an array
+    ##
     test:
       image:
         repository: docker/library/redis
