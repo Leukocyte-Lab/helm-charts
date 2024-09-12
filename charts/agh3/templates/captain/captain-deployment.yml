@@ -16,6 +16,7 @@ spec:
     spec:
       {{- include "captain.imagePullSecrets" . | nindent 6 }}
       initContainers:
+        {{- if .Values.redis.enabled }}
         - name: captain-init-redis
           image: {{ include "redis-test.image" . }}
           env:
@@ -34,6 +35,7 @@ spec:
               "-c",
               "until redis-cli -h redis-master.$(NAMESPACE).svc.cluster.local -a $REDIS_PASSWORD ping; do echo waiting for redis; sleep 1; done",
             ]
+        {{- end }}
         - name: captain-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
           env:
