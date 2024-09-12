@@ -338,6 +338,46 @@ minio:
               - "s3:GetObject"
     usersExistingSecrets:
       - agh-minio-users-secret
+## @section Redis parameters
+##
+redis:
+  ## @param redis.enabled Enable internal redis
+  enabled: true
+  ## @skip redis.fullnameOverride
+  fullnameOverride: redis # remapping chart bitnami/redis -> redis
+  image:
+    ## @param redis.image.repository Internal Redis image repository
+    ## @param redis.image.tag Internal Redis image tag (immutable tags are recommended)
+    ## @param redis.image.pullPolicy Internal Redis image pull policy
+    ## @param redis.image.pullSecrets Specify docker-registry secret names as an array
+    repository: docker/bitnami/redis
+    tag: 7.4.0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  secret:
+    ## @param redis.secret.secretName Name of the generated secret
+    ## @param redis.secret.password Redis password
+    secretName: agh-redis-secret
+    password: ""
+  auth:
+    ## @skip redis.auth.existingSecret
+    ## @skip redis.auth.existingSecretPasswordKey
+    ## @skip redis.auth.usePasswordFileFromSecret
+    existingSecret: "agh-redis-secret"
+    existingSecretPasswordKey: "password"
+  helpers:
+    ## Redis Connection Test image
+    ## @param redis.helpers.test.image.repository Redis Connection Test image repository
+    ## @param redis.helpers.test.image.tag Redis Connection Test image tag (immutable tags are recommended)
+    ## @param redis.helpers.test.image.pullPolicy Redis Connection Test image pull policy
+    ## @param redis.helpers.test.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    test:
+      image:
+        repository: docker/library/redis
+        tag: 7-alpine
+        pullPolicy: IfNotPresent
+        pullSecrets: []
 ## @section RabbitMQ parameters
 ##
 rabbitmq:
