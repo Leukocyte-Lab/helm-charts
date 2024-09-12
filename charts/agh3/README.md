@@ -13,12 +13,29 @@ helm install agh2 lkclab/agh2
 
 ### Global parameters
 
-| Name                               | Description                                                                                                          | Value                  |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `global.imageRegistry`             | Global Docker Image registry                                                                                         | `registry.lkc-lab.com` |
-| `global.imagePullSecrets`          | Global Docker registry secret names as an array                                                                      | `["lkc-registry"]`     |
-| `global.storageClass`              | Global storage class for dynamic provisioning                                                                        | `""`                   |
-| `global.volumePermissions.enabled` | Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup` | `true`                 |
+
+### Image Registry parameters
+
+| Name                      | Description                                     | Value                  |
+| ------------------------- | ----------------------------------------------- | ---------------------- |
+| `global.imageRegistry`    | Global Docker Image registry                    | `registry.lkc-lab.com` |
+| `global.imagePullSecrets` | Global Docker registry secret names as an array | `["lkc-registry"]`     |
+
+### Proxy parameters
+
+| Name                      | Description                                                           | Value   |
+| ------------------------- | --------------------------------------------------------------------- | ------- |
+| `global.proxy.enabled`    | Enable the use of a proxy                                             | `false` |
+| `global.proxy.httpProxy`  | HTTP Proxy server (ex: http://user:password@proxy.example.com:1080)   | `""`    |
+| `global.proxy.httpsProxy` | HTTPS Proxy server (ex: https://user:password@proxy.example.com:4380) | `""`    |
+| `global.proxy.noProxy`    | No Proxy targets (ex: 127.0.0.0/8,10.0.0.0/8)                         | `""`    |
+
+### Common parameters
+
+| Name                               | Description                                                                                                          | Value  |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------ |
+| `global.storageClass`              | Global storage class for dynamic provisioning                                                                        | `""`   |
+| `global.volumePermissions.enabled` | Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup` | `true` |
 
 ### Common parameters
 
@@ -153,6 +170,22 @@ Leave as default if using external DB
 | `minio.provisioning.enabled`      | Enable minio provisioning                                 | `true`                        |
 | `minio.provisioning.generateUser` | Enable minio user generation                              | `true`                        |
 
+### Redis parameters
+
+| Name                                   | Description                                                      | Value                  |
+| -------------------------------------- | ---------------------------------------------------------------- | ---------------------- |
+| `redis.enabled`                        | Enable internal redis                                            | `true`                 |
+| `redis.image.repository`               | Internal Redis image repository                                  | `docker/bitnami/redis` |
+| `redis.image.tag`                      | Internal Redis image tag (immutable tags are recommended)        | `7.4.0`                |
+| `redis.image.pullPolicy`               | Internal Redis image pull policy                                 | `IfNotPresent`         |
+| `redis.image.pullSecrets`              | Specify docker-registry secret names as an array                 | `[]`                   |
+| `redis.secret.secretName`              | Name of the generated secret                                     | `agh-redis-secret`     |
+| `redis.secret.password`                | Redis password                                                   | `""`                   |
+| `redis.helpers.test.image.repository`  | Redis Connection Test image repository                           | `docker/library/redis` |
+| `redis.helpers.test.image.tag`         | Redis Connection Test image tag (immutable tags are recommended) | `7-alpine`             |
+| `redis.helpers.test.image.pullPolicy`  | Redis Connection Test image pull policy                          | `IfNotPresent`         |
+| `redis.helpers.test.image.pullSecrets` | Specify docker-registry secret names as an array                 | `[]`                   |
+
 ### RabbitMQ parameters
 
 | Name                           | Description                                          | Value                 |
@@ -211,7 +244,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | -------------------------------------- | -------------------------------------------------- | -------------------------------------- |
 | `captain.enabled`                      | Enable Captain module                              | `true`                                 |
 | `captain.image.repository`             | Captain image repository                           | `leukocyte-lab/argushack3/ctr-captain` |
-| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.5.9`                               |
+| `captain.image.tag`                    | Captain image tag (immutable tags are recommended) | `v1.7.6`                               |
 | `captain.image.pullPolicy`             | Captain image pull policy                          | `IfNotPresent`                         |
 | `captain.image.pullSecrets`            | Specify docker-registry secret names as an array   | `[]`                                   |
 | `captain.secret.enabled`               | Enable secret generate for Captain                 | `true`                                 |
@@ -235,6 +268,9 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Captain
 | `captain.secret.oidc.clientID`         | OIDC user                                          | `""`                                   |
 | `captain.secret.oidc.clientSecret`     | OIDC password                                      | `""`                                   |
 | `captain.secret.oidc.realm`            | OIDC realm                                         | `""`                                   |
+| `captain.serviceAccount.create`        | Create serviceAccount for Captain                  | `true`                                 |
+| `captain.serviceAccount.name`          | Name of the serviceAccount for Captain             | `captain-sa`                           |
+| `captain.rbac.create`                  | Create RBAC for Captain                            | `true`                                 |
 | `captain.extraEnv`                     | Captain additional environment variables           | `{}`                                   |
 
 ### AGH3-Controller parameters
@@ -246,7 +282,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Controller
 | ------------------------------------ | ----------------------------------------------------- | ----------------------------------------- |
 | `controller.enabled`                 | Enable Controller module                              | `true`                                    |
 | `controller.image.repository`        | Controller image repository                           | `leukocyte-lab/argushack3/ctr-controller` |
-| `controller.image.tag`               | Controller image tag (immutable tags are recommended) | `v0.7.1`                                  |
+| `controller.image.tag`               | Controller image tag (immutable tags are recommended) | `v0.7.2`                                  |
 | `controller.image.pullPolicy`        | Controller image pull policy                          | `IfNotPresent`                            |
 | `controller.image.pullSecrets`       | Specify docker-registry secret names as an array      | `[]`                                      |
 | `controller.secret.enabled`          | Enable secret generate for Controller                 | `true`                                    |
@@ -254,6 +290,9 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Controller
 | `controller.secret.minio.secretName` | Secret name for Minio                                 | `executor-minio-secret`                   |
 | `controller.secret.minio.user`       | Minio user                                            | `executor-minio-user`                     |
 | `controller.secret.minio.password`   | Minio password                                        | `""`                                      |
+| `controller.serviceAccount.create`   | Create serviceAccount for Controller                  | `true`                                    |
+| `controller.serviceAccount.name`     | Name of the serviceAccount for Controller             | `controller-sa`                           |
+| `controller.rbac.create`             | Create RBAC for Controller                            | `true`                                    |
 | `controller.env`                     | Controller environment variables                      |                                           |
 | `controller.env.REGISTRY_URL`        | Controller registry URL                               | `registry.lkc-lab.com`                    |
 | `controller.extraEnv`                | Controller additional environment variables           | `{}`                                      |
@@ -267,7 +306,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-UI
 | ---------------------- | ------------------------------------------------ | --------------------------------- |
 | `ui.enabled`           | Enable UI module                                 | `true`                            |
 | `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack3/ctr-ui` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.3.9`                          |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.6.11`                         |
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                    |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                              |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                              |
@@ -281,7 +320,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Report
 | -------------------------- | ------------------------------------------------- | --------------------------------- |
 | `report.enabled`           | Enable Report module                              | `true`                            |
 | `report.image.repository`  | Report image repository                           | `leukocyte-lab/argushack3/report` |
-| `report.image.tag`         | Report image tag (immutable tags are recommended) | `v1.0.9`                          |
+| `report.image.tag`         | Report image tag (immutable tags are recommended) | `v1.1.4`                          |
 | `report.image.pullPolicy`  | Report image pull policy                          | `IfNotPresent`                    |
 | `report.image.pullSecrets` | Specify docker-registry secret names as an array  | `[]`                              |
 | `report.extraEnv`          | UI additional environment variables               | `{}`                              |
