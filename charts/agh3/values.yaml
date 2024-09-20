@@ -185,11 +185,11 @@ postfix:
       repository: leukocyte-lab/argushack3/opendkim
       tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
       pullPolicy: IfNotPresent
-  ## @param postfix.mydomian Postfix mydomain
+  ## @param postfix.mydomain Postfix mydomain
   ## @param postfix.mail_myhostname Postfix mail_myhostname
   ## @param postfix.domain Postfix domain
   ##
-  mydomian: bas-mail-test.com
+  mydomain: bas-mail-test.com
   mail_myhostname: smtp.bas-mail-test.com
   domain: bas-mail-test.com
 ## @section Internal PostgreSQL database provisioning parameters

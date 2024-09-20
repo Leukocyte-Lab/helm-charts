@@ -20,7 +20,7 @@ dkim:
     tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
     pullPolicy: IfNotPresent
 
-mydomian: bas.com
+mydomain: bas.com
 mail_myhostname: mail.bas.com
 domain: bas.com
 resources: {}
