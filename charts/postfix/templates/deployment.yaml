@@ -31,7 +31,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: mydomain
-              value: {{ .Values.mydomian }}
+              value: {{ .Values.mydomain }}
             - name: mail_myhostname
               value: {{ .Values.mail_myhostname }}
         - name: dkim
