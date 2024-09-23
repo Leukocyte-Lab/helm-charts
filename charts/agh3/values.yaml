@@ -70,6 +70,7 @@ keygen:
   enabled: true
   apiToken: ""
   accountID: ""
+  url: "https://api.keygen.sh"
 ## @param ingress.enabled Enable ingress controller
 ## @param ingress.host Ingress hostname
 ##

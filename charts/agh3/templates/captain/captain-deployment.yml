@@ -110,6 +110,8 @@ spec:
             - name: SMTP_PORT
               value: {{ .Values.postfix.service.port | quote }}
             {{- end }}
+            - name: KEYGEN_URL
+              value: {{ .Values.keygen.url | default "https://api.keygen.sh"}}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
