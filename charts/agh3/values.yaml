@@ -163,7 +163,7 @@ postfix:
   ##
   image:
     repository: leukocyte-lab/argushack3/postfix
-    tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+    tag: production
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @section Postfix service provisioning parameters
@@ -184,7 +184,7 @@ postfix:
   dkim:
     image:
       repository: leukocyte-lab/argushack3/opendkim
-      tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+      tag: production
       pullPolicy: IfNotPresent
   ## @param postfix.mydomain Postfix mydomain
   ## @param postfix.mail_myhostname Postfix mail_myhostname

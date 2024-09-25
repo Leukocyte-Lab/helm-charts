@@ -9,7 +9,7 @@ global:
 podAnnotations: {}
 image:
   repository: leukocyte-lab/argushack3/postfix
-  tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+  tag: production
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -17,7 +17,7 @@ service:
 dkim:
   image:
     repository: leukocyte-lab/argushack3/opendkim
-    tag: 28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8
+    tag: production
     pullPolicy: IfNotPresent
 
 mydomain: bas.com
