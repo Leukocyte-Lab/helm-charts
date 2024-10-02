@@ -345,7 +345,9 @@ redis:
   ## @param redis.enabled Enable internal redis
   enabled: true
   ## @skip redis.fullnameOverride
+  ## @skip redis.architecture
   fullnameOverride: redis # remapping chart bitnami/redis -> redis
+  architecture: standalone
   image:
     ## @param redis.image.repository Internal Redis image repository
     ## @param redis.image.tag Internal Redis image tag (immutable tags are recommended)
