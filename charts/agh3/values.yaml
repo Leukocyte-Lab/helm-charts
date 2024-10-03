@@ -59,6 +59,7 @@ customRegistrySecret:
 ## @param keygen.secretName Secret name for keygen
 ## @param keygen.apiToken Keygen API Token
 ## @param keygen.accountID Keygen Account ID
+## @param keygen.url Keygen Endpoint URL
 ## ref: https://keygen.sh/docs/api
 ##
 keygen:
