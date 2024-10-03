@@ -48,14 +48,15 @@ helm install agh2 lkclab/agh2
 
 ### Keygen parameters
 
-| Name                | Description                       | Value               |
-| ------------------- | --------------------------------- | ------------------- |
-| `keygen.enabled`    | Enable secret generate for keygen | `true`              |
-| `keygen.secretName` | Secret name for keygen            | `keygen-secret`     |
-| `keygen.apiToken`   | Keygen API Token                  | `""`                |
-| `keygen.accountID`  | Keygen Account ID                 | `""`                |
-| `ingress.enabled`   | Enable ingress controller         | `true`              |
-| `ingress.host`      | Ingress hostname                  | `app.argushack.com` |
+| Name                | Description                       | Value                   |
+| ------------------- | --------------------------------- | ----------------------- |
+| `keygen.enabled`    | Enable secret generate for keygen | `true`                  |
+| `keygen.secretName` | Secret name for keygen            | `keygen-secret`         |
+| `keygen.apiToken`   | Keygen API Token                  | `""`                    |
+| `keygen.accountID`  | Keygen Account ID                 | `""`                    |
+| `keygen.url`        | Keygen Endpoint URL               | `https://api.keygen.sh` |
+| `ingress.enabled`   | Enable ingress controller         | `true`                  |
+| `ingress.host`      | Ingress hostname                  | `app.argushack.com`     |
 
 ### TLS parameters
 
@@ -92,28 +93,28 @@ Control the DB Helper behaviors.
 
 Leave as default if using external Postfix Server
 
-| Name                        | Description                                                 | Value                                      |
-| --------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
-| `postfix.enabled`           | Enable internal postfix                                     | `true`                                     |
-| `postfix.image.repository`  | Internal postfix image repository                           | `leukocyte-lab/argushack3/postfix`         |
-| `postfix.image.tag`         | Internal postfix image tag (immutable tags are recommended) | `28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8` |
-| `postfix.image.pullPolicy`  | Internal postfix image pull policy                          | `IfNotPresent`                             |
-| `postfix.image.pullSecrets` | Specify docker-registry secret names as an array            | `[]`                                       |
+| Name                        | Description                                                 | Value                              |
+| --------------------------- | ----------------------------------------------------------- | ---------------------------------- |
+| `postfix.enabled`           | Enable internal postfix                                     | `true`                             |
+| `postfix.image.repository`  | Internal postfix image repository                           | `leukocyte-lab/argushack3/postfix` |
+| `postfix.image.tag`         | Internal postfix image tag (immutable tags are recommended) | `production`                       |
+| `postfix.image.pullPolicy`  | Internal postfix image pull policy                          | `IfNotPresent`                     |
+| `postfix.image.pullSecrets` | Specify docker-registry secret names as an array            | `[]`                               |
 
 ### Postfix service provisioning parameters
 
 Leave as default if using internal Postfix
 
-| Name                            | Description                                              | Value                                      |
-| ------------------------------- | -------------------------------------------------------- | ------------------------------------------ |
-| `postfix.service.type`          | Postfix service type                                     | `ClusterIP`                                |
-| `postfix.service.port`          | Postfix service port                                     | `25`                                       |
-| `postfix.dkim.image.repository` | Internal DKIM image repository                           | `leukocyte-lab/argushack3/opendkim`        |
-| `postfix.dkim.image.tag`        | Internal DKIM image tag (immutable tags are recommended) | `28ada15b31011a4f7ecb1a864e6b07d8a15e1aa8` |
-| `postfix.dkim.image.pullPolicy` | Internal DKIM image pull policy                          | `IfNotPresent`                             |
-| `postfix.mydomian`              | Postfix mydomain                                         | `bas-mail-test.com`                        |
-| `postfix.mail_myhostname`       | Postfix mail_myhostname                                  | `smtp.bas-mail-test.com`                   |
-| `postfix.domain`                | Postfix domain                                           | `bas-mail-test.com`                        |
+| Name                            | Description                                              | Value                               |
+| ------------------------------- | -------------------------------------------------------- | ----------------------------------- |
+| `postfix.service.type`          | Postfix service type                                     | `ClusterIP`                         |
+| `postfix.service.port`          | Postfix service port                                     | `25`                                |
+| `postfix.dkim.image.repository` | Internal DKIM image repository                           | `leukocyte-lab/argushack3/opendkim` |
+| `postfix.dkim.image.tag`        | Internal DKIM image tag (immutable tags are recommended) | `production`                        |
+| `postfix.dkim.image.pullPolicy` | Internal DKIM image pull policy                          | `IfNotPresent`                      |
+| `postfix.mydomain`              | Postfix mydomain                                         | `bas-mail-test.com`                 |
+| `postfix.mail_myhostname`       | Postfix mail_myhostname                                  | `smtp.bas-mail-test.com`            |
+| `postfix.domain`                | Postfix domain                                           | `bas-mail-test.com`                 |
 
 ### Internal PostgreSQL database provisioning parameters
 
@@ -122,8 +123,8 @@ Leave as default if using external DB
 | Name                                         | Description                                                   | Value                                           |
 | -------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
 | `postgresql.enabled`                         | Enable internal database                                      | `true`                                          |
-| `postgresql.image.repository`                | Internal database image repository                            | `leukocyte-lab/postgresql`                      |
-| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian`  |
+| `postgresql.image.repository`                | Internal database image repository                            | `docker/bitnami/postgresql`                     |
+| `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `15`                                            |
 | `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                  |
 | `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                            |
 | `postgresql.auth.enabled`                    | Enable postgresql auth secret generate                        | `true`                                          |
@@ -306,7 +307,7 @@ ref: https://github.com/Leukocyte-Lab/AGH3-UI
 | ---------------------- | ------------------------------------------------ | --------------------------------- |
 | `ui.enabled`           | Enable UI module                                 | `true`                            |
 | `ui.image.repository`  | UI image repository                              | `leukocyte-lab/argushack3/ctr-ui` |
-| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.6.11`                         |
+| `ui.image.tag`         | UI image tag (immutable tags are recommended)    | `v1.6.12`                         |
 | `ui.image.pullPolicy`  | UI image pull policy                             | `IfNotPresent`                    |
 | `ui.image.pullSecrets` | Specify docker-registry secret names as an array | `[]`                              |
 | `ui.extraEnv`          | UI additional environment variables              | `{}`                              |
