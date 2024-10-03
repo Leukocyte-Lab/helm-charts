@@ -213,8 +213,8 @@ postgresql:
   ## @param postgresql.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/postgresql
-    tag: 15
+    repository: leukocyte-lab/postgresql
+    tag: v0.1.2-postgres-15.1.0-pgroonga-2.4.2-debian
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param postgresql.auth.enabled Enable postgresql auth secret generate
