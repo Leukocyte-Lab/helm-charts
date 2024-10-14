@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-aio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-aio
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-aio
+    spec:
+      securityContext:
+        sysctls:
+          - name: net.ipv4.ip_unprivileged_port_start
+            value: "0"
+      initContainers:
+        - name: init-db
+          image: "{{ .Values.aio.image.repository }}:{{ .Values.aio.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:{{ .Values.postgresql.global.postgresql.auth.password }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - "pnpx prisma migrate deploy"
+      containers:
+        - name: aio
+          image: {{ .Values.aio.image.repository }}:{{ .Values.aio.image.tag }}
+          ports:
+            - containerPort: 3000
+            - containerPort: 3100
+            - containerPort: 3170
+            - containerPort: 80
+          env:
+            - name: DATABASE_URL
+              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:{{ .Values.postgresql.global.postgresql.auth.password }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
+            {{- range $key, $value := .Values.aio.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

@@ -1,0 +1,82 @@
+# Global values for the Bitnami PostgreSQL chart
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: "hoppscotch"
+        password: "your-hoppscotch-password"
+        database: "hoppscotch"
+        existingSecret: ""
+        secretKeys:
+          adminPasswordKey: ""
+          userPasswordKey: ""
+          replicationPasswordKey: ""
+
+  primary:
+    persistence:
+      enabled: false
+      storageClass: "standard"
+      size: 8Gi
+      accessModes:
+        - ReadWriteOnce
+
+aio:
+  image:
+    repository: hoppscotch/hoppscotch
+    tag: 2024.9.1
+
+  # Environment variables to be use in the container. Please refer to the following document:
+  # https://docs.hoppscotch.io/documentation/self-host/community-edition/install-and-build#configuring-the-environment
+  env:
+    JWT_SECRET: "secret1233"
+    TOKEN_SALT_COMPLEXITY: 10
+    MAGIC_LINK_TOKEN_VALIDITY:  3
+    REFRESH_TOKEN_VALIDITY: "604800000"
+    ACCESS_TOKEN_VALIDITY: "86400000"
+    SESSION_SECRET: "add some secret here"
+    ALLOW_SECURE_COOKIES: true
+    DATA_ENCRYPTION_KEY: "data encryption key with 32 char"
+    REDIRECT_URL: "http://localhost:3000"
+    WHITELISTED_ORIGINS: "http://localhost:3170,http://localhost:3000,http://localhost:3100"
+    VITE_ALLOWED_AUTH_PROVIDERS: "GOOGLE,GITHUB,MICROSOFT,EMAIL"
+    GITHUB_CLIENT_ID: "************************************************"
+    GITHUB_CLIENT_SECRET: "************************************************"
+    GITHUB_CALLBACK_URL: "http://localhost:3170/v1/auth/github/callback"
+    GITHUB_SCOPE: "user:email"
+    MAILER_SMTP_ENABLE: "false"
+    MAILER_USE_CUSTOM_CONFIGS: "false"
+    #MAILER_ADDRESS_FROM: '"From Name Here" <from@example.com>'
+    MAILER_SMTP_URL: "smtps://user@domain.com:pass@smtp.domain.com" # used if custom mailer configs is false
+    MAILER_SMTP_HOST: "smtp.domain.com"
+    MAILER_SMTP_PORT: "587"
+    MAILER_SMTP_SECURE: "true"
+    MAILER_SMTP_USER: "user@domain.com"
+    MAILER_SMTP_PASSWORD: "pass"
+    MAILER_TLS_REJECT_UNAUTHORIZED: "true"
+    RATE_LIMIT_TTL: 60 # In seconds
+    RATE_LIMIT_MAX: 100 # Max requests per IP
+    VITE_BASE_URL: "http://localhost:3000"
+    VITE_SHORTCODE_BASE_URL: "http://localhost:3000"
+    VITE_ADMIN_URL: "http://localhost:3100"
+    VITE_BACKEND_GQL_URL: "http://localhost:3170/graphql"
+    VITE_BACKEND_WS_URL: "ws://localhost:3170/graphql"
+    VITE_BACKEND_API_URL: "http://localhost:3170/v1"
+    VITE_APP_TOS_LINK: "https://docs.hoppscotch.io/support/terms"
+    VITE_APP_PRIVACY_POLICY_LINK: "https://docs.hoppscotch.io/support/privacy"
+    ENABLE_SUBPATH_BASED_ACCESS: false
+  ports:
+    - 3000:3000
+    - 3100:3100
+    - 3170:3170
+    - 3080:80
+
+ingress:
+  enabled: true
+  hostname: "hoppscotch.test.com"
+  annotations:
+  path: /
+  pathType: Prefix
+  tls:
+    enabled: true
+    secretName: hoppscotch-tls
