@@ -1,0 +1,9 @@
+{{- if .Values.minio.internal }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agh-minio-cm
+data:
+  MINIO_NOTIFY_WEBHOOK_ENABLE_PRIMARY: "on"
+  MINIO_NOTIFY_WEBHOOK_ENDPOINT_PRIMARY: {{ printf "http://captain.%s.svc.cluster.local:8080/internal/webhook/minio" .Release.Namespace | quote }}
+{{- end }}
