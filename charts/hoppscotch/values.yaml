@@ -25,6 +25,7 @@ hoppscotch:
   image:
     repository: hoppscotch/hoppscotch
     tag: 2024.9.1
+    pullPolicy: IfNotPresent
 
   auth:
     JWT_SECRET: "secret1233"
@@ -38,6 +39,8 @@ hoppscotch:
       sessionSecretKey: ""
       mailerSmtpPasswordKey: ""
       dataEncryptionKey: ""
+
+    resources: {}
 
   # Environment variables to be use in the container. Please refer to the following document:
   # https://docs.hoppscotch.io/documentation/self-host/community-edition/install-and-build#configuring-the-environment

@@ -19,7 +19,7 @@ spec:
       initContainers:
         - name: init-db
           image: "{{ .Values.hoppscotch.image.repository }}:{{ .Values.hoppscotch.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.hoppscotch.image.pullPolicy }} 
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -33,7 +33,7 @@ spec:
               value: "{{ $value }}"
             {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.hoppscotch.resources | nindent 12 }}
           command: [ "/bin/sh", "-c" ]
           args:
             - "set -e; pnpx prisma migrate deploy"
