@@ -13,7 +13,7 @@ spec:
       http:
         paths:
           - path: {{ .Values.ingress.path }}
-            pathType: {{ .Values.ingress.pathType }}
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-aio

@@ -88,7 +88,6 @@ ingress:
   hostname: "hoppscotch.test.com"
   annotations:
   path: /
-  pathType: Prefix
   tls:
     enabled: true
     secretName: hoppscotch-tls
