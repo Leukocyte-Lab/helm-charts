@@ -9,16 +9,12 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      name: app-port
+      name: http-web-port
     - protocol: TCP
       port: 3100
       targetPort: 3100
-      name: admin-port
+      name: http-admin-port
     - protocol: TCP
       port: 3170
       targetPort: 3170
       name: backend-port
-    - protocol: TCP
-      port: 3080
-      targetPort: 80
-      name: web-port
