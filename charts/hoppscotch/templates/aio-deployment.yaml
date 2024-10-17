@@ -18,11 +18,16 @@ spec:
             value: "0"
       initContainers:
         - name: init-db
-          image: "{{ .Values.aio.image.repository }}:{{ .Values.aio.image.tag }}"
+          image: "{{ .Values.hoppscotch.image.repository }}:{{ .Values.hoppscotch.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" .Release.Name) }}
+                  key: {{ .Values.postgresql.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
             - name: DATABASE_URL
-              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:{{ .Values.postgresql.global.postgresql.auth.password }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
+              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:$(POSTGRES_PASSWORD)@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
@@ -34,16 +39,41 @@ spec:
             - "pnpx prisma migrate deploy"
       containers:
         - name: aio
-          image: {{ .Values.aio.image.repository }}:{{ .Values.aio.image.tag }}
+          image: {{ .Values.hoppscotch.image.repository }}:{{ .Values.hoppscotch.image.tag }}
           ports:
             - containerPort: 3000
             - containerPort: 3100
             - containerPort: 3170
             - containerPort: 80
           env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" .Release.Name) }}
+                  key: {{ .Values.postgresql.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
             - name: DATABASE_URL
-              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:{{ .Values.postgresql.global.postgresql.auth.password }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
-            {{- range $key, $value := .Values.aio.env }}
+              value: "postgres://{{ .Values.postgresql.global.postgresql.auth.username }}:$(POSTGRES_PASSWORD)@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.hoppscotch.auth.existingSecret | default (printf "%s-secrets" .Release.Name) }}
+                  key: jwt_secret
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.hoppscotch.auth.existingSecret | default (printf "%s-secrets" .Release.Name) }}
+                  key: session_secret
+            - name: MAILER_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.hoppscotch.auth.existingSecret | default (printf "%s-secrets" .Release.Name) }}
+                  key: mailer_smtp_password
+            - name: DATA_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.hoppscotch.auth.existingSecret | default (printf "%s-secrets" .Release.Name) }}
+                  key: data_encryption_key
+            {{- range $key, $value := .Values.hoppscotch.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
             {{- end }}
