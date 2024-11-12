@@ -343,6 +343,12 @@ minio:
   ## @param minio.extraEnvVarsCM
   ##
   extraEnvVarsCM: agh-minio-cm
+## @section Kueue parameters
+kueue:
+  ## @param kueue.enabled Enable internal kueue
+  enabled: true
+  ## @skip kueue.fullnameOverride
+  fullnameOverride: kueue
 ## @section Redis parameters
 ##
 redis:

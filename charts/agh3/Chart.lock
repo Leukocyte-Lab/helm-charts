@@ -17,5 +17,8 @@ dependencies:
 - name: postfix
   repository: https://charts.lkc-lab.com
   version: 0.1.1
-digest: sha256:fb6ba056468f47e486b96134dccb3de190f3525da983e7413f352b5bd6051982
-generated: "2024-09-11T12:52:01.457922+08:00"
+- name: kueue
+  repository: file://../../kueue/charts/kueue
+  version: 0.1.0
+digest: sha256:3786a73a76f17e6192a74fc3cc7c8eea688a7eee719ec9aa7d16244bb595504d
+generated: "2024-11-12T15:25:46.351324+08:00"
