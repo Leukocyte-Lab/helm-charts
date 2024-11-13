@@ -214,7 +214,7 @@ postgresql:
   ##
   image:
     repository: docker/bitnami/postgresql
-    tag: 15
+    tag: 15.7.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param postgresql.auth.enabled Enable postgresql auth secret generate
