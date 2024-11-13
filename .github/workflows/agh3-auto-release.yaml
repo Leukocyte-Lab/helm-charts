@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
-      - orphan
+      - orphan/**
     paths:
       - charts/agh3/**
+      - .github/workflows/agh3-auto-release.yaml
 
 jobs:
   release:
