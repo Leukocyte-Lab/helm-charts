@@ -43,3 +43,7 @@ dependencies:
     version: 0.1.1
     repository: https://charts.lkc-lab.com
     condition: postfix.enabled
+  - name: kueue
+    version: 0.1.0
+    repository: file://../../kueue/charts/kueue
+    condition: kueue.enabled
