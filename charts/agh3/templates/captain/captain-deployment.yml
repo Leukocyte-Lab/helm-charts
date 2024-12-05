@@ -80,6 +80,8 @@ spec:
         - name: captain
           image: {{ include "captain.image" . }}
           env:
+            - name: IMAGE_REGISTRY_URL
+              value: {{ .Values.global.imageRegistry }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
