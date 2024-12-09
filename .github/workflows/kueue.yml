@@ -1,0 +1,50 @@
+name: ⚙️ [Kueue] Release Charts
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - charts/kueue/**
+      - .github/workflows/kueue.yml
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          path: src
+          fetch-depth: 0
+
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          path: dest
+          ref: "gh-pages"
+          fetch-depth: 0
+
+      - name: 📦 Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.13.3
+
+      - name: Package Helm Charts
+        shell: bash
+        run: |
+          helm dep up src/charts/kueue
+          helm package src/charts/kueue -u -d dest
+
+      - name: 🎁 Release Chart
+        shell: bash
+        working-directory: dest
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
+          git add $(git ls-files -o --exclude-standard)
+          git add index.yaml
+          git commit -m "Release from ref: $GITHUB_SHA"
+          git push
