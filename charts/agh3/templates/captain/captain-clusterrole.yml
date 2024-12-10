@@ -7,6 +7,24 @@ metadata:
     {{- include "AGH3.labels" . | nindent 4 }}
 rules:
 - apiGroups:
+  - agh.lkc-lab.com
+  resources:
+  - actions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - agh.lkc-lab.com
+  resources:
+  - actions/status
+  verbs:
+  - get
+- apiGroups:
   - ""
   resources:
   - pods
