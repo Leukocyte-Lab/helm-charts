@@ -1,0 +1,3 @@
+[submodule "kueue"]
+	path = kueue
+	url = https://github.com/kubernetes-sigs/kueue
