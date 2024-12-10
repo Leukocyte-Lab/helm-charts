@@ -46,6 +46,8 @@ spec:
         - name: controller
           image: {{ include "controller.image" . }}
           env:
+            - name: KUEUE_NAME
+              value: {{ .Values.kueue.queueName.local }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
