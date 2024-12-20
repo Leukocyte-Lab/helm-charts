@@ -4,7 +4,7 @@ dependencies:
   version: 12.1.2
 - name: minio
   repository: https://charts.bitnami.com/bitnami
-  version: 12.2.4
+  version: 14.8.6
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 13.0.0
@@ -17,5 +17,5 @@ dependencies:
 - name: postfix
   repository: https://charts.lkc-lab.com
   version: 0.1.1
-digest: sha256:fb6ba056468f47e486b96134dccb3de190f3525da983e7413f352b5bd6051982
-generated: "2024-09-11T12:52:01.457922+08:00"
+digest: sha256:b44e4ac061979e874a131416457e9401c5e2641f30ad0a560b23d8639de489d5
+generated: "2024-12-08T22:18:07.942269+09:00"
