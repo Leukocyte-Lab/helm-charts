@@ -23,28 +23,66 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: dest
-          ref: 'gh-pages'
+          ref: "gh-pages"
           fetch-depth: 0
-      
-      - name: 📦 Install Helm
+
+      - name: "🔔 Checkout (OEM ArrayBAS)"
+        uses: actions/checkout@v4
+        with:
+          repository: Leukocyte-Lab/arraybas-charts
+          path: dest-arraybas
+          token: "${{ secrets.GH_TOKEN }}"
+          ref: "gh-pages"
+          fetch-depth: 0
+
+      - name: 🪝 Install Helm
         uses: azure/setup-helm@v4
         with:
           version: v3.13.3
 
-      - name: Package Helm Charts
+      - name: 📦 Packing Helm Charts
         shell: bash
         run: |
           helm dep up src/charts/agh3
           helm package src/charts/agh3 -u -d dest
-                
+
+      - name: 🖍️ Update manifest for OEM
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp src/charts/agh3/values.yaml src/charts/agh3/values.yaml.tmp
+            cat src/charts/agh3/values.yaml.tmp | \
+              yq '.name = 'bas'' | \
+              yq '.description = 'A Helm chart for BAS3'' | \
+              yq '.' > src/charts/agh3/values.yaml
+            rm src/charts/agh3/values.yaml.tmp
+
+      - name: "📦 Packing Helm Charts (OEM ArrayBAS)"
+        shell: bash
+        run: |
+          helm dep up src/charts/agh3
+          helm package src/charts/agh3 -u -d dest-arraybas
+
       - name: 🎁 Release Chart
         shell: bash
         working-directory: dest
         run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name '$GITHUB_ACTOR'
+          git config user.email '$GITHUB_ACTOR@users.noreply.github.com'
           helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
           git add $(git ls-files -o --exclude-standard)
           git add index.yaml
-          git commit -m "Release from ref: $GITHUB_SHA"
-          git push          
+          git commit -m 'Release from ref: $GITHUB_SHA'
+          git push
+
+      - name: "🎁 Release Chart (OEM: ArrayBAS)"
+        shell: bash
+        working-directory: dest-arraybas
+        run: |
+          git config user.name '$GITHUB_ACTOR'
+          git config user.email '$GITHUB_ACTOR@users.noreply.github.com'
+          helm repo index . --url https://chart_bas.arraynetworks.com/ --merge index.yaml
+          git add $(git ls-files -o --exclude-standard)
+          git add index.yaml
+          git commit -m 'Release from ref: $GITHUB_SHA'
+          git push
