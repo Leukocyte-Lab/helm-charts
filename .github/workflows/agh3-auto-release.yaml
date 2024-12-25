@@ -26,7 +26,7 @@ jobs:
           ref: "gh-pages"
           fetch-depth: 0
 
-      - name: "🔔 Checkout (OEM ArrayBAS)"
+      - name: "🔔 Checkout (OEM: ArrayBAS)"
         uses: actions/checkout@v4
         with:
           repository: Leukocyte-Lab/arraybas-charts
@@ -46,7 +46,7 @@ jobs:
           helm dep up src/charts/agh3
           helm package src/charts/agh3 -u -d dest
 
-      - name: 🖍️ Update manifest for OEM
+      - name: "🖍️ Update manifest for (OEM: ArrayBAS)"
         uses: mikefarah/yq@v4.43.1
         with:
           cmd: |
@@ -57,7 +57,7 @@ jobs:
               yq '.' > src/charts/agh3/values.yaml
             rm src/charts/agh3/values.yaml.tmp
 
-      - name: "📦 Packing Helm Charts (OEM ArrayBAS)"
+      - name: "📦 Packing Helm Charts (OEM: ArrayBAS)"
         shell: bash
         run: |
           helm dep up src/charts/agh3
