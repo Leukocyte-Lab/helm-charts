@@ -52,8 +52,8 @@ jobs:
           cmd: |
             cp src/charts/agh3/values.yaml src/charts/agh3/values.yaml.tmp
             cat src/charts/agh3/values.yaml.tmp | \
-              yq '.name = 'bas'' | \
-              yq '.description = 'A Helm chart for BAS3'' | \
+              yq '.name = "bas"' | \
+              yq '.description = "A Helm chart for BAS3"' | \
               yq '.' > src/charts/agh3/values.yaml
             rm src/charts/agh3/values.yaml.tmp
 
@@ -67,22 +67,22 @@ jobs:
         shell: bash
         working-directory: dest
         run: |
-          git config user.name '$GITHUB_ACTOR'
-          git config user.email '$GITHUB_ACTOR@users.noreply.github.com'
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
           git add $(git ls-files -o --exclude-standard)
           git add index.yaml
-          git commit -m 'Release from ref: $GITHUB_SHA'
+          git commit -m "Release from ref: $GITHUB_SHA"
           git push
 
       - name: "🎁 Release Chart (OEM: ArrayBAS)"
         shell: bash
         working-directory: dest-arraybas
         run: |
-          git config user.name '$GITHUB_ACTOR'
-          git config user.email '$GITHUB_ACTOR@users.noreply.github.com'
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           helm repo index . --url https://chart_bas.arraynetworks.com/ --merge index.yaml
           git add $(git ls-files -o --exclude-standard)
           git add index.yaml
-          git commit -m 'Release from ref: $GITHUB_SHA'
+          git commit -m "Release from ref: $GITHUB_SHA"
           git push
