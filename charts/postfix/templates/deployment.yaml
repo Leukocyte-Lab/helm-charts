@@ -34,6 +34,10 @@ spec:
               value: {{ .Values.mydomain }}
             - name: mail_myhostname
               value: {{ .Values.mail_myhostname }}
+          volumeMounts:
+            - name: postfix-config
+              mountPath: /etc/postfix/main.cf
+              subPath: main.cf
         - name: dkim
           image: {{ include "dkim.image" . }}
           imagePullPolicy: {{ .Values.dkim.image.pullPolicy }}
@@ -71,3 +75,6 @@ spec:
         - name: domainkey
           secret:
             secretName: rsa-private-key
+        - name: postfix-config
+          configMap:
+            name: postfix-config
