@@ -99,8 +99,8 @@ data:
 
 
     smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-    myhostname = smtp.bas-mail-test.com
-    mydomain = bas-mail-test.com
+    myhostname = {{ .Values.mail_myhostname }}
+    mydomain = {{ .Values.mydomain }}
     lmtp_host_lookup = native
     smtp_host_lookup = native
     alias_maps = hash:/etc/aliases

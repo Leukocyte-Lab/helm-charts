@@ -29,11 +29,6 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: mydomain
-              value: {{ .Values.mydomain }}
-            - name: mail_myhostname
-              value: {{ .Values.mail_myhostname }}
           volumeMounts:
             - name: postfix-config
               mountPath: /etc/postfix/main.cf
