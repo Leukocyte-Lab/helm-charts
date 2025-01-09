@@ -141,6 +141,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.captain.secret.minio.secretName }}
                   key: capt-minio-password
+            - name: RABBITMQ_QUEUE
+              value: {{ .Values.rabbitmq.queueName }}
             - name: RABBITMQ_Conn
               valueFrom:
                 secretKeyRef:
