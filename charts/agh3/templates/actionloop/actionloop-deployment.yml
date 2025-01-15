@@ -1,0 +1,134 @@
+{{- if .Values.actionLoop.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: action-loop
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.actionLoop.replicaCount }}
+  selector:
+    matchLabels:
+      app: action-loop
+  template:
+    metadata:
+      labels:
+        app: action-loop
+    spec:
+      {{- include "actionLoop.imagePullSecrets" . | nindent 6 }}
+      initContainers:
+        {{- if .Values.redis.enabled }}
+        - name: action-loop-init-redis
+          image: {{ include "redis-test.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.secret.secretName }}
+                  key: password
+          command:
+            [
+              "sh",
+              "-c",
+              "until redis-cli -h redis-master.$(NAMESPACE).svc.cluster.local -a $REDIS_PASSWORD ping; do echo waiting for redis; sleep 1; done",
+            ]
+        {{- end }}
+        - name: action-loop-init-rabbitmq
+          image: {{ include "rabbitmq-test-client.image" . }}
+          env:
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: manager-uri
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}
+                  key: password
+            - name: RABBITMQ_API_ENDPOINT
+              value: "$(RABBITMQ_URI)/api/health/checks/virtual-hosts"
+          command:
+            [
+              "sh",
+              "-c",
+              "until curl -f --user $RABBITMQ_USERNAME:$RABBITMQ_PASSWORD $RABBITMQ_API_ENDPOINT ; do echo waiting for rabbitmq; sleep 1; done",
+            ]
+        - name: action-loop-init-postgresql
+          image: {{ include "db.image" . }}
+          env:
+            - name: PG_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: DB_CONN_STR
+          command:
+            [
+              "sh",
+              "-c",
+              "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
+            ]
+      containers:
+        - name: action-loop
+          image: {{ include "actionLoop.image" . }}
+          env:
+            - name: IMAGE_REGISTRY_URL
+              value: "registry.lkc-lab.com"
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_URL
+              value: "redis-master.$(NAMESPACE).svc.cluster.local:6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.secret.secretName }}
+                  key: password
+            {{- end }}
+            - name: DB_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.db.secretName }}
+                  key: DB_CONN_STR
+            - name: Web_Host_Port
+              value: "0.0.0.0:8080"
+            - name: RABBITMQ_QUEUE
+              value: {{ .Values.rabbitmq.queueName }}
+            - name: RABBITMQ_Conn
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rabbitmq.secret.secretName }}-connection
+                  key: "RABBITMQ_CONN_STR"
+            - name: "APP_VERSION"
+              value: {{ .Chart.AppVersion | quote }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: http
+              containerPort: 8080
+          imagePullPolicy: {{ .Values.actionLoop.image.pullPolicy }}
+      restartPolicy: "Always"
+      automountServiceAccountToken: true
+      serviceAccountName: {{ include "actionLoop.serviceAccountName" . }}
+{{- end }}

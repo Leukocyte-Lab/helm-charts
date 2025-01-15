@@ -512,6 +512,39 @@ rabbitmq:
         tag: 7.78.0
         pullPolicy: IfNotPresent
         pullSecrets: []
+## @section AGH3-Action-Loop parameters
+## @descriptionStart
+## Action Loop module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-Captain
+## @descriptionEnd
+##
+actionLoop:
+  ## @param actionLoop.enabled Enable Action Loop module
+  ##
+  enabled: true
+  ## @param actionLoop.replicaCount Number of Action Loop replicas
+  ##
+  replicaCount: 3
+  ## @param actionLoop.image.repository Action Loop image repository
+  ## @param actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
+  ## @param actionLoop.image.pullPolicy Action Loop image pull policy
+  ## @param actionLoop.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/ctr-action-loop
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param actionLoop.serviceAccount.create Create serviceAccount for Action Loop
+  ## @param actionLoop.serviceAccount.name Name of the serviceAccount for Action Loop
+  ##
+  serviceAccount:
+    create: true
+    name: action-loop-sa
+  ## @param actionLoop.rbac.create Create RBAC for Action Loop
+  ##
+  rbac:
+    create: true
 ## @section AGH3-Captain parameters
 ## @descriptionStart
 ## Captain module for AGH3.
