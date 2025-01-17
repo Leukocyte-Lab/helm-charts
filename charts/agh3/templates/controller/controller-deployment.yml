@@ -45,7 +45,11 @@ spec:
       containers:
         - name: controller
           image: {{ include "controller.image" . }}
+          args:
+          - "--health-probe-bind-address=:8081"
           env:
+            - name: KUEUE_NAME
+              value: {{ .Values.kueue.queueName.local }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -65,6 +69,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.controller.secret.minio.secretName }}
                   key: executor-minio-password
+            - name: RABBITMQ_QUEUE
+              value: {{ .Values.rabbitmq.queueName }}
             - name: RABBITMQ_Conn
               valueFrom:
                 secretKeyRef:
@@ -80,8 +86,8 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /mq_health_check
-              port: 9050
+              path: /healthz
+              port: 8081
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 10
