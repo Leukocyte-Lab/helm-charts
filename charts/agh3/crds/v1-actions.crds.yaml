@@ -377,21 +377,9 @@ spec:
                     identify the action is a root action
                     kubebuilder:default:false
                   type: boolean
-                trigerRun:
-                  description:
-                    If mark TrigerRun to true, when detected by controller,
-                    it will run action and resum this value to false to ensure run once
-                  type: boolean
-                trigerStop:
-                  description:
-                    If mark Stop to true, when detected by controller, it
-                    will stop action and resum this value to false to ensure run once
-                  type: boolean
               required:
                 - containers
                 - historyID
-                - trigerRun
-                - trigerStop
               type: object
             status:
               description: ActionStatus defines the observed state of Action
