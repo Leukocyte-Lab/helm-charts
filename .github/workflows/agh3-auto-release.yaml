@@ -50,12 +50,12 @@ jobs:
         uses: mikefarah/yq@v4.43.1
         with:
           cmd: |
-            cp src/charts/agh3/values.yaml src/charts/agh3/values.yaml.tmp
-            cat src/charts/agh3/values.yaml.tmp | \
+            cp src/charts/agh3/Chart.yaml src/charts/agh3/Chart.yaml.tmp
+            cat src/charts/agh3/Chart.yaml.tmp | \
               yq '.name = "bas"' | \
               yq '.description = "A Helm chart for BAS3"' | \
-              yq '.' > src/charts/agh3/values.yaml
-            rm src/charts/agh3/values.yaml.tmp
+              yq '.' > src/charts/agh3/Chart.yaml
+            rm src/charts/agh3/Chart.yaml.tmp
 
       - name: "📦 Packing Helm Charts (OEM: ArrayBAS)"
         shell: bash
