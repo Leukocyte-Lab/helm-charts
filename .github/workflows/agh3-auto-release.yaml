@@ -52,7 +52,7 @@ jobs:
           cmd: |
             cp src/charts/agh3/Chart.yaml src/charts/agh3/Chart.yaml.tmp
             cat src/charts/agh3/Chart.yaml.tmp | \
-              yq '.name = "bas"' | \
+              yq '.name = "arraybas"' | \
               yq '.description = "A Helm chart for BAS3"' | \
               yq '.' > src/charts/agh3/Chart.yaml
             rm src/charts/agh3/Chart.yaml.tmp
