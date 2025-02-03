@@ -183,6 +183,13 @@ Return the proper rabbitmq-test-client image name
 {{- end }}
 
 {{/*
+Return the proper kueue-initialize image name
+*/}}
+{{- define "kueue-initialize.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.kueue.helpers.initialize.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper Captain image name
 */}}
 {{- define "captain.image" -}}

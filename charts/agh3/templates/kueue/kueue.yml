@@ -1,0 +1,38 @@
+{{ if .Values.kueue.enabled }}
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: {{ .Values.kueue.queueName.cluster }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  namespaceSelector: {}
+  resourceGroups:
+    - coveredResources: ["jobs"]
+      flavors:
+        - name: "default-flavor"
+          resources:
+            - name: "jobs"
+              nominalQuota: {{ .Values.kueue.concurrentJobs }}
+
+---
+
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.kueue.queueName.local }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  clusterQueue: {{ .Values.kueue.queueName.cluster }}
+
+---
+
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ResourceFlavor
+metadata:
+  name: default-flavor
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+{{- end }}
