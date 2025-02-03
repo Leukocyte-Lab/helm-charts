@@ -16,6 +16,6 @@ dependencies:
   version: 2.19.1
 - name: postfix
   repository: https://charts.lkc-lab.com
-  version: 0.1.1
-digest: sha256:fb6ba056468f47e486b96134dccb3de190f3525da983e7413f352b5bd6051982
-generated: "2024-09-11T12:52:01.457922+08:00"
+  version: 0.1.2
+digest: sha256:57c4fcdeb424562a7f162a86b9b4e70ce4057b1903a10b832be7f5a95b346157
+generated: "2025-02-03T17:12:10.669177+08:00"
