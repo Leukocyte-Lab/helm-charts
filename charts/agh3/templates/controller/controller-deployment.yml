@@ -48,8 +48,10 @@ spec:
           args:
           - "--health-probe-bind-address=:8081"
           env:
+            {{- if .Values.kueue.enabled }}
             - name: KUEUE_NAME
               value: {{ .Values.kueue.queueName.local }}
+            {{- end }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
