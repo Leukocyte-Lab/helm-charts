@@ -104,6 +104,25 @@ playground:
       messagingSenderId: ""
       appId: ""
       measurementId: ""
+    ## @param playground.secret.ai.enabled Enable secret generate for Playground AI
+    ##
+    ai:
+      ## @skip playground.secret.ai.secretName
+      ## Secret name for Playground AI
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
+      secretName: playground-ai-secrets
+      enabled: true
+      ## @skip playground.secret.ai.workflows List of AI workflows
+      ##
+      workflows:
+        []
+        # @example
+        #
+        # - name: "generate-mitigations"
+        #   token: "token1"
+        # - name: "generate-mitigation"
+        #   token: "token2"
   ## @section Playground service provisioning parameters
   ##
   ## @param playground.service.backendRef.kind Backend Service kind (available options: Service, ExternalService)
