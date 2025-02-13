@@ -50,6 +50,7 @@ jobs:
             --set playground.secret.firebase.messagingSenderId='ci-test-firebase-sender-id' \
             --set playground.secret.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
             --set playground.secret.firebase.measurementId='G-CI_TEST_CODE' \
+            --set-json playground.secret.ai.workflows=[{"name":"generate-mitigations","token":"test-token-123"},{"name":"generate-mitigation","token":"test-token-456"}] \
             -n agh3-playground
 
       - name: 🧪 Run chart-testing -> internal mode with custom namespace
@@ -67,6 +68,7 @@ jobs:
             --set playground.secret.firebase.messagingSenderId='ci-test-firebase-sender-id' \
             --set playground.secret.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
             --set playground.secret.firebase.measurementId='G-CI_TEST_CODE' \
+            --set-json playground.secret.ai.workflows=[{"name":"generate-mitigations","token":"test-token-123"},{"name":"generate-mitigation","token":"test-token-456"}] \
             -n agh3-playground
 
       - name: 🧪 Run chart-testing -> external mode
@@ -84,4 +86,5 @@ jobs:
             --set playground.secret.firebase.messagingSenderId='ci-test-firebase-sender-id' \
             --set playground.secret.firebase.appId='1:ci-test-firebase-sender-id:web:ci-test-firebase-app-id' \
             --set playground.secret.firebase.measurementId='G-CI_TEST_CODE' \
+            --set-json playground.secret.ai.workflows=[{"name":"generate-mitigations","token":"test-token-123"},{"name":"generate-mitigation","token":"test-token-456"}] \
             -n agh3-playground
