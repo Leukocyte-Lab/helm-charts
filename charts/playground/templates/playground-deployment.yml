@@ -38,6 +38,10 @@ spec:
               mountPath: /usr/share/nginx/html/api/secrets/firebase.json
               subPath: firebase.json
               readOnly: true
+            - name: ai-secrets
+              mountPath: /usr/share/nginx/html/api/secrets/ai.json
+              subPath: ai.json
+              readOnly: true
           {{- end }}
       restartPolicy: Always
       {{- if .Values.playground.secret.firebase.enabled }}
@@ -45,5 +49,8 @@ spec:
         - name: firebase-secrets
           secret:
             secretName: {{ .Values.playground.secret.firebase.secretName }}
+        - name: ai-secrets
+          secret:
+            secretName: {{ .Values.playground.secret.ai.secretName }}
       {{- end }}
 {{- end }}
