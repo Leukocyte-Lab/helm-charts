@@ -74,7 +74,7 @@ playground:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v1.3.2
+    tag: v1.4.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param playground.secret.enabled Enable secret generate for Playground
@@ -115,14 +115,13 @@ playground:
       enabled: true
       ## @skip playground.secret.ai.workflows List of AI workflows
       ##
-      workflows:
-        []
-        # @example
-        #
-        # - name: "generate-mitigations"
-        #   token: "token1"
-        # - name: "generate-mitigation"
-        #   token: "token2"
+      workflows: []
+      # @example
+      #
+      # - name: "generate-mitigations"
+      #   token: "token1"
+      # - name: "generate-mitigation"
+      #   token: "token2"
   ## @section Playground service provisioning parameters
   ##
   ## @param playground.service.backendRef.kind Backend Service kind (available options: Service, ExternalService)
