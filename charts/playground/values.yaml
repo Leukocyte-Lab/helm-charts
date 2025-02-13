@@ -130,6 +130,7 @@ playground:
   ## @param playground.service.backendRef.port Backend Service port
   ## @param playground.service.backendRef.protocol Backend Service protocol
   ## @param playground.service.backendRef.endpoint Backend Service endpoint for the Playground service (required and must be full URL when playground.service.backendRef.kind is ExternalService, only the path or leave empty when playground.service.backendRef.kind is Service)
+  ## @param playground.service.ai.endpoint AI service endpoint
   ##
   service:
     backendRef:
@@ -138,6 +139,8 @@ playground:
       name: "captain"
       port: 8080
       protocol: "HTTP"
+      endpoint: ""
+    ai:
       endpoint: ""
   ## @param playground.extraEnv UI additional environment variables
   ##
