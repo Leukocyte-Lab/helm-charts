@@ -1,0 +1,9 @@
+apiVersion: v2
+name: hoppscotch
+description: A Helm chart for Hoppscotch services
+version: 0.1.0
+appVersion: "1.0"
+dependencies:
+  - name: postgresql
+    version: 16.0.1
+    repository: https://charts.bitnami.com/bitnami
