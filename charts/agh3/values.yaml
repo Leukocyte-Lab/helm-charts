@@ -346,7 +346,7 @@ minio:
 ## @section Kueue parameters
 kueue:
   ## @param kueue.enabled Enable internal kueue
-  enabled: true
+  enabled: false
   ## @skip kueue.fullnameOverride
   fullnameOverride: kueue
   queueName:
