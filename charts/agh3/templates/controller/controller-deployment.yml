@@ -45,6 +45,8 @@ spec:
       containers:
         - name: controller
           image: {{ include "controller.image" . }}
+          args:
+          - "--health-probe-bind-address=:8081"
           env:
             - name: KUEUE_NAME
               value: {{ .Values.kueue.queueName.local }}
@@ -84,8 +86,8 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /mq_health_check
-              port: 9050
+              path: /healthz
+              port: 8081
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 10
