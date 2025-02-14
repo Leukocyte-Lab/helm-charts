@@ -65,6 +65,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.controller.secret.minio.secretName }}
                   key: executor-minio-password
+            - name: RABBITMQ_QUEUE
+              value: {{ .Values.rabbitmq.queueName }}
             - name: RABBITMQ_Conn
               valueFrom:
                 secretKeyRef:
