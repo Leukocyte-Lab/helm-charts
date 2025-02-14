@@ -69,7 +69,7 @@ jobs:
               yq '.controller.image.tag = "${{ steps.controller.outputs.tag }}"' | \
               yq '.ui.image.tag = "${{ steps.ui.outputs.tag }}"' | \
               yq '.report.image.tag = "${{ steps.report.outputs.tag }}"' | \
-              yq '.actionLoop.image.tag = "${{ steps.captain.outputs.tag }}"' \
+              yq '.actionLoop.image.tag = "${{ steps.captain.outputs.tag }}"' | \
               yq '.' > charts/agh3/values.yaml
             rm charts/agh3/values.yaml.tmp
 
