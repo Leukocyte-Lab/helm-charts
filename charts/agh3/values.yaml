@@ -531,7 +531,7 @@ actionLoop:
   ## @param actionLoop.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: leukocyte-lab/argushack3/ctr-action-loop
+    repository: leukocyte-lab/argushack3/ctr-actionloop
     tag: v1.0.0
     pullPolicy: IfNotPresent
     pullSecrets: []
