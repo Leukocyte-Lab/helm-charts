@@ -176,6 +176,8 @@ spec:
                   key: realm
                   name: {{ .Values.captain.secret.oidc.secretName }}
                   optional: true
+            - name: CHART_NAME
+              value: {{ .Chart.Name | quote }}
             {{- if .Values.global.proxy.enabled}}
             {{- include "global.proxy.envs" . | nindent 12 }}
             {{- end }}

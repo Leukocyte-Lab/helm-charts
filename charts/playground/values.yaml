@@ -74,7 +74,7 @@ playground:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v1.3.0
+    tag: v1.3.2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param playground.secret.enabled Enable secret generate for Playground
