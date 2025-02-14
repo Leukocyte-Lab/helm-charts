@@ -343,6 +343,19 @@ minio:
   ## @param minio.extraEnvVarsCM
   ##
   extraEnvVarsCM: agh-minio-cm
+## @section Kueue parameters
+kueue:
+  ## @param kueue.enabled Enable internal kueue
+  enabled: true
+  ## @skip kueue.fullnameOverride
+  fullnameOverride: kueue
+  queueName:
+    ## @param kueue.queueName.cluster Cluster queue name
+    ## @param kueue.queueName.local Local queue name
+    cluster: agh3-cluster-pool
+    local: agh3-local-pool
+  ## @param kueue.concurrentJobs Number of concurrent jobs
+  concurrentJobs: 100
 ## @section Redis parameters
 ##
 redis:
