@@ -51,7 +51,7 @@ data:
 
     # Hosts for which to sign rather than verify, default is 127.0.0.1. See the
     # OPERATION section of opendkim(8) for more information.
-    #InternalHosts		192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
+    InternalHosts		192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
 
     # The trust anchor enables DNSSEC. In Debian, the trust anchor file is provided
     # by the package dns-root-data.
