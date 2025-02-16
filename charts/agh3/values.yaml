@@ -511,7 +511,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.11.0
+    tag: v1.11.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
