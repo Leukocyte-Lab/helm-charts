@@ -521,7 +521,7 @@ rabbitmq:
 actionLoop:
   ## @param actionLoop.enabled Enable Action Loop module
   ##
-  enabled: true
+  enabled: false
   ## @param actionLoop.replicaCount Number of Action Loop replicas
   ##
   replicaCount: 3
