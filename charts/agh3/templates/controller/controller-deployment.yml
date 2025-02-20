@@ -88,8 +88,8 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /healthz
-              port: 8081
+              path: /mq_health_check
+              port: 9050
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 10
