@@ -655,7 +655,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.11.0
+    tag: v1.11.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
