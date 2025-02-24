@@ -74,7 +74,7 @@ playground:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v1.2.4
+    tag: v1.4.1
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param playground.secret.enabled Enable secret generate for Playground
@@ -104,6 +104,24 @@ playground:
       messagingSenderId: ""
       appId: ""
       measurementId: ""
+    ## @param playground.secret.ai.enabled Enable secret generate for Playground AI
+    ##
+    ai:
+      ## @skip playground.secret.ai.secretName
+      ## Secret name for Playground AI
+      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+      ##
+      secretName: playground-ai-secrets
+      enabled: true
+      ## @skip playground.secret.ai.workflows List of AI workflows
+      ##
+      workflows: []
+      # @example
+      #
+      # - name: "generate-mitigations"
+      #   token: "token1"
+      # - name: "generate-mitigation"
+      #   token: "token2"
   ## @section Playground service provisioning parameters
   ##
   ## @param playground.service.backendRef.kind Backend Service kind (available options: Service, ExternalService)
@@ -112,6 +130,7 @@ playground:
   ## @param playground.service.backendRef.port Backend Service port
   ## @param playground.service.backendRef.protocol Backend Service protocol
   ## @param playground.service.backendRef.endpoint Backend Service endpoint for the Playground service (required and must be full URL when playground.service.backendRef.kind is ExternalService, only the path or leave empty when playground.service.backendRef.kind is Service)
+  ## @param playground.service.ai.endpoint AI service endpoint
   ##
   service:
     backendRef:
@@ -120,6 +139,8 @@ playground:
       name: "captain"
       port: 8080
       protocol: "HTTP"
+      endpoint: ""
+    ai:
       endpoint: ""
   ## @param playground.extraEnv UI additional environment variables
   ##

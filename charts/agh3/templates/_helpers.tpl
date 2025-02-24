@@ -183,6 +183,13 @@ Return the proper rabbitmq-test-client image name
 {{- end }}
 
 {{/*
+Return the proper kueue-initialize image name
+*/}}
+{{- define "kueue-initialize.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.kueue.helpers.initialize.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper Captain image name
 */}}
 {{- define "captain.image" -}}
@@ -212,6 +219,31 @@ Return the name of the service account to use for the Captain
   {{- else }}
     {{- default "default" .Values.captain.serviceAccount.name }}
 {{- end }}
+{{- end -}}
+
+{{/*
+Return the proper Action Loop image name
+*/}}
+{{- define "actionLoop.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.actionLoop.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "actionLoop.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.actionLoop.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the name of service account to use for Action Loop
+*/}}
+{{- define "actionLoop.serviceAccountName" -}}
+  {{- if .Values.actionLoop.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.actionLoop.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.actionLoop.serviceAccount.name }}
+  {{- end }}
 {{- end -}}
 
 {{/*

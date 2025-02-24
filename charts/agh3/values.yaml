@@ -343,11 +343,23 @@ minio:
   ## @param minio.extraEnvVarsCM
   ##
   extraEnvVarsCM: agh-minio-cm
-  
   persistence:
     ## @param persistence.mountPath Data volume mount path
     ##
     mountPath: /data
+## @section Kueue parameters
+kueue:
+  ## @param kueue.enabled Enable internal kueue
+  enabled: false
+  ## @skip kueue.fullnameOverride
+  fullnameOverride: kueue
+  queueName:
+    ## @param kueue.queueName.cluster Cluster queue name
+    ## @param kueue.queueName.local Local queue name
+    cluster: agh3-cluster-pool
+    local: agh3-local-pool
+  ## @param kueue.concurrentJobs Number of concurrent jobs
+  concurrentJobs: 100
 ## @section Redis parameters
 ##
 redis:
@@ -393,6 +405,11 @@ redis:
 ## @section RabbitMQ parameters
 ##
 rabbitmq:
+  ## @param rabbitmq.queueName Name of the RabbitMQ queue
+  queueName: action_crd_result
+  loadDefinition:
+    enabled: true
+    existingSecret: agh-rabbitmq-secret
   connection:
     ## @param rabbitmq.connection.type Choose to use external RabbitMQ or internal RabbitMQ
     ## internal` or `external` in string
@@ -499,6 +516,39 @@ rabbitmq:
         tag: 7.78.0
         pullPolicy: IfNotPresent
         pullSecrets: []
+## @section AGH3-Action-Loop parameters
+## @descriptionStart
+## Action Loop module for AGH3.
+## ref: https://github.com/Leukocyte-Lab/AGH3-Captain
+## @descriptionEnd
+##
+actionLoop:
+  ## @param actionLoop.enabled Enable Action Loop module
+  ##
+  enabled: true
+  ## @param actionLoop.replicaCount Number of Action Loop replicas
+  ##
+  replicaCount: 3
+  ## @param actionLoop.image.repository Action Loop image repository
+  ## @param actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
+  ## @param actionLoop.image.pullPolicy Action Loop image pull policy
+  ## @param actionLoop.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: leukocyte-lab/argushack3/ctr-actionloop
+    tag: v1.12.0
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param actionLoop.serviceAccount.create Create serviceAccount for Action Loop
+  ## @param actionLoop.serviceAccount.name Name of the serviceAccount for Action Loop
+  ##
+  serviceAccount:
+    create: true
+    name: action-loop-sa
+  ## @param actionLoop.rbac.create Create RBAC for Action Loop
+  ##
+  rbac:
+    create: true
 ## @section AGH3-Captain parameters
 ## @descriptionStart
 ## Captain module for AGH3.
@@ -516,7 +566,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.9.4
+    tag: v1.12.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -660,7 +710,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.9.10
+    tag: v1.11.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables

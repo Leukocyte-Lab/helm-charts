@@ -26,6 +26,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: API_ENDPOINT
               value: {{ include "playground.apiEndpoint" . }}
+            - name: AI_API_ENDPOINT
+              value: {{ required "playground.service.ai.endpoint is required" .Values.playground.service.ai.endpoint | quote }}
             {{- if .Values.playground.extraEnv }}
             {{- include "common.tplvalues.render" (dict "value" .Values.playground.extraEnv "context" $) | nindent 12 }}
             {{- end }}
@@ -38,6 +40,10 @@ spec:
               mountPath: /usr/share/nginx/html/api/secrets/firebase.json
               subPath: firebase.json
               readOnly: true
+            - name: ai-secrets
+              mountPath: /usr/share/nginx/html/api/secrets/ai.json
+              subPath: ai.json
+              readOnly: true
           {{- end }}
       restartPolicy: Always
       {{- if .Values.playground.secret.firebase.enabled }}
@@ -45,5 +51,8 @@ spec:
         - name: firebase-secrets
           secret:
             secretName: {{ .Values.playground.secret.firebase.secretName }}
+        - name: ai-secrets
+          secret:
+            secretName: {{ .Values.playground.secret.ai.secretName }}
       {{- end }}
 {{- end }}

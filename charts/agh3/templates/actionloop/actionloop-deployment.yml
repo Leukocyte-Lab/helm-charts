@@ -1,23 +1,24 @@
-{{- if .Values.captain.enabled }}
+{{- if .Values.actionLoop.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: captain
+  name: action-loop
   labels:
     {{- include "AGH3.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.actionLoop.replicaCount }}
   selector:
     matchLabels:
-      app: captain
+      app: action-loop
   template:
     metadata:
       labels:
-        app: captain
+        app: action-loop
     spec:
-      {{- include "captain.imagePullSecrets" . | nindent 6 }}
+      {{- include "actionLoop.imagePullSecrets" . | nindent 6 }}
       initContainers:
         {{- if .Values.redis.enabled }}
-        - name: captain-init-redis
+        - name: action-loop-init-redis
           image: {{ include "redis-test.image" . }}
           env:
             - name: NAMESPACE
@@ -36,7 +37,7 @@ spec:
               "until redis-cli -h redis-master.$(NAMESPACE).svc.cluster.local -a $REDIS_PASSWORD ping; do echo waiting for redis; sleep 1; done",
             ]
         {{- end }}
-        - name: captain-init-rabbitmq
+        - name: action-loop-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
           env:
             - name: RABBITMQ_URI
@@ -62,7 +63,7 @@ spec:
               "-c",
               "until curl -f --user $RABBITMQ_USERNAME:$RABBITMQ_PASSWORD $RABBITMQ_API_ENDPOINT ; do echo waiting for rabbitmq; sleep 1; done",
             ]
-        - name: captain-init-postgresql
+        - name: action-loop-init-postgresql
           image: {{ include "db.image" . }}
           env:
             - name: PG_CONN_STR
@@ -77,11 +78,11 @@ spec:
               "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
             ]
       containers:
-        - name: captain
-          image: {{ include "captain.image" . }}
+        - name: action-loop
+          image: {{ include "actionLoop.image" . }}
           env:
             - name: IMAGE_REGISTRY_URL
-              value: {{ .Values.global.imageRegistry }}
+              value: "registry.lkc-lab.com"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -95,25 +96,6 @@ spec:
                   name: {{ .Values.redis.secret.secretName }}
                   key: password
             {{- end }}
-            {{- if .Values.captain.secret.superadmin.enabled }}
-            - name: SUPERADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.superadmin.secretName }}
-                  key: SUPERADMIN_PASSWORD
-            {{- end }}
-            {{- if .Values.report.enabled }}
-            - name: REPORT_URL
-              value: "http://report.$(NAMESPACE).svc.cluster.local:80"
-            {{- end }}
-            {{- if .Values.postfix.enabled }}
-            - name: SMTP_HOST
-              value: "postfix.$(NAMESPACE).svc.cluster.local"
-            - name: SMTP_PORT
-              value: {{ .Values.postfix.service.port | quote }}
-            {{- end }}
-            - name: KEYGEN_URL
-              value: {{ .Values.keygen.url | default "https://api.keygen.sh"}}
             - name: DB_Conn
               valueFrom:
                 secretKeyRef:
@@ -121,26 +103,6 @@ spec:
                   key: DB_CONN_STR
             - name: Web_Host_Port
               value: "0.0.0.0:8080"
-            - name: SECRET_JWT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.jwt.secretName }}
-                  key: jwt-secret
-            - name: MINIO_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.minio.secret.secretName }}
-                  key: url
-            - name: MINIO_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-user
-            - name: MINIO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-password
             - name: RABBITMQ_QUEUE
               value: {{ .Values.rabbitmq.queueName }}
             - name: RABBITMQ_Conn
@@ -150,43 +112,9 @@ spec:
                   key: "RABBITMQ_CONN_STR"
             - name: "APP_VERSION"
               value: {{ .Chart.AppVersion | quote }}
-            - name: "CHART_VERSION"
-              value: {{ .Chart.Version | quote }}
-            - name: OIDC_LOGIN_URL
-              valueFrom:
-                secretKeyRef:
-                  key: url
-                  name: {{ .Values.captain.secret.oidc.secretName }}
-                  optional: true
-            - name: OIDC_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  key: client-id
-                  name: {{ .Values.captain.secret.oidc.secretName }}
-                  optional: true
-            - name: OIDC_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: client-secret
-                  name: {{ .Values.captain.secret.oidc.secretName }}
-                  optional: true
-            - name: OIDC_REALM
-              valueFrom:
-                secretKeyRef:
-                  key: realm
-                  name: {{ .Values.captain.secret.oidc.secretName }}
-                  optional: true
-            - name: CHART_NAME
-              value: {{ .Chart.Name | quote }}
-            {{- if .Values.global.proxy.enabled}}
-            {{- include "global.proxy.envs" . | nindent 12 }}
-            {{- end }}
-            {{- if .Values.captain.extraEnv }}
-            {{- include "common.tplvalues.render" (dict "value" .Values.captain.extraEnv "context" $) | nindent 12 }}
-            {{- end }}
           livenessProbe:
             httpGet:
-              path: /api/healthz
+              path: /healthz
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
@@ -195,12 +123,12 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "500m"
+              cpu: "100m"
           ports:
             - name: http
               containerPort: 8080
-          imagePullPolicy: {{ .Values.captain.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.actionLoop.image.pullPolicy }}
       restartPolicy: "Always"
       automountServiceAccountToken: true
-      serviceAccountName: {{ include "captain.serviceAccountName" . }}
+      serviceAccountName: {{ include "actionLoop.serviceAccountName" . }}
 {{- end }}
