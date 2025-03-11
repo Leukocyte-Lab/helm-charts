@@ -1243,7 +1243,7 @@ entries:
   agh3:
   - apiVersion: v2
     appVersion: v3.10.3
-    created: "2025-03-11T11:14:41.640751466Z"
+    created: "2025-03-11T11:22:53.507535003Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1277,7 +1277,7 @@ entries:
     version: 3.11.3
   - apiVersion: v2
     appVersion: v3.10.2
-    created: "2025-03-11T11:14:41.622061814Z"
+    created: "2025-03-11T11:22:53.487851591Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1311,7 +1311,7 @@ entries:
     version: 3.11.2
   - apiVersion: v2
     appVersion: v3.10.1
-    created: "2025-03-11T11:14:41.602757352Z"
+    created: "2025-03-11T11:22:53.468569717Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1345,7 +1345,7 @@ entries:
     version: 3.11.1
   - apiVersion: v2
     appVersion: v3.10.0
-    created: "2025-03-11T11:14:41.583979057Z"
+    created: "2025-03-11T11:22:53.449942465Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1379,7 +1379,7 @@ entries:
     version: 3.11.0
   - apiVersion: v2
     appVersion: v3.9.1
-    created: "2025-03-11T11:14:41.412687281Z"
+    created: "2025-03-11T11:22:53.279939875Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1405,7 +1405,41 @@ entries:
       repository: https://charts.lkc-lab.com
       version: 0.1.3
     description: A Helm chart for ArgusHack3
-    digest: cceef906fe594be2304ec91ab25484f8e817bb55dee54c703715e7974b3492f4
+    digest: 9d3047677690f7d6c3d3ecd4b3c9a51cc1b9b7bf0521f915443f4b1cc50f2c8c
+    name: agh3
+    type: application
+    urls:
+    - https://charts.lkc-lab.com/agh3-3.10.15.tgz
+    version: 3.10.15
+  - apiVersion: v2
+    appVersion: v3.9.2
+    created: "2025-03-11T11:22:53.262119455Z"
+    dependencies:
+    - condition: db.internal.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.2
+    - condition: minio.internal.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.4
+    - condition: rabbitmq.internal.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.1.0
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.19.1
+    - condition: postfix.enabled
+      name: postfix
+      repository: https://charts.lkc-lab.com
+      version: 0.1.3
+    description: A Helm chart for ArgusHack3
+    digest: c55cc78354bcfc984535485c9f266b7ee1c5266b3b78f38e8e48be7e694306db
     name: agh3
     type: application
     urls:
@@ -1413,7 +1447,7 @@ entries:
     version: 3.10.14
   - apiVersion: v2
     appVersion: v3.9.2
-    created: "2025-03-11T11:14:41.394613202Z"
+    created: "2025-03-11T11:22:53.243307241Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1447,7 +1481,7 @@ entries:
     version: 3.10.13
   - apiVersion: v2
     appVersion: v3.9.2
-    created: "2025-03-11T11:14:41.375386771Z"
+    created: "2025-03-11T11:22:53.22315288Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1481,7 +1515,7 @@ entries:
     version: 3.10.12
   - apiVersion: v2
     appVersion: v3.9.1
-    created: "2025-03-11T11:14:41.356819764Z"
+    created: "2025-03-11T11:22:53.203965633Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1515,7 +1549,7 @@ entries:
     version: 3.10.11
   - apiVersion: v2
     appVersion: v3.9.0
-    created: "2025-03-11T11:14:41.337190586Z"
+    created: "2025-03-11T11:22:53.184813322Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1549,7 +1583,7 @@ entries:
     version: 3.10.10
   - apiVersion: v2
     appVersion: v3.8.8
-    created: "2025-03-11T11:14:41.566052536Z"
+    created: "2025-03-11T11:22:53.430989256Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1583,7 +1617,7 @@ entries:
     version: 3.10.9
   - apiVersion: v2
     appVersion: v3.8.8
-    created: "2025-03-11T11:14:41.54708018Z"
+    created: "2025-03-11T11:22:53.412247974Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1617,7 +1651,7 @@ entries:
     version: 3.10.8
   - apiVersion: v2
     appVersion: v3.8.7
-    created: "2025-03-11T11:14:41.528368587Z"
+    created: "2025-03-11T11:22:53.393592481Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1651,7 +1685,7 @@ entries:
     version: 3.10.7
   - apiVersion: v2
     appVersion: v3.8.6
-    created: "2025-03-11T11:14:41.509517723Z"
+    created: "2025-03-11T11:22:53.375802317Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1685,7 +1719,7 @@ entries:
     version: 3.10.6
   - apiVersion: v2
     appVersion: v3.8.5
-    created: "2025-03-11T11:14:41.489456894Z"
+    created: "2025-03-11T11:22:53.356737936Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1719,7 +1753,7 @@ entries:
     version: 3.10.5
   - apiVersion: v2
     appVersion: v3.8.4
-    created: "2025-03-11T11:14:41.470698821Z"
+    created: "2025-03-11T11:22:53.337510599Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1753,7 +1787,7 @@ entries:
     version: 3.10.4
   - apiVersion: v2
     appVersion: v3.8.3
-    created: "2025-03-11T11:14:41.451446261Z"
+    created: "2025-03-11T11:22:53.31863527Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1787,7 +1821,7 @@ entries:
     version: 3.10.3
   - apiVersion: v2
     appVersion: v3.8.2
-    created: "2025-03-11T11:14:41.431919323Z"
+    created: "2025-03-11T11:22:53.299146864Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1821,7 +1855,7 @@ entries:
     version: 3.10.2
   - apiVersion: v2
     appVersion: v3.8.1
-    created: "2025-03-11T11:14:41.317924937Z"
+    created: "2025-03-11T11:22:53.166814148Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1855,7 +1889,7 @@ entries:
     version: 3.10.1
   - apiVersion: v2
     appVersion: v3.8.0
-    created: "2025-03-11T11:14:41.299141204Z"
+    created: "2025-03-11T11:22:53.148807614Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1889,7 +1923,7 @@ entries:
     version: 3.10.0
   - apiVersion: v2
     appVersion: v3.7.3
-    created: "2025-03-11T11:14:42.177170873Z"
+    created: "2025-03-11T11:22:54.04420797Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1923,7 +1957,7 @@ entries:
     version: 3.9.4
   - apiVersion: v2
     appVersion: v3.7.2
-    created: "2025-03-11T11:14:42.158537399Z"
+    created: "2025-03-11T11:22:54.024174761Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1957,7 +1991,7 @@ entries:
     version: 3.9.3
   - apiVersion: v2
     appVersion: v3.7.1
-    created: "2025-03-11T11:14:42.140859939Z"
+    created: "2025-03-11T11:22:54.004568799Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -1991,7 +2025,7 @@ entries:
     version: 3.9.2
   - apiVersion: v2
     appVersion: v3.7.0
-    created: "2025-03-11T11:14:42.121674068Z"
+    created: "2025-03-11T11:22:53.986655179Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2025,7 +2059,7 @@ entries:
     version: 3.9.1
   - apiVersion: v2
     appVersion: v3.7.0
-    created: "2025-03-11T11:14:42.100898354Z"
+    created: "2025-03-11T11:22:53.968030347Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2059,7 +2093,7 @@ entries:
     version: 3.9.0
   - apiVersion: v2
     appVersion: v3.6.12
-    created: "2025-03-11T11:14:41.915748013Z"
+    created: "2025-03-11T11:22:53.795525759Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2093,7 +2127,7 @@ entries:
     version: 3.8.13
   - apiVersion: v2
     appVersion: v3.6.11
-    created: "2025-03-11T11:14:41.89814938Z"
+    created: "2025-03-11T11:22:53.776336205Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2127,7 +2161,7 @@ entries:
     version: 3.8.12
   - apiVersion: v2
     appVersion: v3.6.10
-    created: "2025-03-11T11:14:41.879351128Z"
+    created: "2025-03-11T11:22:53.757392448Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2161,7 +2195,7 @@ entries:
     version: 3.8.11
   - apiVersion: v2
     appVersion: v3.6.9
-    created: "2025-03-11T11:14:41.860821577Z"
+    created: "2025-03-11T11:22:53.737625354Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2195,7 +2229,7 @@ entries:
     version: 3.8.10
   - apiVersion: v2
     appVersion: v3.6.8
-    created: "2025-03-11T11:14:42.081248959Z"
+    created: "2025-03-11T11:22:53.949215223Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2229,7 +2263,7 @@ entries:
     version: 3.8.9
   - apiVersion: v2
     appVersion: v3.6.7
-    created: "2025-03-11T11:14:42.061518523Z"
+    created: "2025-03-11T11:22:53.931506659Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2263,7 +2297,7 @@ entries:
     version: 3.8.8
   - apiVersion: v2
     appVersion: v3.6.6
-    created: "2025-03-11T11:14:42.041235079Z"
+    created: "2025-03-11T11:22:53.91219325Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2297,7 +2331,7 @@ entries:
     version: 3.8.7
   - apiVersion: v2
     appVersion: v3.6.5
-    created: "2025-03-11T11:14:42.021399955Z"
+    created: "2025-03-11T11:22:53.892270335Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2331,7 +2365,7 @@ entries:
     version: 3.8.6
   - apiVersion: v2
     appVersion: v3.6.4
-    created: "2025-03-11T11:14:41.99732299Z"
+    created: "2025-03-11T11:22:53.872067953Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2365,7 +2399,7 @@ entries:
     version: 3.8.5
   - apiVersion: v2
     appVersion: v3.6.3
-    created: "2025-03-11T11:14:41.977626767Z"
+    created: "2025-03-11T11:22:53.853184999Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2399,7 +2433,7 @@ entries:
     version: 3.8.4
   - apiVersion: v2
     appVersion: v3.6.2
-    created: "2025-03-11T11:14:41.957811366Z"
+    created: "2025-03-11T11:22:53.83377349Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2433,7 +2467,7 @@ entries:
     version: 3.8.3
   - apiVersion: v2
     appVersion: v3.6.1
-    created: "2025-03-11T11:14:41.934488641Z"
+    created: "2025-03-11T11:22:53.815217918Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2467,7 +2501,7 @@ entries:
     version: 3.8.2
   - apiVersion: v2
     appVersion: v3.6.0
-    created: "2025-03-11T11:14:41.84195286Z"
+    created: "2025-03-11T11:22:53.718326775Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2501,7 +2535,7 @@ entries:
     version: 3.8.1
   - apiVersion: v2
     appVersion: v3.6.0
-    created: "2025-03-11T11:14:41.822591455Z"
+    created: "2025-03-11T11:22:53.698514187Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2535,7 +2569,7 @@ entries:
     version: 3.8.0
   - apiVersion: v2
     appVersion: v3.5.6
-    created: "2025-03-11T11:14:41.803639734Z"
+    created: "2025-03-11T11:22:53.675844576Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2569,7 +2603,7 @@ entries:
     version: 3.7.9
   - apiVersion: v2
     appVersion: v3.5.6
-    created: "2025-03-11T11:14:41.785983248Z"
+    created: "2025-03-11T11:22:53.656761609Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2603,7 +2637,7 @@ entries:
     version: 3.7.8
   - apiVersion: v2
     appVersion: v3.5.5
-    created: "2025-03-11T11:14:41.768009981Z"
+    created: "2025-03-11T11:22:53.637959666Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2633,7 +2667,7 @@ entries:
     version: 3.7.7
   - apiVersion: v2
     appVersion: v3.5.4
-    created: "2025-03-11T11:14:41.755495626Z"
+    created: "2025-03-11T11:22:53.624440636Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2663,7 +2697,7 @@ entries:
     version: 3.7.6
   - apiVersion: v2
     appVersion: v3.5.3
-    created: "2025-03-11T11:14:41.743114869Z"
+    created: "2025-03-11T11:22:53.612607141Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2693,7 +2727,7 @@ entries:
     version: 3.7.5
   - apiVersion: v2
     appVersion: v3.5.2
-    created: "2025-03-11T11:14:41.730652413Z"
+    created: "2025-03-11T11:22:53.600171291Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2723,7 +2757,7 @@ entries:
     version: 3.7.4
   - apiVersion: v2
     appVersion: v3.5.1
-    created: "2025-03-11T11:14:41.718038927Z"
+    created: "2025-03-11T11:22:53.587198265Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2753,7 +2787,7 @@ entries:
     version: 3.7.3
   - apiVersion: v2
     appVersion: v3.5.0
-    created: "2025-03-11T11:14:41.704904913Z"
+    created: "2025-03-11T11:22:53.573444175Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2783,7 +2817,7 @@ entries:
     version: 3.7.2
   - apiVersion: v2
     appVersion: v3.5.0
-    created: "2025-03-11T11:14:41.691564554Z"
+    created: "2025-03-11T11:22:53.560708046Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2813,7 +2847,7 @@ entries:
     version: 3.7.1
   - apiVersion: v2
     appVersion: v3.5.0
-    created: "2025-03-11T11:14:41.679306073Z"
+    created: "2025-03-11T11:22:53.547829041Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2843,7 +2877,7 @@ entries:
     version: 3.7.0
   - apiVersion: v2
     appVersion: v3.4.4
-    created: "2025-03-11T11:14:41.666699481Z"
+    created: "2025-03-11T11:22:53.534373856Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -2873,7 +2907,7 @@ entries:
     version: 3.6.5
   - apiVersion: v2
     appVersion: v3.4.3
-    created: "2025-03-11T11:14:41.654354169Z"
+    created: "2025-03-11T11:22:53.521574272Z"
     dependencies:
     - condition: db.internal.enabled
       name: postgresql
@@ -4252,7 +4286,7 @@ entries:
   agh3-playground:
   - apiVersion: v2
     appVersion: v1.4.1
-    created: "2025-03-11T11:14:42.195640658Z"
+    created: "2025-03-11T11:22:54.062376273Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4266,7 +4300,7 @@ entries:
     version: 1.4.1
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2025-03-11T11:14:42.19370641Z"
+    created: "2025-03-11T11:22:54.061224921Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4280,7 +4314,7 @@ entries:
     version: 1.4.0
   - apiVersion: v2
     appVersion: v1.3.2
-    created: "2025-03-11T11:14:42.192592653Z"
+    created: "2025-03-11T11:22:54.059786182Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4294,7 +4328,7 @@ entries:
     version: 1.3.2
   - apiVersion: v2
     appVersion: v1.3.1
-    created: "2025-03-11T11:14:42.19149225Z"
+    created: "2025-03-11T11:22:54.058469212Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4308,7 +4342,7 @@ entries:
     version: 1.3.1
   - apiVersion: v2
     appVersion: v1.3.0
-    created: "2025-03-11T11:14:42.190378382Z"
+    created: "2025-03-11T11:22:54.057352084Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4322,7 +4356,7 @@ entries:
     version: 1.3.0
   - apiVersion: v2
     appVersion: v1.2.4
-    created: "2025-03-11T11:14:42.189105729Z"
+    created: "2025-03-11T11:22:54.056170125Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4336,7 +4370,7 @@ entries:
     version: 1.2.4
   - apiVersion: v2
     appVersion: v1.2.3
-    created: "2025-03-11T11:14:42.18789946Z"
+    created: "2025-03-11T11:22:54.053965936Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4350,7 +4384,7 @@ entries:
     version: 1.2.3
   - apiVersion: v2
     appVersion: v1.2.2
-    created: "2025-03-11T11:14:42.18668194Z"
+    created: "2025-03-11T11:22:54.052636782Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4364,7 +4398,7 @@ entries:
     version: 1.2.2
   - apiVersion: v2
     appVersion: v1.2.0
-    created: "2025-03-11T11:14:42.184703115Z"
+    created: "2025-03-11T11:22:54.051348705Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4378,7 +4412,7 @@ entries:
     version: 1.2.1
   - apiVersion: v2
     appVersion: v1.2.0
-    created: "2025-03-11T11:14:42.183071676Z"
+    created: "2025-03-11T11:22:54.05003509Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4392,7 +4426,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.1.0
-    created: "2025-03-11T11:14:42.181784086Z"
+    created: "2025-03-11T11:22:54.048668816Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4406,7 +4440,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.0.1
-    created: "2025-03-11T11:14:42.180509219Z"
+    created: "2025-03-11T11:22:54.047553642Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4420,7 +4454,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-03-11T11:14:42.179389852Z"
+    created: "2025-03-11T11:22:54.046444119Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4434,7 +4468,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: 0.0.1-beta.25
-    created: "2025-03-11T11:14:42.178285512Z"
+    created: "2025-03-11T11:22:54.045335307Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4477,7 +4511,7 @@ entries:
   postfix:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-11T11:14:42.198445054Z"
+    created: "2025-03-11T11:22:54.066062079Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4491,7 +4525,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-11T11:14:42.197530266Z"
+    created: "2025-03-11T11:22:54.064215059Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4505,7 +4539,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-11T11:14:42.196609347Z"
+    created: "2025-03-11T11:22:54.06328435Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -4531,4 +4565,4 @@ entries:
     urls:
     - https://github.com/Leukocyte-Lab/helm-charts/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-11T11:14:41.280316656Z"
+generated: "2025-03-11T11:22:53.12883313Z"
