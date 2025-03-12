@@ -36,6 +36,30 @@ spec:
               "until redis-cli -h redis-master.$(NAMESPACE).svc.cluster.local -a $REDIS_PASSWORD ping; do echo waiting for redis; sleep 1; done",
             ]
         {{- end }}
+        - name: captain-init-minio
+          image: {{ include "minio-test-client.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-password
+          command:
+            [
+              "sh",
+              "-c",
+              "until (mc alias set myminio http://minio.$(NAMESPACE).svc.cluster.local:9000 $MINIO_USER $MINIO_PASSWORD) do echo $(date) waiting... && sleep 1; done;",
+              "mc ping myminio --count 10 --interval 10 --error-count 30 --exit"
+            ]
         - name: captain-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
           env:

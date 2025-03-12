@@ -183,6 +183,13 @@ Return the proper rabbitmq-test-client image name
 {{- end }}
 
 {{/*
+  Return the proper minio-test-client image name
+*/}}
+{{- define "minio-test-client.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.minio.helpers.test.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper kueue-initialize image name
 */}}
 {{- define "kueue-initialize.image" -}}
