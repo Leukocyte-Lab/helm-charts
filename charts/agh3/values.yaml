@@ -351,6 +351,18 @@ minio:
               - "s3:GetBucketLocation"
               - "s3:ListBucket"
               - "s3:GetObject"
+      - name: agh-parser-policy
+        statements:
+          - effect: "Allow"
+            resources:
+              - "arn:aws:s3:::intelli-bridge/*"
+              - "arn:aws:s3:::intelli-bridge"
+            actions:
+              - "s3:GetBucketLocation"
+              - "s3:PutObject"
+              - "s3:GetObject"
+              - "s3:ListBucket"
+              - "s3:HeadBucket"
     usersExistingSecrets:
       - agh-minio-users-secret
   ## @param minio.extraEnvVarsCM
@@ -654,6 +666,27 @@ captain:
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
+## @section ai-parser parameters
+## @descriptionStart
+## AI Parser module for AGH3.
+## @descriptionEnd
+parser:
+  ## @param parser.secret.minio.enabled Enable secrete generate for parser
+  ##
+  secret:
+    ## @param parser.secret.minio.enabled Enable secret generate for Parser
+    ##
+    enabled: true
+    ## @param parser.secret.minio.enabled Enable secret generate for Minio
+    ## @param parser.secret.minio.secretName Secret name for Minio
+    ## @param parser.secret.minio.user Minio user
+    ## @param parser.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: parser-minio-secret
+      user: "parser-minio-user"
+      password: ""
 ## @section AGH3-Controller parameters
 ## @descriptionStart
 ## Controller module for AGH3.
