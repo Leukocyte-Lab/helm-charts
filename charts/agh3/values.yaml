@@ -313,6 +313,19 @@ minio:
     tag: 2023.4.12
     pullPolicy: IfNotPresent
     pullSecrets: []
+  helpers:
+    ## Minio Connection Test image
+    ## @param minio.helpers.test.image.repository Minio Connection Test image repository
+    ## @param minio.helpers.test.image.tag Minio Connection Test image tag (immutable tags are recommended)
+    ## @param minio.helpers.test.image.pullPolicy Minio Connection Test image pull policy
+    ## @param minio.helpers.test.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    test:
+      image:
+        repository: docker/library/curlimages/curl
+        tag: latest
+        pullPolicy: IfNotPresent
+        pullSecrets: []
   ## @param minio.auth.rootUser Internal database root user
   ## @param minio.auth.rootPassword Internal database root password
   ##
