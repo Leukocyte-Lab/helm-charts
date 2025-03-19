@@ -691,6 +691,12 @@ parser:
       secretName: parser-minio-secret
       user: "parser-minio-user"
       password: ""
+    ## @param parser.secret.sa.enabled Enable secret generate for Parser service account
+    ## @param parser.secret.sa.secretName Secret name for Parser service account
+    ##
+    sa:
+      enabled: true
+      secretName: parser-sa-secret
 ## @section AGH3-Controller parameters
 ## @descriptionStart
 ## Controller module for AGH3.
