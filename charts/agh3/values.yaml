@@ -338,6 +338,10 @@ minio:
   provisioning:
     enabled: true
     generateUser: true
+    ## @skip minio.provisioning.buckets
+    buckets:
+      - name: intelli-bridge
+        versioning: true
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
