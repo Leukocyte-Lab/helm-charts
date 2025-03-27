@@ -322,7 +322,7 @@ minio:
     ##
     test:
       image:
-        repository: docker/library/curlimages/curl
+        repository: docker/curlimages/curl
         tag: latest
         pullPolicy: IfNotPresent
         pullSecrets: []
