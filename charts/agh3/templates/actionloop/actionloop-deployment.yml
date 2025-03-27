@@ -82,7 +82,7 @@ spec:
           image: {{ include "actionLoop.image" . }}
           env:
             - name: IMAGE_REGISTRY_URL
-              value: "registry.lkc-lab.com"
+              value: {{ .Values.global.imageRegistry }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
