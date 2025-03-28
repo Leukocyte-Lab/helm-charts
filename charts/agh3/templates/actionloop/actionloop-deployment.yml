@@ -120,6 +120,14 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 10
             failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               memory: "128Mi"
