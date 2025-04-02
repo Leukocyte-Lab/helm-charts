@@ -342,6 +342,8 @@ minio:
     buckets:
       - name: intelli-bridge
         versioning: true
+      - name: embedding
+        versioning: true
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
@@ -361,6 +363,8 @@ minio:
             resources:
               - "arn:aws:s3:::intelli-bridge/*"
               - "arn:aws:s3:::intelli-bridge"
+              - "arn:aws:s3:::embedding/*"
+              - "arn:aws:s3:::embedding"
             actions:
               - "s3:GetBucketLocation"
               - "s3:PutObject"
