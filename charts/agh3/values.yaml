@@ -165,7 +165,7 @@ postfix:
   image:
     repository: leukocyte-lab/argushack3/postfix
     tag: production
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     pullSecrets: []
   ## @section Postfix service provisioning parameters
   ## @descriptionStart
@@ -186,7 +186,7 @@ postfix:
     image:
       repository: leukocyte-lab/argushack3/opendkim
       tag: production
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   ## @param postfix.mydomain Postfix mydomain
   ## @param postfix.mail_myhostname Postfix mail_myhostname
   ## @param postfix.domain Postfix domain
