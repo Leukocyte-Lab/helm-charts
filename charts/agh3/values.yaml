@@ -344,6 +344,7 @@ minio:
         versioning: true
       - name: embedding
         versioning: true
+      - name: packet
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
