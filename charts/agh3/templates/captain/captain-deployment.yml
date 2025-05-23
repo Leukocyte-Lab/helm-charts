@@ -70,7 +70,7 @@ spec:
             [
               "sh",
               "-c",
-              "mc alias set m http://minio.$(NAMESPACE).svc.cluster.local:9000 $MINIO_USER $MINIO_PASSWORD; until mc ls m/intelli-bridge/; do echo $(date) waiting... && sleep 1; done;"
+              "mc alias set m http://minio.$(NAMESPACE).svc.cluster.local:9000 $MINIO_USER $MINIO_PASSWORD; until mc ls m/intelli-bridge; do echo $(date) waiting... && sleep 1; done;"
             ]
         - name: captain-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
