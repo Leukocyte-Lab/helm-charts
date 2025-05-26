@@ -625,12 +625,14 @@ captain:
     ## @param captain.secret.minio.secretName Secret name for Minio
     ## @param captain.secret.minio.user Minio user
     ## @param captain.secret.minio.password Minio password
+    ## @param captain.secret.minio.resourcesPreset Minio resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
     ##
     minio:
       enabled: true
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
+      resourcesPreset: "small"
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret
@@ -700,7 +702,7 @@ parser:
     ## @param parser.secret.sa.json Parser service account JSON
     ##
     sa:
-      enabled: true
+      enabled: false
       secretName: parser-sa-secret
       json: |-
         {
