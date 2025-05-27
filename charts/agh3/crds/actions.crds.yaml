@@ -861,9 +861,9 @@ spec:
                 - activeStatus
               type: object
           type: object
-      served: false
+      served: true
       storage: false
-      deprecated: true
+      deprecated: false
       subresources:
         status: {}
     - additionalPrinterColumns:
