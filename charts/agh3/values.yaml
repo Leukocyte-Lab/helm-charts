@@ -344,6 +344,7 @@ minio:
         versioning: true
       - name: embedding
         versioning: true
+      - name: packet
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
@@ -365,6 +366,18 @@ minio:
               - "arn:aws:s3:::intelli-bridge"
               - "arn:aws:s3:::embedding/*"
               - "arn:aws:s3:::embedding"
+            actions:
+              - "s3:GetBucketLocation"
+              - "s3:PutObject"
+              - "s3:GetObject"
+              - "s3:ListBucket"
+              - "s3:HeadBucket"
+      - name: agh-packet-policy
+        statements:
+          - effect: "Allow"
+            resources:
+              - "arn:aws:s3:::packet/*"
+              - "arn:aws:s3:::packet"
             actions:
               - "s3:GetBucketLocation"
               - "s3:PutObject"
@@ -676,6 +689,27 @@ captain:
   ## @param captain.extraEnv Captain additional environment variables
   ##
   extraEnv: {}
+## @section packet parameters
+## @descriptionStart
+## Packet module for AGH3.
+## descriptionEnd
+packet:
+  ## @param packet.secret.enabled Enable secrete generate for packet
+  ##
+  secret:
+    ## @param packet.secret.enabled Enable secret generate for packet
+    ##
+    enabled: true
+    ## @param packet.secret.minio.enabled Enable secret generate for Minio
+    ## @param packet.secret.minio.secretName Secret name for Minio
+    ## @param packet.secret.minio.user Minio user
+    ## @param packet.secret.minio.password Minio password
+    ##
+    minio:
+      enabled: true
+      secretName: packet-minio-secret
+      user: "packet-minio-user"
+      password: ""
 ## @section ai-parser parameters
 ## @descriptionStart
 ## AI Parser module for AGH3.

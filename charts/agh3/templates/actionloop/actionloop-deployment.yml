@@ -114,6 +114,21 @@ spec:
               value: {{ .Chart.AppVersion | quote }}
             - name: KEYGEN_URL
               value: {{ .Values.keygen.url | default "https://api.keygen.sh"}}
+            - name: MINIO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.minio.secret.secretName }}
+                  key: url
+            - name: MINIO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-user
+            - name: MINIO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.captain.secret.minio.secretName }}
+                  key: capt-minio-password
           livenessProbe:
             httpGet:
               path: /healthz
