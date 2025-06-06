@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.crds.job.name }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "2"
+spec:
+  template:
+    spec:
+      containers:
+        - name: actions-crd-job
+          image: {{ include "actions-crds-job.image" . }}
+          command: ["/bin/sh", "-c", "kubectl apply -f /crds/actions.crds.yaml"]
+          volumeMounts:
+            - name: {{ .Values.crds.volume.name }}
+              mountPath: /crds
+      volumes:
+        - name: {{ .Values.crds.volume.name }}
+          configMap:
+            name: {{ .Values.crds.cm.name }}
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "actions-crds-job.serviceAccountName" . }}
+  backoffLimit: 1

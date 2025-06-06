@@ -169,6 +169,13 @@ Return the proper db image name
 {{- end }}
 
 {{/*
+Return the proper actions-crds-job image name
+*/}}
+{{- define "actions-crds-job.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.crds.job.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper redis-test image name
 */}}
 {{- define "redis-test.image" -}}
@@ -215,6 +222,13 @@ Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "captain.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.captain.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the name of the service account to use for the actions-crds-job
+*/}}
+{{- define "actions-crds-job.serviceAccountName" -}}
+  {{- default (include "AGH3.fullname" .) .Values.crds.job.serviceAccount.name }}
 {{- end -}}
 
 {{/*
