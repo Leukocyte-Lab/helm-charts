@@ -326,6 +326,18 @@ minio:
         tag: latest
         pullPolicy: IfNotPresent
         pullSecrets: []
+    ## Minio Bucket Test image
+    ## @param minio.helpers.bucket.image.repository Minio Bucket Test image repository
+    ## @param minio.helpers.bucket.image.tag Minio Bucket Test image tag(immutable tags are recommended)
+    ## @param minio.helpers.bucket.image.pullPolicy Minio Bucket Test image pull policy
+    ## @param minio.helpers.bucket.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    bucket:
+      image:
+        repository: docker/minio/mc
+        tag: latest
+        pullPolicy: IfNotPresent
+        pullSecrets: []
   ## @param minio.auth.rootUser Internal database root user
   ## @param minio.auth.rootPassword Internal database root password
   ##
