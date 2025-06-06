@@ -50,7 +50,7 @@ spec:
               "until curl http://minio.$(NAMESPACE).svc.cluster.local:9000; do echo $(date) waiting... && sleep 1; done;"
             ]
         - name: captain-init-minio-bucket-intelli-bridge
-          image: minio/mc
+          image: {{ include "minio-bucket-test-client.image" . }}
           env:
             - name: NAMESPACE
               valueFrom:
