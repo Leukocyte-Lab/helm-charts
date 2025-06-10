@@ -51,7 +51,7 @@ crds:
     name: actions-crd-job
     image:
       repository: docker/bitnami/kubectl
-      tag: latest
+      tag: 1.28.15-debian-12-r5
       pullPolicy: IfNotPresent
       pullSecrets: []
     serviceAccount:
