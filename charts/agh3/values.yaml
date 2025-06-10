@@ -33,6 +33,33 @@ global:
   storageClass: ""
   volumePermissions:
     enabled: true
+## @section crds parameters
+##
+crds:
+  ## @param crds.volume.name Name of the volume
+  ##
+  volume:
+    name: crd-volume
+  ## @param crds.job.name Name of the job
+  ## @param crds.job.image.repository Image repository
+  ## @param crds.job.image.tag Image tag
+  ## @param crds.job.image.pullPolicy Image pull policy
+  ## @param crds.job.image.pullSecrets Image pull secrets
+  ## @param crds.job.serviceAccount.name Name of the service account
+  ##
+  job:
+    name: actions-crd-job
+    image:
+      repository: docker/bitnami/kubectl
+      tag: 1.28.15-debian-12-r5
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    serviceAccount:
+      name: actions-crds-job-sa
+  ## @param crds.cm.name Name of the config map
+  ##
+  cm:
+    name: actions-crd
 ## @section Common parameters
 ##
 
