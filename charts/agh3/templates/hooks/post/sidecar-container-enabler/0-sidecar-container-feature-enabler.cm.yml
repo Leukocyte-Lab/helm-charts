@@ -1,0 +1,30 @@
+{{- if and .Values.clusterFeatureEnabler.enabled .Values.clusterFeatureEnabler.jobs.sidecarContainers.enabled -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: sidecar-containers-feature-enabler-script
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+data:
+  sidecar-containers-feature-enabler-script.sh: |
+    set -e
+    NODE_NAME=$1
+    if [ -z "$NODE_NAME" ]; then
+      echo "Node name is not provided. Exiting."
+      exit 1
+    fi
+
+    echo "Node name: $NODE_NAME"
+    echo "Checking if Sidecar Containers feature is enabled..."
+    if kubectl get --raw /metrics | grep kubernetes_feature_enabled | grep SidecarContainers | awk '{ print $2 }' | grep 0; then
+      echo "Sidecar Containers feature is not enabled, enabling it now..."
+      echo "Enabling Sidecar Containers feature..."
+      kubectl debug "node/$NODE_NAME" -it --image=ubuntu -- chroot /host /bin/bash -c 'cat /etc/systemd/system/k3s.service | sed /^\$/d | tee /tmp/patched-k3s.service && printf "\t\x27--kube-apiserver-arg=feature-gates=SidecarContainers=true\x27 \\" | tee -a /tmp/patched-k3s.service && mv /tmp/patched-k3s.service /etc/systemd/system/k3s.service && systemctl daemon-reload && systemctl restart k3s.service'
+      echo "Sidecar Containers feature enabled."
+    else
+      echo "Sidecar Containers feature is already enabled."
+    fi
+{{- end }}
