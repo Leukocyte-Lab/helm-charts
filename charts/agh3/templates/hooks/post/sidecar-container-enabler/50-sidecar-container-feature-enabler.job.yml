@@ -1,0 +1,45 @@
+{{- if and .Values.clusterFeatureEnabler.enabled .Values.clusterFeatureEnabler.jobs.sidecarContainers.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.clusterFeatureEnabler.jobs.sidecarContainers.name }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "50"
+spec:
+  template:
+    spec:
+      containers:
+        - name: sidecar-containers-feature-enabler
+          image: docker/bitnami/kubectl:1.28
+          imagePullPolicy: IfNotPresent
+          command:
+            [
+              "/bin/bash",
+              "-c",
+              "/opt/sidecar-containers-feature-enabler-script.sh ${NODE_NAME}",
+            ]
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: "spec.nodeName"
+          volumeMounts:
+            - name: sidecar-containers-feature-enabler-script
+              mountPath: /opt/sidecar-containers-feature-enabler-script.sh
+              subPath: sidecar-containers-feature-enabler-script.sh
+              readOnly: true
+      volumes:
+        - name: sidecar-containers-feature-enabler-script
+          configMap:
+            name: sidecar-containers-feature-enabler-script
+            defaultMode: 0777
+            items:
+              - key: sidecar-containers-feature-enabler-script.sh
+                path: sidecar-containers-feature-enabler-script.sh
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "clusterFeatureEnabler.serviceAccountName" . }}
+  backoffLimit: 1
+{{- end }}

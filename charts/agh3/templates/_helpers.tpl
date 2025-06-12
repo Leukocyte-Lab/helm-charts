@@ -250,6 +250,24 @@ Return the name of the service account to use for the Captain
 {{- end -}}
 
 {{/*
+Return the name of the service account to use for the cluster-feature-enabler
+*/}}
+{{- define "clusterFeatureEnabler.serviceAccountName" -}}
+  {{- if .Values.clusterFeatureEnabler.serviceAccount.create }}
+    {{- default (include "AGH3.fullname" .) .Values.clusterFeatureEnabler.serviceAccount.name }}
+  {{- else }}
+    {{- default "default" .Values.clusterFeatureEnabler.serviceAccount.name }}
+  {{- end }}
+{{- end -}}
+
+{{/*
+Return the proper clusterFeatureEnabler image name
+*/}}
+{{- define "clusterFeatureEnabler.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.clusterFeatureEnabler.job.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper Action Loop image name
 */}}
 {{- define "actionLoop.image" -}}

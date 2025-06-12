@@ -879,3 +879,31 @@ report:
   ## @param report.extraEnv UI additional environment variables
   ##
   extraEnv: {}
+
+## @section cluster-feature-enabler parameters
+clusterFeatureEnabler:
+  ## @param clusterFeatureEnabler.enabled Enable Cluster Feature Enabler module
+  ##
+  enabled: true
+  ## @param clusterFeatureEnabler.image.repository Cluster Feature Enabler image repository
+  ## @param clusterFeatureEnabler.image.tag Cluster Feature Enabler image tag (immutable tags are recommended)
+  ## @param clusterFeatureEnabler.image.pullPolicy Cluster Feature Enabler image pull policy
+  ## @param clusterFeatureEnabler.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    repository: docker/bitnami/kubectl
+    tag: "1.28.15-debian-12-r5"
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  ## @param clusterFeatureEnabler.serviceAccount.create Create serviceAccount for Cluster Feature Enabler
+  ## @param clusterFeatureEnabler.serviceAccount.name Name of the serviceAccount for Cluster Feature Enabler
+  ##
+  serviceAccount:
+    create: true
+    name: cluster-feature-enabler-sa
+
+  jobs:
+    ## @param clusterFeatureEnabler.jobs.sidecarContainers.enabled Enable Sidecar Containers feature enabler job
+    sidecarContainers:
+      name: sidecar-containers-feature-enabler
+      enabled: true
