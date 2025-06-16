@@ -801,7 +801,7 @@ controller:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-controller
-    tag: v1.1.0
+    tag: v1.0.0
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param controller.secret.enabled Enable secret generate for Controller
@@ -882,7 +882,6 @@ report:
   ## @param report.extraEnv UI additional environment variables
   ##
   extraEnv: {}
-
 ## @section cluster-feature-enabler parameters
 clusterFeatureEnabler:
   ## @param clusterFeatureEnabler.enabled Enable Cluster Feature Enabler module
@@ -904,7 +903,6 @@ clusterFeatureEnabler:
   serviceAccount:
     create: true
     name: cluster-feature-enabler-sa
-
   jobs:
     ## @param clusterFeatureEnabler.jobs.sidecarContainers.enabled Enable Sidecar Containers feature enabler job
     sidecarContainers:
