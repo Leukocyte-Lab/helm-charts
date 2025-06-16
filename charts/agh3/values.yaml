@@ -384,6 +384,7 @@ minio:
       - name: embedding
         versioning: true
       - name: packet
+      - name: integration
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
@@ -405,6 +406,8 @@ minio:
               - "arn:aws:s3:::intelli-bridge"
               - "arn:aws:s3:::embedding/*"
               - "arn:aws:s3:::embedding"
+              - "arn:aws:s3:::integration/*"
+              - "arn:aws:s3:::integration"
             actions:
               - "s3:GetBucketLocation"
               - "s3:PutObject"
