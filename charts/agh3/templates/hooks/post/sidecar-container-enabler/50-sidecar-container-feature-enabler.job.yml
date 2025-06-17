@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: sidecar-containers-feature-enabler
-          image: docker/bitnami/kubectl:1.28
+          image: {{ include "clusterFeatureEnabler.image" . }}
           imagePullPolicy: IfNotPresent
           command:
             [
