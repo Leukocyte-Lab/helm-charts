@@ -264,7 +264,7 @@ Return the name of the service account to use for the cluster-feature-enabler
 Return the proper clusterFeatureEnabler image name
 */}}
 {{- define "clusterFeatureEnabler.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.clusterFeatureEnabler.job.image "global" .Values.global) }}
+{{- include "common.images.image" (dict "imageRoot" .Values.clusterFeatureEnabler.image "global" .Values.global) }}
 {{- end }}
 
 {{/*
