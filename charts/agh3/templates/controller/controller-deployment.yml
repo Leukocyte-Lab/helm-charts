@@ -52,6 +52,8 @@ spec:
             - name: KUEUE_NAME
               value: {{ .Values.kueue.queueName.local }}
             {{- end }}
+            - name: SA_NAME
+              value: {{ include "controller.serviceAccountName" . }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
