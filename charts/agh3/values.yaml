@@ -777,7 +777,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.13.0
+    tag: v1.12.15
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
@@ -800,7 +800,7 @@ report:
   ##
   image:
     repository: leukocyte-lab/argushack3/report
-    tag: v1.2.1
+    tag: v1.1.4
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param report.extraEnv UI additional environment variables
