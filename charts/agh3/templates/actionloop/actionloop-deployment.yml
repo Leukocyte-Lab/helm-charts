@@ -112,6 +112,12 @@ spec:
                   key: "RABBITMQ_CONN_STR"
             - name: "APP_VERSION"
               value: {{ .Chart.AppVersion | quote }}
+            {{- if .Values.postfix.enabled }}
+            - name: SMTP_HOST
+              value: "postfix.$(NAMESPACE).svc.cluster.local"
+            - name: SMTP_PORT
+              value: {{ .Values.postfix.service.port | quote }}
+            {{- end }}
             - name: KEYGEN_URL
               value: {{ .Values.keygen.url | default "https://api.keygen.sh"}}
           livenessProbe:
