@@ -385,6 +385,7 @@ minio:
         versioning: true
       - name: packet
       - name: integration
+      - name: report-setting
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
