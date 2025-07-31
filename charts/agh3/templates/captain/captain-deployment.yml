@@ -112,7 +112,24 @@ spec:
               "-c",
               "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
             ]
+      {{- if .Values.vector.enabled }}
+      volumes:
+        - name: vector-captain-config
+          configMap:
+            name: vector-captain-config
+        - name: logs
+          emptyDir: {}
+      {{- end }}
       containers:
+        {{- if .Values.vector.enabled }}
+        - name: vector
+          image: {{ .Values.vector.image.repository }}:{{ .Values.vector.image.tag }}
+          volumeMounts:
+            - name: vector-captain-config
+              mountPath: /etc/vector
+            - name: logs
+              mountPath: /logs
+        {{- end }}
         - name: captain
           image: {{ include "captain.image" . }}
           env:
