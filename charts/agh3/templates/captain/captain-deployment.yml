@@ -124,6 +124,7 @@ spec:
         {{- if .Values.vector.enabled }}
         - name: vector
           image: {{ .Values.vector.image.repository }}:{{ .Values.vector.image.tag }}
+          command: [ "vector", "--config", "/etc/vector/vector.toml" ]
           volumeMounts:
             - name: vector-captain-config
               mountPath: /etc/vector

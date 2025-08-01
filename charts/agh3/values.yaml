@@ -910,15 +910,22 @@ clusterFeatureEnabler:
       name: sidecar-containers-feature-enabler
       enabled: true
 
+# @section Observability parameters
 vector:
+  ## @param vector.enabled Enable Vector observability agent for captain, action-loop and controller
+  ## @param vector.image.repository Vector image repository
+  ## @param vector.image.tag Vector image tag
+  ## 
   enabled: true
   image:
     repository: timberio/vector
     tag: latest-alpine
-    pullPolicy: IfNotPresent
 
 grafana:
   enabled: false
+  persistence:
+    enabled: true
+    type: pvc
 
 tempo:
   enabled: false
