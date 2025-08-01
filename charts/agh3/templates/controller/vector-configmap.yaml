@@ -1,0 +1,32 @@
+{{- if .Values.vector.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector-controller-config
+  namespace: agh
+data:
+  vector.toml: |
+    [sources.logs]
+    type = "file"
+    include = ["/logs/app.log"]
+
+    [transforms.parse_logs_to_json]
+      type = "remap"
+      inputs = [ "logs" ]
+      source = '''
+      . = parse_json!(.message)
+      '''
+
+    [sinks.to_loki]
+    type = "loki"
+    inputs = ["parse_logs_to_json"]
+    encoding.codec = "json"
+    endpoint = 'http://loki.agh.svc.cluster.local:3100'
+      labels = {level = "{{`{{`}} level {{`}}`}}", app = "AGH3-Controller", source = "{{`{{`}} source {{`}}`}}", service = "{{`{{`}} service {{`}}`}}"}
+
+
+    [sinks.console]
+      type = "console"
+      inputs = ["logs"]
+      encoding.codec = "json"
+{{- end }}
