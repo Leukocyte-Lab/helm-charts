@@ -940,7 +940,7 @@ vector:
 grafana:
   ## @param grafana.enabled Enable Grafana
   ##
-  enabled: true
+  enabled: false
   ## @param grafana.image.repository Grafana image repository
   ##
   image:
@@ -970,7 +970,7 @@ grafana:
 grafana-tempo:
   ## @param grafana-tempo.enabled Enable Grafana Tempo
   ##
-  enabled: true
+  enabled: false
   image:
       repository: docker/bitnami/grafana-tempo
   tempo:
@@ -1006,7 +1006,7 @@ grafana-tempo:
 grafana-loki:
   ## @param grafana-loki.enabled Enable Grafana Loki
   ##
-  enabled: true
+  enabled: false
 
   loki:
     ## @param grafana-loki.loki.image.repository Loki image repository
@@ -1046,4 +1046,3 @@ grafana-loki:
   ##
   memcachedfrontend:
     enabled: false
-    
