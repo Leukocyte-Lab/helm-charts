@@ -928,7 +928,7 @@ vector:
   ## @param vector.image.tag Vector image tag (immutable tags are recommended)
   ##
   image:
-    repository: docker/timberio/vector
+    repository: timberio/vector
     tag: latest-alpine
 
 ## @section Grafana parameters
@@ -996,6 +996,15 @@ grafana-tempo:
       tag: 12-debian-12-r49
   memcached:
     enabled: false
+  externalMemcached:
+    ## @param grafana-tempo.externalMemcached.host External memcached host address
+    ## IP or FQDN in string
+    ##
+    host: agh3-memcached.agh.svc.cluster.local
+    ## @param grafana-tempo.externalMemcached.port External memcached port
+    ## Port in number
+    ##
+    port: 11211
 
 ## @section Grafana Loki parameters
 ## @descriptionStart
@@ -1040,9 +1049,15 @@ grafana-loki:
   ## @param grafana-loki.memcachedchunks.enabled Enable memcached for chunks caching
   ##
   memcachedchunks:
-    enabled: false
+    enabled: true
+    image:
+      repository: docker/bitnami/memcached
+      tag: 1.6.39-debian-12-r0
 
   ## @param grafana-loki.memcachedfrontend.enabled Enable memcached for frontend caching
   ##
   memcachedfrontend:
-    enabled: false
+    enabled: true
+    image:
+      repository: docker/bitnami/memcached
+      tag: 1.6.39-debian-12-r0

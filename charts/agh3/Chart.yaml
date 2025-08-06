@@ -55,3 +55,8 @@ dependencies:
     version: 4.0.14
     repository: https://charts.bitnami.com/bitnami
     condition: grafana-tempo.enabled
+  - name: memcached
+    version: 7.9.4
+    repository: https://charts.bitnami.com/bitnami
+    condition: memcached.enabled
+
