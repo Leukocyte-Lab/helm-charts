@@ -923,7 +923,7 @@ clusterFeatureEnabler:
 vector:
   ## @param vector.enabled Enable Vector observability agent for captain, action-loop and controller
   ##
-  enabled: true
+  enabled: false
   ## @param vector.image.repository Vector image repository
   ## @param vector.image.tag Vector image tag (immutable tags are recommended)
   ##
