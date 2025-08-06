@@ -33,6 +33,10 @@ global:
   storageClass: ""
   volumePermissions:
     enabled: true
+  ## @section Security parameters
+  ## @param global.security.allowInsecureImages Allow unrecognized images, this is be use for `grafana-tempo/charts/memcached/templates/NOTES.txt` warning
+  security:
+    allowInsecureImages: true
 ## @section crds parameters
 ##
 crds:
@@ -625,7 +629,7 @@ actionLoop:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-actionloop
-    tag: v1.15.0
+    tag: "451-snapshot"
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param actionLoop.serviceAccount.create Create serviceAccount for Action Loop
@@ -655,7 +659,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.15.0
+    tag: "451-snapshot"
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -910,25 +914,136 @@ clusterFeatureEnabler:
       name: sidecar-containers-feature-enabler
       enabled: true
 
-# @section Observability parameters
+## @section Vector parameters
+## @descriptionStart
+## Vector observability agent for AGH3 captain, action-loop, and controller modules.
+## ref: https://vector.dev
+## @descriptionEnd
+##
 vector:
   ## @param vector.enabled Enable Vector observability agent for captain, action-loop and controller
-  ## @param vector.image.repository Vector image repository
-  ## @param vector.image.tag Vector image tag
-  ## 
+  ##
   enabled: true
+  ## @param vector.image.repository Vector image repository
+  ## @param vector.image.tag Vector image tag (immutable tags are recommended)
+  ##
   image:
-    repository: timberio/vector
+    repository: docker/timberio/vector
     tag: latest-alpine
 
+## @section Grafana parameters
+## @descriptionStart
+## Grafana dashboard service for visualizing metrics, logs, and traces.
+## ref: https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+## @descriptionEnd
+##
 grafana:
-  enabled: false
+  ## @param grafana.enabled Enable Grafana
+  ##
+  enabled: true
+  ## @param grafana.image.repository Grafana image repository
+  ##
+  image:
+    repository: docker/grafana/grafana
+  ## @param grafana.initChownData.image.repository Init container image repository for setting data directory ownership
+  ##
+  initChownData:
+    image:
+      repository: docker/busybox
+  ## @param grafana.downloadDashboardsImage.repository Image repository used to download dashboards
+  ##
+  downloadDashboardsImage:
+    repository: docker/curlimages/curl
+  ## @param grafana.persistence.enabled Enable Grafana persistence
+  ## @param grafana.persistence.type Persistence type for Grafana (pvc or other supported types)
+  ##
   persistence:
     enabled: true
     type: pvc
 
-tempo:
-  enabled: false
+## @section Grafana Tempo parameters
+## @descriptionStart
+## Grafana Tempo distributed tracing backend.
+## ref: https://artifacthub.io/packages/helm/bitnami/grafana-tempo
+## @descriptionEnd
+##
+grafana-tempo:
+  ## @param grafana-tempo.enabled Enable Grafana Tempo
+  ##
+  enabled: true
+  image:
+      repository: docker/bitnami/grafana-tempo
+  tempo:
+    ## @param grafana-tempo.tempo.image.repository Tempo image repository
+    ##
+    image:
+      repository: docker/bitnami/grafana-tempo
+  queryFrontend:
+    ## @param grafana-tempo.queryFrontend.image.repository Tempo query frontend image repository
+    ##
+    image:
+      repository: docker/bitnami/grafana-tempo-query
+  vulture:
+    ## @param grafana-tempo.vulture.image.repository Tempo vulture image repository
+    ##
+    image:
+      repository: docker/bitnami/grafana-tempo-vulture
+  volumePermissions:
+    ## @param grafana-tempo.volumePermissions.image.repository Image repository for setting volume permissions
+    ##
+    image:
+      repository: docker/bitnami/os-shell
+      tag: 12-debian-12-r49
+  memcached:
+    enabled: false
 
-loki:
-  enabled: false
+## @section Grafana Loki parameters
+## @descriptionStart
+## Grafana Loki log aggregation system.
+## ref: https://artifacthub.io/packages/helm/bitnami/grafana-loki
+## @descriptionEnd
+##
+grafana-loki:
+  ## @param grafana-loki.enabled Enable Grafana Loki
+  ##
+  enabled: true
+
+  loki:
+    ## @param grafana-loki.loki.image.repository Loki image repository
+    ## @param grafana-loki.loki.image.tag Loki image tag (immutable tags are recommended)
+    ##
+    image:
+      repository: docker/bitnami/grafana-loki
+      tag: 3.5.3-debian-12-r0
+
+  gateway:
+    ## @param grafana-loki.gateway.image.repository Loki gateway image repository
+    ## @param grafana-loki.gateway.image.tag Loki gateway image tag
+    ##
+    image:
+      repository: docker/bitnami/nginx
+      tag: 1.29.0-debian-12-r5
+
+  volumePermissions:
+    ## @param grafana-loki.volumePermissions.image.repository Image repository for setting volume permissions
+    ## @param grafana-loki.volumePermissions.image.tag Image tag for setting volume permissions
+    ##
+    image:
+      repository: docker/bitnami/os-shell
+      tag: 12-debian-12-r49
+
+  ## @param grafana-loki.grafanaalloy.enabled Enable integration with Grafana Alloy
+  ##
+  grafanaalloy:
+    enabled: false
+
+  ## @param grafana-loki.memcachedchunks.enabled Enable memcached for chunks caching
+  ##
+  memcachedchunks:
+    enabled: false
+
+  ## @param grafana-loki.memcachedfrontend.enabled Enable memcached for frontend caching
+  ##
+  memcachedfrontend:
+    enabled: false
+    
