@@ -17,5 +17,17 @@ dependencies:
 - name: postfix
   repository: https://charts.lkc-lab.com
   version: 0.1.2
-digest: sha256:6ee00be8f0955258e2ccf1539856472fa646314a0ef674b49d970286ebaefcfb
-generated: "2025-02-24T15:21:29.63248+08:00"
+- name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 9.3.0
+- name: grafana-loki
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.0.2
+- name: grafana-tempo
+  repository: https://charts.bitnami.com/bitnami
+  version: 4.0.14
+- name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 7.9.4
+digest: sha256:0d42d2a0527434644cc94cb526030f14a3ae1f8e238cd2967eca3f91993a0e5d
+generated: "2025-08-06T13:02:35.690373877+08:00"
