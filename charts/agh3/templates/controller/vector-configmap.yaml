@@ -21,7 +21,7 @@ data:
     type = "loki"
     inputs = ["parse_logs_to_json"]
     encoding.codec = "json"
-    endpoint = 'http://agh3-grafana-loki-gateway.agh.svc.cluster.local'
+    endpoint = 'http://agh3-grafana-loki-gateway.{{ .Release.Namespace }}.svc.cluster.local'
       labels = {level = "{{`{{`}} level {{`}}`}}", app = "AGH3-Controller", source = "{{`{{`}} source {{`}}`}}", service = "{{`{{`}} service {{`}}`}}"}
 
 

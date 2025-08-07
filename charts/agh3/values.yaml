@@ -929,7 +929,7 @@ vector:
   ##
   image:
     repository: timberio/vector
-    tag: latest-alpine
+    tag: latest-debian
 
 ## @section Grafana parameters
 ## @descriptionStart
@@ -978,6 +978,9 @@ grafana-tempo:
     ##
     image:
       repository: docker/bitnami/grafana-tempo
+    traces:
+      otlp:
+        grpc: true
   queryFrontend:
     ## @param grafana-tempo.queryFrontend.image.repository Tempo query frontend image repository
     ##
@@ -994,6 +997,19 @@ grafana-tempo:
     image:
       repository: docker/bitnami/os-shell
       tag: 12-debian-12-r49
+  ## @param grafana-tempo.ingester.resources.requests.memory Ingester memory requests
+  ## @param grafana-tempo.ingester.resources.requests.cpu Ingester CPU requests
+  ## @param grafana-tempo.ingester.resources.limits.memory Ingester memory limits
+  ## @param grafana-tempo.ingester.resources.limits.cpu Ingester CPU limits
+  ## Need to prevent OOMKilled
+  ingester:
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "2Gi"
+        cpu: "1000m"
   memcached:
     enabled: false
   externalMemcached:
@@ -1049,15 +1065,35 @@ grafana-loki:
   ## @param grafana-loki.memcachedchunks.enabled Enable memcached for chunks caching
   ##
   memcachedchunks:
-    enabled: true
-    image:
-      repository: docker/bitnami/memcached
-      tag: 1.6.39-debian-12-r0
+    enabled: false
+
+  ## @param grafana-loki.externalMemcachedChunks.host External memcached host address
+  ## IP or FQDN in string
+  ##
+  externalMemcachedChunks:
+    host: agh3-memcached.agh.svc.cluster.local
+    port: 11211
 
   ## @param grafana-loki.memcachedfrontend.enabled Enable memcached for frontend caching
   ##
   memcachedfrontend:
-    enabled: true
-    image:
-      repository: docker/bitnami/memcached
-      tag: 1.6.39-debian-12-r0
+    enabled: false
+
+  ## @param grafana-loki.externalMemcachedFrontend.host External memcached host address
+  ## IP or FQDN in string
+  ##
+  externalMemcachedFrontend:
+    host: agh3-memcached.agh.svc.cluster.local
+    port: 11211
+
+## @section Memcached parameters
+## @descriptionStart
+## Memcached distributed caching system.
+## ref: https://artifacthub.io/packages/helm/bitnami/memcached
+## @descriptionEnd
+##
+memcached:
+  enabled: true
+  image:
+    repository: docker/bitnami/memcached
+    tag: 1.6.39-debian-12-r0
