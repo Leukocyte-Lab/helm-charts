@@ -77,9 +77,30 @@ spec:
               "-c",
               "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
             ]
+      {{- if .Values.vector.enabled }}
+      volumes:
+        - name: vector-action-loop-config
+          configMap:
+            name: vector-action-loop-config
+        - name: logs
+          emptyDir: {}
+      {{- end }}
       containers:
+        {{- if .Values.vector.enabled }}
+        - name: vector
+          image: {{ .Values.vector.image.repository }}:{{ .Values.vector.image.tag }}
+          command: [ "vector", "--config", "/etc/vector/vector.toml" ]
+          volumeMounts:
+            - name: vector-action-loop-config
+              mountPath: /etc/vector
+            - name: logs
+              mountPath: /logs
+        {{- end }}
         - name: action-loop
           image: {{ include "actionLoop.image" . }}
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
           env:
             - name: IMAGE_REGISTRY_URL
               value: {{ .Values.global.imageRegistry }}
@@ -87,6 +108,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            {{- if index .Values "grafana-tempo" "enabled" }}
+            - name: OTEL_COLLECTOR_URL
+              value: "agh3-grafana-tempo-distributor.{{ .Release.Namespace }}.svc.cluster.local:4317"
+            {{- end }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_URL
               value: "redis-master.$(NAMESPACE).svc.cluster.local:6379"

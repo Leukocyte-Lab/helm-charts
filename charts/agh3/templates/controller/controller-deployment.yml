@@ -42,15 +42,40 @@ spec:
               "-c",
               "until curl -f --user $RABBITMQ_USERNAME:$RABBITMQ_PASSWORD $RABBITMQ_API_ENDPOINT ; do echo waiting for rabbitmq; sleep 1; done",
             ]
+      {{- if .Values.vector.enabled }}
+      volumes:
+        - name: vector-controller-config
+          configMap:
+            name: vector-controller-config
+        - name: logs
+          emptyDir: {}
+      {{- end }}
       containers:
+        {{- if .Values.vector.enabled }}
+        - name: vector
+          image: {{ .Values.vector.image.repository }}:{{ .Values.vector.image.tag }}
+          command: [ "vector", "--config", "/etc/vector/vector.toml" ]
+          volumeMounts:
+            - name: vector-controller-config
+              mountPath: /etc/vector
+            - name: logs
+              mountPath: /logs
+        {{- end }}
         - name: controller
           image: {{ include "controller.image" . }}
           args:
-          - "--health-probe-bind-address=:8081"
+            - "--health-probe-bind-address=:8081"
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
           env:
             {{- if .Values.kueue.enabled }}
             - name: KUEUE_NAME
               value: {{ .Values.kueue.queueName.local }}
+            {{- end }}
+            {{- if index .Values "grafana-tempo" "enabled" }}
+            - name: OTEL_COLLECTOR_URL
+              value: "agh3-grafana-tempo-distributor.{{ .Release.Namespace }}.svc.cluster.local:4317"
             {{- end }}
             - name: SA_NAME
               value: {{ include "controller.serviceAccountName" . }}
