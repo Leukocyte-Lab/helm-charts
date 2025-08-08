@@ -350,7 +350,7 @@ minio:
     test:
       image:
         repository: docker/curlimages/curl
-        tag: latest
+        tag: 8.15.0
         pullPolicy: IfNotPresent
         pullSecrets: []
     ## Minio Bucket Test image
@@ -362,7 +362,7 @@ minio:
     bucket:
       image:
         repository: docker/minio/mc
-        tag: latest
+        tag: RELEASE.2025-07-16T15-35-03Z
         pullPolicy: IfNotPresent
         pullSecrets: []
   ## @param minio.auth.rootUser Internal database root user
