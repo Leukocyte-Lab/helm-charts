@@ -407,7 +407,7 @@ ref: https://artifacthub.io/packages/helm/bitnami/memcached
 
 | Name                           | Description                    | Value                                 |
 | ------------------------------ | ------------------------------ | ------------------------------------- |
-| `memcached.enabled`            | Enable Memcached               | `true`                                |
+| `memcached.enabled`            | Enable Memcached               | `false`                               |
 | `memcached.image.repository`   | Memcached image repository     | `docker/bitnami/memcached`            |
 | `memcached.image.tag`          | Memcached image tag            | `1.6.39-debian-12-r0`                 |
 
