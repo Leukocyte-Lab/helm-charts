@@ -3,30 +3,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vector-action-loop-config
-  namespace: agh
+  namespace: {{ .Release.Namespace }}
 data:
-  vector.toml: |
-    [sources.logs]
-    type = "file"
-    include = ["/logs/app.log"]
-
-    [transforms.parse_logs_to_json]
-      type = "remap"
-      inputs = [ "logs" ]
-      source = '''
-      . = parse_json!(.message)
-      '''
-
-    [sinks.to_loki]
-    type = "loki"
-    inputs = ["parse_logs_to_json"]
-    encoding.codec = "json"
-    endpoint = 'http://agh3-grafana-loki-gateway.{{ .Release.Namespace }}.svc.cluster.local'
-      labels = {level = "{{`{{`}} level {{`}}`}}", app = "AGH3-Action-Loop", source = "{{`{{`}} source {{`}}`}}", service = "{{`{{`}} service {{`}}`}}"}
-
-
-    [sinks.console]
-      type = "console"
-      inputs = ["logs"]
-      encoding.codec = "json"
+  vector.toml: |-
+    {{- $content := .Files.Get "files/vector.toml" }}
+    {{ $content | replace "${NAMESPACE}" .Release.Namespace | replace "${APP_NAME}" "AGH3-Action-Loop" | nindent 4 }}
 {{- end }}
