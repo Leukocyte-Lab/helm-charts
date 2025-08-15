@@ -1,0 +1,23 @@
+[sources.logs]
+type = "file"
+include = ["/logs/app.log"]
+
+[transforms.parse_logs_to_json]
+type = "remap"
+inputs = [ "logs" ]
+source = '''
+. = parse_json!(.message)
+'''
+
+[sinks.to_loki]
+type = "loki"
+inputs = ["parse_logs_to_json"]
+encoding.codec = "json"
+endpoint = 'http://agh3-grafana-loki-gateway.${NAMESPACE}.svc.cluster.local'
+labels = {level = "{{ level }}", app = "${APP_NAME}", source = "{{ source }}", service = "{{ service }}"}
+
+
+[sinks.console]
+type = "console"
+inputs = ["logs"]
+encoding.codec = "json"

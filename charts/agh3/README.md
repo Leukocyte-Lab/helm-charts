@@ -326,3 +326,88 @@ ref: https://github.com/Leukocyte-Lab/AGH3-Report
 | `report.image.pullSecrets` | Specify docker-registry secret names as an array  | `[]`                              |
 | `report.extraEnv`          | UI additional environment variables               | `{}`                              |
 
+### Vector parameters
+
+Vector observability agent for AGH3 captain, action-loop, and controller modules.  
+ref: https://vector.dev
+
+| Name                        | Description                                                     | Value             |
+| ---------------------------| --------------------------------------------------------------- | ----------------- |
+| `vector.enabled`           | Enable Vector observability agent                               | `false`           |
+| `vector.image.repository`  | Vector image repository                                         | `timberio/vector` |
+| `vector.image.tag`         | Vector image tag (immutable tags are recommended)               | `latest-debian`   |
+
+
+### Grafana parameters
+
+Grafana dashboard service for visualizing metrics, logs, and traces.  
+ref: https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+
+| Name                                    | Description                                                         | Value                  |
+| --------------------------------------- | ------------------------------------------------------------------- | ---------------------- |
+| `grafana.enabled`                       | Enable Grafana                                                      | `false`                |
+| `grafana.image.repository`             | Grafana image repository                                            | `docker/grafana/grafana` |
+| `grafana.initChownData.image.repository`| Init container image for setting data ownership                     | `docker/busybox`       |
+| `grafana.downloadDashboardsImage.repository` | Image repository used to download dashboards                    | `docker/curlimages/curl` |
+| `grafana.persistence.enabled`          | Enable Grafana persistence                                          | `true`                 |
+| `grafana.persistence.type`             | Persistence type for Grafana                                        | `pvc`                  |
+
+
+### Grafana Tempo parameters
+
+Grafana Tempo distributed tracing backend.  
+ref: https://artifacthub.io/packages/helm/bitnami/grafana-tempo
+
+| Name                                                 | Description                                                                 | Value                                 |
+| ---------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------- |
+| `grafana-tempo.enabled`                              | Enable Grafana Tempo                                                        | `false`                               |
+| `grafana-tempo.image.repository`                     | Tempo main image repository                                                 | `docker/bitnami/grafana-tempo`        |
+| `grafana-tempo.tempo.image.repository`               | Tempo OTLP image repository                                                 | `docker/bitnami/grafana-tempo`        |
+| `grafana-tempo.tempo.traces.otlp.grpc`               | Enable gRPC OTLP ingestion                                                  | `true`                                |
+| `grafana-tempo.queryFrontend.image.repository`       | Tempo query frontend image repository                                       | `docker/bitnami/grafana-tempo-query`  |
+| `grafana-tempo.vulture.image.repository`             | Tempo vulture image repository                                              | `docker/bitnami/grafana-tempo-vulture`|
+| `grafana-tempo.volumePermissions.image.repository`   | Image for volume permission setup                                           | `docker/bitnami/os-shell`             |
+| `grafana-tempo.volumePermissions.image.tag`          | Image tag for volume permission setup                                       | `12-debian-12-r49`                    |
+| `grafana-tempo.ingester.resources.requests.memory`   | Ingester memory requests                                                    | `"512Mi"`                             |
+| `grafana-tempo.ingester.resources.requests.cpu`      | Ingester CPU requests                                                       | `"250m"`                              |
+| `grafana-tempo.ingester.resources.limits.memory`     | Ingester memory limits                                                      | `"2Gi"`                               |
+| `grafana-tempo.ingester.resources.limits.cpu`        | Ingester CPU limits                                                         | `"1000m"`                             |
+| `grafana-tempo.memcached.enabled`                    | Enable internal Memcached                                                  | `false`                               |
+| `grafana-tempo.externalMemcached.host`               | External Memcached hostname                                                | `agh3-memcached.agh.svc.cluster.local` |
+| `grafana-tempo.externalMemcached.port`               | External Memcached port                                                    | `11211`                               |
+
+
+### Grafana Loki parameters
+
+Grafana Loki log aggregation system.  
+ref: https://artifacthub.io/packages/helm/bitnami/grafana-loki
+
+| Name                                                      | Description                                                             | Value                                  |
+| --------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------- |
+| `grafana-loki.enabled`                                    | Enable Grafana Loki                                                     | `false`                                |
+| `grafana-loki.loki.image.repository`                      | Loki image repository                                                   | `docker/bitnami/grafana-loki`          |
+| `grafana-loki.loki.image.tag`                             | Loki image tag                                                          | `3.5.3-debian-12-r0`                   |
+| `grafana-loki.gateway.image.repository`                   | Loki gateway image repository                                           | `docker/bitnami/nginx`                 |
+| `grafana-loki.gateway.image.tag`                          | Loki gateway image tag                                                  | `1.29.0-debian-12-r5`                  |
+| `grafana-loki.volumePermissions.image.repository`         | Volume permission image repository                                      | `docker/bitnami/os-shell`              |
+| `grafana-loki.volumePermissions.image.tag`                | Volume permission image tag                                             | `12-debian-12-r49`                     |
+| `grafana-loki.grafanaalloy.enabled`                       | Enable Grafana Alloy integration                                        | `false`                                |
+| `grafana-loki.memcachedchunks.enabled`                    | Enable Memcached for chunks caching                                     | `false`                                |
+| `grafana-loki.externalMemcachedChunks.host`               | External Memcached chunks hostname                                      | `agh3-memcached.agh.svc.cluster.local` |
+| `grafana-loki.externalMemcachedChunks.port`               | External Memcached chunks port                                          | `11211`                                |
+| `grafana-loki.memcachedfrontend.enabled`                  | Enable Memcached for frontend caching                                   | `false`                                |
+| `grafana-loki.externalMemcachedFrontend.host`             | External Memcached frontend hostname                                    | `agh3-memcached.agh.svc.cluster.local` |
+| `grafana-loki.externalMemcachedFrontend.port`             | External Memcached frontend port                                        | `11211`                                |
+
+
+### Memcached parameters
+
+Memcached distributed caching system.  
+ref: https://artifacthub.io/packages/helm/bitnami/memcached
+
+| Name                           | Description                    | Value                                 |
+| ------------------------------ | ------------------------------ | ------------------------------------- |
+| `memcached.enabled`            | Enable Memcached               | `false`                               |
+| `memcached.image.repository`   | Memcached image repository     | `docker/bitnami/memcached`            |
+| `memcached.image.tag`          | Memcached image tag            | `1.6.39-debian-12-r0`                 |
+

@@ -1,0 +1,11 @@
+{{- if .Values.vector.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector-controller-config
+  namespace: {{ .Release.Namespace }}
+data:
+  vector.toml: |-
+    {{- $content := .Files.Get "files/vector.toml" }}
+    {{ $content | replace "${NAMESPACE}" .Release.Namespace | replace "${APP_NAME}" "AGH3-Controller" | nindent 4 }}
+{{- end }}
