@@ -629,7 +629,7 @@ actionLoop:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-actionloop
-    tag: v1.15.4
+    tag: v1.15.7
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param actionLoop.serviceAccount.create Create serviceAccount for Action Loop
@@ -659,7 +659,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.15.4
+    tag: v1.15.7
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -913,7 +913,6 @@ clusterFeatureEnabler:
     sidecarContainers:
       name: sidecar-containers-feature-enabler
       enabled: true
-
 ## @section Vector parameters
 ## @descriptionStart
 ## Vector observability agent for AGH3 captain, action-loop, and controller modules.
@@ -930,7 +929,6 @@ vector:
   image:
     repository: timberio/vector
     tag: latest-debian
-
 ## @section Grafana parameters
 ## @descriptionStart
 ## Grafana dashboard service for visualizing metrics, logs, and traces.
@@ -960,7 +958,6 @@ grafana:
   persistence:
     enabled: true
     type: pvc
-
 ## @section Grafana Tempo parameters
 ## @descriptionStart
 ## Grafana Tempo distributed tracing backend.
@@ -972,7 +969,7 @@ grafana-tempo:
   ##
   enabled: false
   image:
-      repository: docker/bitnami/grafana-tempo
+    repository: docker/bitnami/grafana-tempo
   tempo:
     ## @param grafana-tempo.tempo.image.repository Tempo image repository
     ##
@@ -1021,7 +1018,6 @@ grafana-tempo:
     ## Port in number
     ##
     port: 11211
-
 ## @section Grafana Loki parameters
 ## @descriptionStart
 ## Grafana Loki log aggregation system.
@@ -1032,7 +1028,6 @@ grafana-loki:
   ## @param grafana-loki.enabled Enable Grafana Loki
   ##
   enabled: false
-
   loki:
     ## @param grafana-loki.loki.image.repository Loki image repository
     ## @param grafana-loki.loki.image.tag Loki image tag (immutable tags are recommended)
@@ -1040,7 +1035,6 @@ grafana-loki:
     image:
       repository: docker/bitnami/grafana-loki
       tag: 3.5.3-debian-12-r0
-
   gateway:
     ## @param grafana-loki.gateway.image.repository Loki gateway image repository
     ## @param grafana-loki.gateway.image.tag Loki gateway image tag
@@ -1048,7 +1042,6 @@ grafana-loki:
     image:
       repository: docker/bitnami/nginx
       tag: 1.29.0-debian-12-r5
-
   volumePermissions:
     ## @param grafana-loki.volumePermissions.image.repository Image repository for setting volume permissions
     ## @param grafana-loki.volumePermissions.image.tag Image tag for setting volume permissions
@@ -1056,36 +1049,30 @@ grafana-loki:
     image:
       repository: docker/bitnami/os-shell
       tag: 12-debian-12-r49
-
   ## @param grafana-loki.grafanaalloy.enabled Enable integration with Grafana Alloy
   ##
   grafanaalloy:
     enabled: false
-
   ## @param grafana-loki.memcachedchunks.enabled Enable memcached for chunks caching
   ##
   memcachedchunks:
     enabled: false
-
   ## @param grafana-loki.externalMemcachedChunks.host External memcached host address
   ## IP or FQDN in string
   ##
   externalMemcachedChunks:
     host: agh3-memcached.agh.svc.cluster.local
     port: 11211
-
   ## @param grafana-loki.memcachedfrontend.enabled Enable memcached for frontend caching
   ##
   memcachedfrontend:
     enabled: false
-
   ## @param grafana-loki.externalMemcachedFrontend.host External memcached host address
   ## IP or FQDN in string
   ##
   externalMemcachedFrontend:
     host: agh3-memcached.agh.svc.cluster.local
     port: 11211
-
 ## @section Memcached parameters
 ## @descriptionStart
 ## Memcached distributed caching system.
