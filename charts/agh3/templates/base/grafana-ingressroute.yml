@@ -1,0 +1,16 @@
+{{- if and .Values.ingress.enabled .Values.grafana.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-ingressroute
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`{{ empty .Values.ingress.host | ternary "grafana.argushack.com" (printf "grafana.%s" .Values.ingress.host) }}`)
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: agh3-grafana
+          port: 80
+{{- end }}
