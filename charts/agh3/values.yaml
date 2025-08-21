@@ -964,8 +964,6 @@ grafana:
   ## @param grafana.fullnameOverride Fullname override for Grafana
   ##
   fullnameOverride: grafana
-
-
 ## @section Grafana Tempo parameters
 ## @descriptionStart
 ## Grafana Tempo distributed tracing backend.
@@ -1029,7 +1027,6 @@ grafana-tempo:
   ## @param grafana-tempo.fullnameOverride Fullname override for Grafana Tempo
   ##
   fullnameOverride: grafana-tempo
-
 ## @section Grafana Loki parameters
 ## @descriptionStart
 ## Grafana Loki log aggregation system.
@@ -1088,7 +1085,6 @@ grafana-loki:
   ## @param grafana-loki.fullnameOverride Fullname override for Grafana Loki
   ##
   fullnameOverride: grafana-loki
-
 ## @section Memcached parameters
 ## @descriptionStart
 ## Memcached distributed caching system.
