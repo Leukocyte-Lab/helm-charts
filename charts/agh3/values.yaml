@@ -960,6 +960,9 @@ grafana:
   persistence:
     enabled: true
     type: pvc
+  ## @param grafana.fullnameOverride Fullname override for Grafana
+  ##
+  fullnameOverride: grafana
 
 ## @section Grafana Tempo parameters
 ## @descriptionStart
@@ -1016,11 +1019,14 @@ grafana-tempo:
     ## @param grafana-tempo.externalMemcached.host External memcached host address
     ## IP or FQDN in string
     ##
-    host: agh3-memcached.agh.svc.cluster.local
+    host: memcached.agh.svc.cluster.local
     ## @param grafana-tempo.externalMemcached.port External memcached port
     ## Port in number
     ##
     port: 11211
+  ## @param grafana-tempo.fullnameOverride Fullname override for Grafana Tempo
+  ##
+  fullnameOverride: grafana-tempo
 
 ## @section Grafana Loki parameters
 ## @descriptionStart
@@ -1071,7 +1077,7 @@ grafana-loki:
   ## IP or FQDN in string
   ##
   externalMemcachedChunks:
-    host: agh3-memcached.agh.svc.cluster.local
+    host: memcached.agh.svc.cluster.local
     port: 11211
 
   ## @param grafana-loki.memcachedfrontend.enabled Enable memcached for frontend caching
@@ -1083,8 +1089,11 @@ grafana-loki:
   ## IP or FQDN in string
   ##
   externalMemcachedFrontend:
-    host: agh3-memcached.agh.svc.cluster.local
+    host: memcached.agh.svc.cluster.local
     port: 11211
+  ## @param grafana-loki.fullnameOverride Fullname override for Grafana Loki
+  ##
+  fullnameOverride: grafana-loki
 
 ## @section Memcached parameters
 ## @descriptionStart
@@ -1097,3 +1106,6 @@ memcached:
   image:
     repository: docker/bitnami/memcached
     tag: 1.6.39-debian-12-r0
+  ## @param memcached.fullnameOverride Fullname override for Memcached
+  ##
+  fullnameOverride: memcached
