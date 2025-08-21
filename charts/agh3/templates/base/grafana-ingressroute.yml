@@ -11,6 +11,6 @@ spec:
         - name: https-redirectscheme
       services:
         - kind: Service
-          name: agh3-grafana
+          name: grafana
           port: 80
 {{- end }}
