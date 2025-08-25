@@ -13,7 +13,7 @@ source = '''
 type = "loki"
 inputs = ["parse_logs_to_json"]
 encoding.codec = "json"
-endpoint = 'http://agh3-grafana-loki-gateway.${NAMESPACE}.svc.cluster.local'
+endpoint = 'http://grafana-loki-gateway.${NAMESPACE}.svc.cluster.local'
 labels = {level = "{{ level }}", app = "${APP_NAME}", source = "{{ source }}", service = "{{ service }}"}
 
 
