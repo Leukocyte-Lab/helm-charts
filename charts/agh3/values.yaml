@@ -1046,6 +1046,202 @@ grafana-loki:
     image:
       repository: docker/bitnamilegacy/grafana-loki
       tag: 3.5.3-debian-12-r0
+    overrideConfiguration:
+      ## @param grafana-loki.loki.overrideConfiguration.storage_config Storage configuration overrides
+      ##
+      storage_config:
+        aws:
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.endpoint S3/MinIO endpoint
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.bucketnames Bucket name for storing Loki data
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.access_key_id Access key for S3/MinIO
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.secret_access_key Secret key for S3/MinIO
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.region AWS region (or dummy for MinIO)
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.s3forcepathstyle Force path-style S3 URLs
+          ##
+          endpoint: http://${MINIO_URL}
+          bucketnames: loki-data
+          access_key_id: ${MINIO_USERNAME}
+          secret_access_key: ${MINIO_PASSWORD}
+          region: us-east-1
+          s3forcepathstyle: true
+        tsdb_shipper:
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.active_index_directory Directory for active index
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_location Cache location for tsdb shipper
+          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_ttl Cache TTL for tsdb shipper
+          ##
+          active_index_directory: /loki/index
+          cache_location: /loki/index_cache
+          cache_ttl: 24h
+      schema_config:
+        ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs Loki schema configuration
+        ##
+        configs:
+          - from: 2020-07-01
+            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.store Store engine (tsdb/boltdb-shipper)
+            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.object_store Object store backend (s3/filesystem)
+            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.schema Schema version
+            ##
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.index.prefix Index table prefix
+              ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.index.period Index rollover period
+              ##
+              prefix: index_
+              period: 24h
+  compactor:
+    ## @param grafana-loki.compactor.extraArgs Additional arguments for compactor
+    ##
+    extraArgs:
+      - -config.expand-env=true
+    ## @param grafana-loki.compactor.extraEnvVars Extra environment variables for compactor
+    ##
+    extraEnvVars:
+      - name: MINIO_URL
+        valueFrom:
+          secretKeyRef:
+            name: minio-secret
+            key: url
+      - name: MINIO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-user
+      - name: MINIO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-password
+    ## @param grafana-loki.compactor.initContainers Init containers for compactor
+    ##
+    initContainers:
+      - name: minio-init
+        image: minio/mc:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Waiting for MinIO to be ready..."
+            until mc alias set local http://$MINIO_URL $MINIO_USERNAME $MINIO_PASSWORD; do
+              echo "MinIO not ready, retrying..."
+              sleep 5
+            done
+
+            echo "Creating buckets..."
+            mc mb --ignore-existing local/loki-data
+
+            echo "Applying lifecycle policies..."
+            mc ilm add local/loki-data --expiry-days 90
+
+            echo "Setup completed!"
+        env:
+        - name: MINIO_URL
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: url
+        - name: MINIO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: capt-minio-secret
+              key: capt-minio-user
+        - name: MINIO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: capt-minio-secret
+              key: capt-minio-password
+  distributor:
+    ## @param grafana-loki.distributor.extraArgs Additional arguments for distributor
+    ##
+    extraArgs:
+      - -config.expand-env=true
+    ## @param grafana-loki.distributor.extraEnvVars Extra environment variables for distributor
+    ##
+    extraEnvVars:
+      - name: MINIO_URL
+        valueFrom:
+          secretKeyRef:
+            name: minio-secret
+            key: url
+      - name: MINIO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-user
+      - name: MINIO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-password
+  ingester:
+    ## @param grafana-loki.ingester.extraArgs Additional arguments for ingester
+    ##
+    extraArgs:
+      - -config.expand-env=true
+    ## @param grafana-loki.ingester.extraEnvVars Extra environment variables for ingester
+    ##
+    extraEnvVars:
+      - name: MINIO_URL
+        valueFrom:
+          secretKeyRef:
+            name: minio-secret
+            key: url
+      - name: MINIO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-user
+      - name: MINIO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-password
+  querier:
+    ## @param grafana-loki.querier.extraArgs Additional arguments for querier
+    ##
+    extraArgs:
+      - -config.expand-env=true
+    ## @param grafana-loki.querier.extraEnvVars Extra environment variables for querier
+    ##
+    extraEnvVars:
+      - name: MINIO_URL
+        valueFrom:
+          secretKeyRef:
+            name: minio-secret
+            key: url
+      - name: MINIO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-user
+      - name: MINIO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-password
+  queryFrontend:
+    ## @param grafana-loki.queryFrontend.extraArgs Additional arguments for query frontend
+    ##
+    extraArgs:
+      - -config.expand-env=true
+    ## @param grafana-loki.queryFrontend.extraEnvVars Extra environment variables for query frontend
+    ##
+    extraEnvVars:
+      - name: MINIO_URL
+        valueFrom:
+          secretKeyRef:
+            name: minio-secret
+            key: url
+      - name: MINIO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-user
+      - name: MINIO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: capt-minio-secret
+            key: capt-minio-password
   gateway:
     ## @param grafana-loki.gateway.image.repository Loki gateway image repository
     ## @param grafana-loki.gateway.image.tag Loki gateway image tag
