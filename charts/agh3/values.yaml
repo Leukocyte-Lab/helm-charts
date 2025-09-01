@@ -391,6 +391,7 @@ minio:
       - name: integration
       - name: report-setting
       - name: review
+        versioning: true
     ## @skip minio.provisioning.policies
     ## @skip minio.provisioning.usersExistingSecrets
     ##
