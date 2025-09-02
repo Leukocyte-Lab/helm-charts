@@ -114,11 +114,11 @@ Leave as default if using external DB
 | Name                              | Description                                               | Value                         |
 | --------------------------------- | --------------------------------------------------------- | ----------------------------- |
 | `minio.internal.enabled`          | Enable internal minio                                     | `true`                        |
-| `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnami/minio`        |
+| `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnamilegacy/minio`        |
 | `minio.image.tag`                 | Internal MinIO image tag (immutable tags are recommended) | `2023.3.24`                   |
 | `minio.image.pullPolicy`          | Internal MinIO image pull policy                          | `IfNotPresent`                |
 | `minio.image.pullSecrets`         | Specify docker-registry secret names as an array          | `[]`                          |
-| `minio.clientImage.repository`    | Internal MinIO image repository                           | `docker/bitnami/minio-client` |
+| `minio.clientImage.repository`    | Internal MinIO image repository                           | `docker/bitnamilegacy/minio-client` |
 | `minio.clientImage.tag`           | Internal MinIO image tag (immutable tags are recommended) | `2023.4.12`                   |
 | `minio.clientImage.pullPolicy`    | Internal MinIO image pull policy                          | `IfNotPresent`                |
 | `minio.clientImage.pullSecrets`   | Specify docker-registry secret names as an array          | `[]`                          |

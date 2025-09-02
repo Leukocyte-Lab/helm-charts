@@ -54,7 +54,7 @@ crds:
   job:
     name: actions-crd-job
     image:
-      repository: docker/bitnami/kubectl
+      repository: docker/bitnamilegacy/kubectl
       tag: 1.28.15-debian-12-r5
       pullPolicy: IfNotPresent
       pullSecrets: []
@@ -244,7 +244,7 @@ postgresql:
   ## @param postgresql.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/postgresql
+    repository: docker/bitnamilegacy/postgresql
     tag: 15.7.0
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -329,7 +329,7 @@ minio:
   ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/minio
+    repository: docker/bitnamilegacy/minio
     tag: 2024.11.7-debian-12-r2
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -340,7 +340,7 @@ minio:
   ## @param minio.clientImage.pullSecrets Specify docker-registry secret names as an array
   ##
   clientImage:
-    repository: docker/bitnami/minio-client
+    repository: docker/bitnamilegacy/minio-client
     tag: 2024.11.17-debian-12-r1
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -471,7 +471,7 @@ redis:
     ## @param redis.image.tag Internal Redis image tag (immutable tags are recommended)
     ## @param redis.image.pullPolicy Internal Redis image pull policy
     ## @param redis.image.pullSecrets Specify docker-registry secret names as an array
-    repository: docker/bitnami/redis
+    repository: docker/bitnamilegacy/redis
     tag: 7.4.0
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -558,7 +558,7 @@ rabbitmq:
   ## @param rabbitmq.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/rabbitmq
+    repository: docker/bitnamilegacy/rabbitmq
     tag: 3.12.13-debian-12-r2
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -902,7 +902,7 @@ clusterFeatureEnabler:
   ## @param clusterFeatureEnabler.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/kubectl
+    repository: docker/bitnamilegacy/kubectl
     tag: "1.28.15-debian-12-r5"
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -977,12 +977,12 @@ grafana-tempo:
   ##
   enabled: false
   image:
-    repository: docker/bitnami/grafana-tempo
+    repository: docker/bitnamilegacy/grafana-tempo
   tempo:
     ## @param grafana-tempo.tempo.image.repository Tempo image repository
     ##
     image:
-      repository: docker/bitnami/grafana-tempo
+      repository: docker/bitnamilegacy/grafana-tempo
     traces:
       otlp:
         grpc: true
@@ -990,17 +990,17 @@ grafana-tempo:
     ## @param grafana-tempo.queryFrontend.image.repository Tempo query frontend image repository
     ##
     image:
-      repository: docker/bitnami/grafana-tempo-query
+      repository: docker/bitnamilegacy/grafana-tempo-query
   vulture:
     ## @param grafana-tempo.vulture.image.repository Tempo vulture image repository
     ##
     image:
-      repository: docker/bitnami/grafana-tempo-vulture
+      repository: docker/bitnamilegacy/grafana-tempo-vulture
   volumePermissions:
     ## @param grafana-tempo.volumePermissions.image.repository Image repository for setting volume permissions
     ##
     image:
-      repository: docker/bitnami/os-shell
+      repository: docker/bitnamilegacy/os-shell
       tag: 12-debian-12-r49
   ## @param grafana-tempo.ingester.resources.requests.memory Ingester memory requests
   ## @param grafana-tempo.ingester.resources.requests.cpu Ingester CPU requests
@@ -1044,21 +1044,21 @@ grafana-loki:
     ## @param grafana-loki.loki.image.tag Loki image tag (immutable tags are recommended)
     ##
     image:
-      repository: docker/bitnami/grafana-loki
+      repository: docker/bitnamilegacy/grafana-loki
       tag: 3.5.3-debian-12-r0
   gateway:
     ## @param grafana-loki.gateway.image.repository Loki gateway image repository
     ## @param grafana-loki.gateway.image.tag Loki gateway image tag
     ##
     image:
-      repository: docker/bitnami/nginx
+      repository: docker/bitnamilegacy/nginx
       tag: 1.29.0-debian-12-r5
   volumePermissions:
     ## @param grafana-loki.volumePermissions.image.repository Image repository for setting volume permissions
     ## @param grafana-loki.volumePermissions.image.tag Image tag for setting volume permissions
     ##
     image:
-      repository: docker/bitnami/os-shell
+      repository: docker/bitnamilegacy/os-shell
       tag: 12-debian-12-r49
   ## @param grafana-loki.grafanaalloy.enabled Enable integration with Grafana Alloy
   ##
@@ -1096,7 +1096,7 @@ grafana-loki:
 memcached:
   enabled: false
   image:
-    repository: docker/bitnami/memcached
+    repository: docker/bitnamilegacy/memcached
     tag: 1.6.39-debian-12-r0
   ## @param memcached.fullnameOverride Fullname override for Memcached
   ##

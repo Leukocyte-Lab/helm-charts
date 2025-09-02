@@ -123,7 +123,7 @@ Leave as default if using external DB
 | Name                                         | Description                                                   | Value                                           |
 | -------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
 | `postgresql.enabled`                         | Enable internal database                                      | `true`                                          |
-| `postgresql.image.repository`                | Internal database image repository                            | `docker/bitnami/postgresql`                     |
+| `postgresql.image.repository`                | Internal database image repository                            | `docker/bitnamilegacy/postgresql`                     |
 | `postgresql.image.tag`                       | Internal database image tag (immutable tags are recommended)  | `15`                                            |
 | `postgresql.image.pullPolicy`                | Internal database image pull policy                           | `IfNotPresent`                                  |
 | `postgresql.image.pullSecrets`               | Specify docker-registry secret names as an array              | `[]`                                            |
@@ -158,11 +158,11 @@ Leave as default if using external DB
 | Name                              | Description                                               | Value                         |
 | --------------------------------- | --------------------------------------------------------- | ----------------------------- |
 | `minio.internal.enabled`          | Enable internal minio                                     | `true`                        |
-| `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnami/minio`        |
+| `minio.image.repository`          | Internal MinIO image repository                           | `docker/bitnamilegacy/minio`        |
 | `minio.image.tag`                 | Internal MinIO image tag (immutable tags are recommended) | `2023.3.24`                   |
 | `minio.image.pullPolicy`          | Internal MinIO image pull policy                          | `IfNotPresent`                |
 | `minio.image.pullSecrets`         | Specify docker-registry secret names as an array          | `[]`                          |
-| `minio.clientImage.repository`    | Internal MinIO image repository                           | `docker/bitnami/minio-client` |
+| `minio.clientImage.repository`    | Internal MinIO image repository                           | `docker/bitnamilegacy/minio-client` |
 | `minio.clientImage.tag`           | Internal MinIO image tag (immutable tags are recommended) | `2023.4.12`                   |
 | `minio.clientImage.pullPolicy`    | Internal MinIO image pull policy                          | `IfNotPresent`                |
 | `minio.clientImage.pullSecrets`   | Specify docker-registry secret names as an array          | `[]`                          |
@@ -176,7 +176,7 @@ Leave as default if using external DB
 | Name                                   | Description                                                      | Value                  |
 | -------------------------------------- | ---------------------------------------------------------------- | ---------------------- |
 | `redis.enabled`                        | Enable internal redis                                            | `true`                 |
-| `redis.image.repository`               | Internal Redis image repository                                  | `docker/bitnami/redis` |
+| `redis.image.repository`               | Internal Redis image repository                                  | `docker/bitnamilegacy/redis` |
 | `redis.image.tag`                      | Internal Redis image tag (immutable tags are recommended)        | `7.4.0`                |
 | `redis.image.pullPolicy`               | Internal Redis image pull policy                                 | `IfNotPresent`         |
 | `redis.image.pullSecrets`              | Specify docker-registry secret names as an array                 | `[]`                   |
@@ -207,7 +207,7 @@ Leave as default if using external RabbitMQ
 | Name                         | Description                                                  | Value                     |
 | ---------------------------- | ------------------------------------------------------------ | ------------------------- |
 | `rabbitmq.internal.enabled`  | Enable internal rabbitmq                                     | `true`                    |
-| `rabbitmq.image.repository`  | Internal RabbitMQ image repository                           | `docker/bitnami/rabbitmq` |
+| `rabbitmq.image.repository`  | Internal RabbitMQ image repository                           | `docker/bitnamilegacy/rabbitmq` |
 | `rabbitmq.image.tag`         | Internal RabbitMQ image tag (immutable tags are recommended) | `3.12.13-debian-12-r2`    |
 | `rabbitmq.image.pullPolicy`  | Internal RabbitMQ image pull policy                          | `IfNotPresent`            |
 | `rabbitmq.image.pullSecrets` | Specify docker-registry secret names as an array             | `[]`                      |
@@ -361,12 +361,12 @@ ref: https://artifacthub.io/packages/helm/bitnami/grafana-tempo
 | Name                                                 | Description                                                                 | Value                                 |
 | ---------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------- |
 | `grafana-tempo.enabled`                              | Enable Grafana Tempo                                                        | `false`                               |
-| `grafana-tempo.image.repository`                     | Tempo main image repository                                                 | `docker/bitnami/grafana-tempo`        |
-| `grafana-tempo.tempo.image.repository`               | Tempo OTLP image repository                                                 | `docker/bitnami/grafana-tempo`        |
+| `grafana-tempo.image.repository`                     | Tempo main image repository                                                 | `docker/bitnamilegacy/grafana-tempo`        |
+| `grafana-tempo.tempo.image.repository`               | Tempo OTLP image repository                                                 | `docker/bitnamilegacy/grafana-tempo`        |
 | `grafana-tempo.tempo.traces.otlp.grpc`               | Enable gRPC OTLP ingestion                                                  | `true`                                |
-| `grafana-tempo.queryFrontend.image.repository`       | Tempo query frontend image repository                                       | `docker/bitnami/grafana-tempo-query`  |
-| `grafana-tempo.vulture.image.repository`             | Tempo vulture image repository                                              | `docker/bitnami/grafana-tempo-vulture`|
-| `grafana-tempo.volumePermissions.image.repository`   | Image for volume permission setup                                           | `docker/bitnami/os-shell`             |
+| `grafana-tempo.queryFrontend.image.repository`       | Tempo query frontend image repository                                       | `docker/bitnamilegacy/grafana-tempo-query`  |
+| `grafana-tempo.vulture.image.repository`             | Tempo vulture image repository                                              | `docker/bitnamilegacy/grafana-tempo-vulture`|
+| `grafana-tempo.volumePermissions.image.repository`   | Image for volume permission setup                                           | `docker/bitnamilegacy/os-shell`             |
 | `grafana-tempo.volumePermissions.image.tag`          | Image tag for volume permission setup                                       | `12-debian-12-r49`                    |
 | `grafana-tempo.ingester.resources.requests.memory`   | Ingester memory requests                                                    | `"512Mi"`                             |
 | `grafana-tempo.ingester.resources.requests.cpu`      | Ingester CPU requests                                                       | `"250m"`                              |
@@ -385,11 +385,11 @@ ref: https://artifacthub.io/packages/helm/bitnami/grafana-loki
 | Name                                                      | Description                                                             | Value                                  |
 | --------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------- |
 | `grafana-loki.enabled`                                    | Enable Grafana Loki                                                     | `false`                                |
-| `grafana-loki.loki.image.repository`                      | Loki image repository                                                   | `docker/bitnami/grafana-loki`          |
+| `grafana-loki.loki.image.repository`                      | Loki image repository                                                   | `docker/bitnamilegacy/grafana-loki`          |
 | `grafana-loki.loki.image.tag`                             | Loki image tag                                                          | `3.5.3-debian-12-r0`                   |
-| `grafana-loki.gateway.image.repository`                   | Loki gateway image repository                                           | `docker/bitnami/nginx`                 |
+| `grafana-loki.gateway.image.repository`                   | Loki gateway image repository                                           | `docker/bitnamilegacy/nginx`                 |
 | `grafana-loki.gateway.image.tag`                          | Loki gateway image tag                                                  | `1.29.0-debian-12-r5`                  |
-| `grafana-loki.volumePermissions.image.repository`         | Volume permission image repository                                      | `docker/bitnami/os-shell`              |
+| `grafana-loki.volumePermissions.image.repository`         | Volume permission image repository                                      | `docker/bitnamilegacy/os-shell`              |
 | `grafana-loki.volumePermissions.image.tag`                | Volume permission image tag                                             | `12-debian-12-r49`                     |
 | `grafana-loki.grafanaalloy.enabled`                       | Enable Grafana Alloy integration                                        | `false`                                |
 | `grafana-loki.memcachedchunks.enabled`                    | Enable Memcached for chunks caching                                     | `false`                                |
@@ -408,6 +408,6 @@ ref: https://artifacthub.io/packages/helm/bitnami/memcached
 | Name                           | Description                    | Value                                 |
 | ------------------------------ | ------------------------------ | ------------------------------------- |
 | `memcached.enabled`            | Enable Memcached               | `false`                               |
-| `memcached.image.repository`   | Memcached image repository     | `docker/bitnami/memcached`            |
+| `memcached.image.repository`   | Memcached image repository     | `docker/bitnamilegacy/memcached`            |
 | `memcached.image.tag`          | Memcached image tag            | `1.6.39-debian-12-r0`                 |
 
