@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - orphan/**
+      - release/**
     paths:
       - charts/agh3/**
       - .github/workflows/agh3-auto-release.yaml
