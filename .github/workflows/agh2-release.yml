@@ -6,45 +6,44 @@ on:
       - main
     paths:
       - charts/agh2/**
+      - .github/workflows/agh2-release.yaml
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
+          path: src
           fetch-depth: 0
 
-      - name: Configure Git
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          path: dest
+          ref: "gh-pages"
+          fetch-depth: 0
+
+      - name: 🪝 Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.13.3
+
+      - name: 📦 Packing Helm Charts
+        shell: bash
+        run: |
+          helm dep up src/charts/agh2
+          helm package src/charts/agh2 -u -d dest
+
+      - name: 🎁 Release Chart
+        shell: bash
+        working-directory: dest
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-      - name: Install Helm
-        uses: azure/setup-helm@v1
-        with:
-          version: v3.8.1
-
-      - name: Add Helm dependency repos
-        run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo update
-
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Dump .version.json
-        id: versions
-        run: |
-          VERSION=$(cat .version.json)
-          echo "::set-output name=version::${VERSION}"
-
-      - name: Invoke workflow Update ArgusHack in Leukocyte-Lab/ArgusHack2
-        run: |
-         echo '{"version": ${{ toJson(steps.versions.outputs.version) }}}' | gh workflow -R Leukocyte-Lab/ArgusHack2 run agh2-update.yml -r develop --json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          helm repo index . --url https://charts.lkc-lab.com/ --merge index.yaml 
+          git add $(git ls-files -o --exclude-standard)
+          git add index.yaml
+          git commit -m "Release from ref: $GITHUB_SHA"
+          git push
