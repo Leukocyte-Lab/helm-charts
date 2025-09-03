@@ -62,7 +62,7 @@ keygen:
 ##
 ingress:
   enabled: true
-  host: app.argushack.com
+  host: ""
 
   ## @section TLS parameters
   ##
