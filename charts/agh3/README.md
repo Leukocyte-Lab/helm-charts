@@ -382,22 +382,48 @@ ref: https://artifacthub.io/packages/helm/bitnami/grafana-tempo
 Grafana Loki log aggregation system.  
 ref: https://artifacthub.io/packages/helm/bitnami/grafana-loki
 
-| Name                                                      | Description                                                             | Value                                  |
-| --------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------- |
-| `grafana-loki.enabled`                                    | Enable Grafana Loki                                                     | `false`                                |
-| `grafana-loki.loki.image.repository`                      | Loki image repository                                                   | `docker/bitnami/grafana-loki`          |
-| `grafana-loki.loki.image.tag`                             | Loki image tag                                                          | `3.5.3-debian-12-r0`                   |
-| `grafana-loki.gateway.image.repository`                   | Loki gateway image repository                                           | `docker/bitnami/nginx`                 |
-| `grafana-loki.gateway.image.tag`                          | Loki gateway image tag                                                  | `1.29.0-debian-12-r5`                  |
-| `grafana-loki.volumePermissions.image.repository`         | Volume permission image repository                                      | `docker/bitnami/os-shell`              |
-| `grafana-loki.volumePermissions.image.tag`                | Volume permission image tag                                             | `12-debian-12-r49`                     |
-| `grafana-loki.grafanaalloy.enabled`                       | Enable Grafana Alloy integration                                        | `false`                                |
-| `grafana-loki.memcachedchunks.enabled`                    | Enable Memcached for chunks caching                                     | `false`                                |
-| `grafana-loki.externalMemcachedChunks.host`               | External Memcached chunks hostname                                      | `agh3-memcached.agh.svc.cluster.local` |
-| `grafana-loki.externalMemcachedChunks.port`               | External Memcached chunks port                                          | `11211`                                |
-| `grafana-loki.memcachedfrontend.enabled`                  | Enable Memcached for frontend caching                                   | `false`                                |
-| `grafana-loki.externalMemcachedFrontend.host`             | External Memcached frontend hostname                                    | `agh3-memcached.agh.svc.cluster.local` |
-| `grafana-loki.externalMemcachedFrontend.port`             | External Memcached frontend port                                        | `11211`                                |
+| Name                                                                     | Description                                        | Value                                  |
+| ------------------------------------------------------------------------ | -------------------------------------------------- | -------------------------------------- |
+| `grafana-loki.enabled`                                                   | Enable Grafana Loki                                | `false`                                |
+| `grafana-loki.loki.image.repository`                                     | Loki image repository                              | `docker/bitnami/grafana-loki`          |
+| `grafana-loki.loki.image.tag`                                            | Loki image tag                                     | `3.5.3-debian-12-r0`                   |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.endpoint`    | S3/MinIO endpoint                                  | `http://$(MINIO_URL)`                  |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.bucketnames` | Bucket name for storing Loki data                  | `loki-data`                            |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.access_key_id` | Access key for S3/MinIO                          | `$(MINIO_USERNAME)`                    |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.secret_access_key` | Secret key for S3/MinIO                         | `$(MINIO_PASSWORD)`                    |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.region`      | AWS region (or dummy for MinIO)                    | `us-east-1`                            |
+| `grafana-loki.loki.overrideConfiguration.storage_config.aws.s3forcepathstyle` | Force path-style S3 URLs                        | `true`                                 |
+| `grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.active_index_directory` | Directory for active index          | `/loki/index`                          |
+| `grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_location` | Cache location for tsdb shipper      | `/loki/index_cache`                    |
+| `grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_ttl` | Cache TTL for tsdb shipper            | `24h`                                  |
+| `grafana-loki.loki.overrideConfiguration.schema_config.configs.store`    | Store engine (tsdb/boltdb-shipper)                 | `tsdb`                                 |
+| `grafana-loki.loki.overrideConfiguration.schema_config.configs.object_store` | Object store backend (s3/filesystem)            | `s3`                                   |
+| `grafana-loki.loki.overrideConfiguration.schema_config.configs.schema`   | Schema version                                     | `v13`                                  |
+| `grafana-loki.loki.overrideConfiguration.schema_config.configs.index.prefix` | Index table prefix                               | `index_`                               |
+| `grafana-loki.loki.overrideConfiguration.schema_config.configs.index.period` | Index rollover period                            | `24h`                                  |
+| `grafana-loki.compactor.extraArgs`                                       | Additional arguments for compactor                 | `["-config.expand-env=true"]`          |
+| `grafana-loki.compactor.extraEnvVars`                                    | Extra environment variables for compactor          | `[]`                                   |
+| `grafana-loki.compactor.initContainers`                                  | Init containers for compactor                      | `[]`                                   |
+| `grafana-loki.distributor.extraArgs`                                     | Additional arguments for distributor               | `["-config.expand-env=true"]`          |
+| `grafana-loki.distributor.extraEnvVars`                                  | Extra environment variables for distributor        | `[]`                                   |
+| `grafana-loki.ingester.extraArgs`                                        | Additional arguments for ingester                  | `["-config.expand-env=true"]`          |
+| `grafana-loki.ingester.extraEnvVars`                                     | Extra environment variables for ingester           | `[]`                                   |
+| `grafana-loki.querier.extraArgs`                                         | Additional arguments for querier                   | `["-config.expand-env=true"]`          |
+| `grafana-loki.querier.extraEnvVars`                                      | Extra environment variables for querier            | `[]`                                   |
+| `grafana-loki.queryFrontend.extraArgs`                                   | Additional arguments for query frontend            | `["-config.expand-env=true"]`          |
+| `grafana-loki.queryFrontend.extraEnvVars`                                | Extra environment variables for query frontend     | `[]`                                   |
+| `grafana-loki.gateway.image.repository`                                  | Loki gateway image repository                      | `docker/bitnami/nginx`                 |
+| `grafana-loki.gateway.image.tag`                                         | Loki gateway image tag                             | `1.29.0-debian-12-r5`                  |
+| `grafana-loki.volumePermissions.image.repository`                        | Volume permission image repository                 | `docker/bitnami/os-shell`              |
+| `grafana-loki.volumePermissions.image.tag`                               | Volume permission image tag                        | `12-debian-12-r49`                     |
+| `grafana-loki.grafanaalloy.enabled`                                      | Enable Grafana Alloy integration                   | `false`                                |
+| `grafana-loki.memcachedchunks.enabled`                                   | Enable Memcached for chunks caching                | `false`                                |
+| `grafana-loki.externalMemcachedChunks.host`                              | External Memcached chunks hostname                 | `agh3-memcached.agh.svc.cluster.local` |
+| `grafana-loki.externalMemcachedChunks.port`                              | External Memcached chunks port                     | `11211`                                |
+| `grafana-loki.memcachedfrontend.enabled`                                 | Enable Memcached for frontend caching              | `false`                                |
+| `grafana-loki.externalMemcachedFrontend.host`                            | External Memcached frontend hostname               | `agh3-memcached.agh.svc.cluster.local` |
+| `grafana-loki.externalMemcachedFrontend.port`                            | External Memcached frontend port                   | `11211`                                |
+| `grafana-loki.fullnameOverride`                                          | Fullname override for Grafana Loki                 | `grafana-loki`                         |
 
 
 ### Memcached parameters
