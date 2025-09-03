@@ -243,7 +243,7 @@ minio:
   ## @param minio.image.pullSecrets Specify docker-registry secret names as an array
   ##
   image:
-    repository: docker/bitnami/minio
+    repository: docker/bitnamilegacy/minio
     tag: 2023.3.24
     pullPolicy: IfNotPresent
     pullSecrets: []
@@ -255,7 +255,7 @@ minio:
   ## @param minio.clientImage.pullSecrets Specify docker-registry secret names as an array
   ##
   clientImage:
-    repository: docker/bitnami/minio-client
+    repository: docker/bitnamilegacy/minio-client
     tag: 2023.4.12
     pullPolicy: IfNotPresent
     pullSecrets: []
