@@ -423,6 +423,9 @@ minio:
               - "s3:GetObject"
               - "s3:ListBucket"
               - "s3:HeadBucket"
+              - "s3:ListMultipartUploadParts"
+              - "s3:AbortMultipartUpload"
+              - "s3:ListBucketMultipartUploads"
       - name: agh-packet-policy
         statements:
           - effect: "Allow"
