@@ -405,7 +405,7 @@ minio:
               - "s3:GetBucketLocation"
               - "s3:ListBucket"
               - "s3:GetObject"
-      - name: agh-parser-policy
+      - name: agh-ai-policy
         statements:
           - effect: "Allow"
             resources:
