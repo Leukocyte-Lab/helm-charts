@@ -441,7 +441,7 @@ minio:
   ##
   extraEnvVarsCM: agh-minio-cm
   persistence:
-    ## @param persistence.mountPath Data volume mount path
+    ## @param minio.persistence.mountPath Data volume mount path
     ##
     mountPath: /data
 ## @section Kueue parameters
@@ -504,6 +504,7 @@ redis:
 rabbitmq:
   ## @param rabbitmq.queueName Name of the RabbitMQ queue
   queueName: action_crd_result
+  ## @skip rabbitmq.loadDefinition
   loadDefinition:
     enabled: true
     existingSecret: agh-rabbitmq-secret
@@ -745,8 +746,6 @@ captain:
 ## Packet module for AGH3.
 ## descriptionEnd
 packet:
-  ## @param packet.secret.enabled Enable secrete generate for packet
-  ##
   secret:
     ## @param packet.secret.enabled Enable secret generate for packet
     ##
@@ -766,10 +765,8 @@ packet:
 ## AI Parser module for AGH3.
 ## @descriptionEnd
 parser:
-  ## @param parser.secret.minio.enabled Enable secrete generate for parser
-  ##
   secret:
-    ## @param parser.secret.minio.enabled Enable secret generate for Parser
+    ## @param parser.secret.enabled Enable secret generate for Parser
     ##
     enabled: true
     ## @param parser.secret.minio.enabled Enable secret generate for Minio
@@ -914,6 +911,8 @@ clusterFeatureEnabler:
     name: cluster-feature-enabler-sa
   jobs:
     ## @param clusterFeatureEnabler.jobs.sidecarContainers.enabled Enable Sidecar Containers feature enabler job
+    ## @param clusterFeatureEnabler.jobs.sidecarContainers.name Sidecar Containers feature enabler job name
+    ##
     sidecarContainers:
       name: sidecar-containers-feature-enabler
       enabled: true
@@ -947,6 +946,7 @@ grafana:
   ##
   image:
     repository: docker/grafana/grafana
+  ## @param grafana.initChownData.enabled Enable init container for setting data directory ownership
   ## @param grafana.initChownData.image.repository Init container image repository for setting data directory ownership
   ##
   initChownData:
@@ -976,6 +976,8 @@ grafana-tempo:
   ## @param grafana-tempo.enabled Enable Grafana Tempo
   ##
   enabled: false
+  ## @param grafana-tempo.image.repository Tempo image repository
+  ##
   image:
     repository: docker/bitnamilegacy/grafana-tempo
   tempo:
@@ -983,6 +985,8 @@ grafana-tempo:
     ##
     image:
       repository: docker/bitnamilegacy/grafana-tempo
+    ## @param grafana-tempo.tempo.traces.otlp.grpc Enable gRPC for OTLP receiver
+    ##
     traces:
       otlp:
         grpc: true
@@ -998,6 +1002,7 @@ grafana-tempo:
       repository: docker/bitnamilegacy/grafana-tempo-vulture
   volumePermissions:
     ## @param grafana-tempo.volumePermissions.image.repository Image repository for setting volume permissions
+    ## @param grafana-tempo.volumePermissions.image.tag Image tag for setting volume permissions
     ##
     image:
       repository: docker/bitnamilegacy/os-shell
@@ -1016,6 +1021,8 @@ grafana-tempo:
         memory: "2Gi"
         cpu: "1000m"
   memcached:
+    ## @param grafana-tempo.memcached.enabled Enable memcached for Tempo
+    ##
     enabled: false
   externalMemcached:
     ## @param grafana-tempo.externalMemcached.host External memcached host address
@@ -1047,17 +1054,10 @@ grafana-loki:
       repository: docker/bitnamilegacy/grafana-loki
       tag: 3.5.3-debian-12-r0
     overrideConfiguration:
-      ## @param grafana-loki.loki.overrideConfiguration.storage_config Storage configuration overrides
+      ## @skip grafana-loki.loki.overrideConfiguration Storage configuration overrides
       ##
       storage_config:
         aws:
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.endpoint S3/MinIO endpoint
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.bucketnames Bucket name for storing Loki data
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.access_key_id Access key for S3/MinIO
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.secret_access_key Secret key for S3/MinIO
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.region AWS region (or dummy for MinIO)
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.aws.s3forcepathstyle Force path-style S3 URLs
-          ##
           endpoint: http://${MINIO_URL}
           bucketnames: loki-data
           access_key_id: ${MINIO_USERNAME}
@@ -1065,29 +1065,18 @@ grafana-loki:
           region: us-east-1
           s3forcepathstyle: true
         tsdb_shipper:
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.active_index_directory Directory for active index
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_location Cache location for tsdb shipper
-          ## @param grafana-loki.loki.overrideConfiguration.storage_config.tsdb_shipper.cache_ttl Cache TTL for tsdb shipper
-          ##
           active_index_directory: /loki/index
           cache_location: /loki/index_cache
           cache_ttl: 24h
       schema_config:
-        ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs Loki schema configuration
+        ## @skip grafana-loki.loki.overrideConfiguration.schema_config.configs Loki schema configuration
         ##
         configs:
           - from: 2020-07-01
-            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.store Store engine (tsdb/boltdb-shipper)
-            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.object_store Object store backend (s3/filesystem)
-            ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.schema Schema version
-            ##
             store: tsdb
             object_store: s3
             schema: v13
             index:
-              ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.index.prefix Index table prefix
-              ## @param grafana-loki.loki.overrideConfiguration.schema_config.configs.index.period Index rollover period
-              ##
               prefix: index_
               period: 24h
   compactor:
@@ -1095,7 +1084,7 @@ grafana-loki:
     ##
     extraArgs:
       - -config.expand-env=true
-    ## @param grafana-loki.compactor.extraEnvVars Extra environment variables for compactor
+    ## @skip grafana-loki.compactor.extraEnvVars Extra environment variables for compactor
     ##
     extraEnvVars:
       - name: MINIO_URL
@@ -1113,7 +1102,7 @@ grafana-loki:
           secretKeyRef:
             name: capt-minio-secret
             key: capt-minio-password
-    ## @param grafana-loki.compactor.initContainers Init containers for compactor
+    ## @skip grafana-loki.compactor.initContainers Init containers for compactor
     ##
     initContainers:
       - name: minio-init
@@ -1135,27 +1124,27 @@ grafana-loki:
 
             echo "Setup completed!"
         env:
-        - name: MINIO_URL
-          valueFrom:
-            secretKeyRef:
-              name: minio-secret
-              key: url
-        - name: MINIO_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: capt-minio-secret
-              key: capt-minio-user
-        - name: MINIO_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: capt-minio-secret
-              key: capt-minio-password
+          - name: MINIO_URL
+            valueFrom:
+              secretKeyRef:
+                name: minio-secret
+                key: url
+          - name: MINIO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: capt-minio-secret
+                key: capt-minio-user
+          - name: MINIO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: capt-minio-secret
+                key: capt-minio-password
   distributor:
     ## @param grafana-loki.distributor.extraArgs Additional arguments for distributor
     ##
     extraArgs:
       - -config.expand-env=true
-    ## @param grafana-loki.distributor.extraEnvVars Extra environment variables for distributor
+    ## @skip grafana-loki.distributor.extraEnvVars Extra environment variables for distributor
     ##
     extraEnvVars:
       - name: MINIO_URL
@@ -1178,7 +1167,7 @@ grafana-loki:
     ##
     extraArgs:
       - -config.expand-env=true
-    ## @param grafana-loki.ingester.extraEnvVars Extra environment variables for ingester
+    ## @skip grafana-loki.ingester.extraEnvVars Extra environment variables for ingester
     ##
     extraEnvVars:
       - name: MINIO_URL
@@ -1201,7 +1190,7 @@ grafana-loki:
     ##
     extraArgs:
       - -config.expand-env=true
-    ## @param grafana-loki.querier.extraEnvVars Extra environment variables for querier
+    ## @skip grafana-loki.querier.extraEnvVars Extra environment variables for querier
     ##
     extraEnvVars:
       - name: MINIO_URL
@@ -1224,7 +1213,7 @@ grafana-loki:
     ##
     extraArgs:
       - -config.expand-env=true
-    ## @param grafana-loki.queryFrontend.extraEnvVars Extra environment variables for query frontend
+    ## @skip grafana-loki.queryFrontend.extraEnvVars Extra environment variables for query frontend
     ##
     extraEnvVars:
       - name: MINIO_URL
@@ -1264,8 +1253,8 @@ grafana-loki:
   ##
   memcachedchunks:
     enabled: false
-  ## @param grafana-loki.externalMemcachedChunks.host External memcached host address
-  ## IP or FQDN in string
+  ## @param grafana-loki.externalMemcachedChunks.host External memcached host address (IP or FQDN in string)
+  ## @param grafana-loki.externalMemcachedChunks.port External memcached port
   ##
   externalMemcachedChunks:
     host: memcached.agh.svc.cluster.local
@@ -1274,8 +1263,8 @@ grafana-loki:
   ##
   memcachedfrontend:
     enabled: false
-  ## @param grafana-loki.externalMemcachedFrontend.host External memcached host address
-  ## IP or FQDN in string
+  ## @param grafana-loki.externalMemcachedFrontend.host External memcached host address (IP or FQDN in string)
+  ## @param grafana-loki.externalMemcachedFrontend.port External memcached port
   ##
   externalMemcachedFrontend:
     host: memcached.agh.svc.cluster.local
@@ -1290,7 +1279,12 @@ grafana-loki:
 ## @descriptionEnd
 ##
 memcached:
+  ## @param memcached.enabled Enable Memcached
+  ## @description Enable Memcached for caching
   enabled: false
+  ## @param memcached.image.repository Memcached image repository
+  ## @param memcached.image.tag Memcached image tag (immutable tags are recommended)
+  ##
   image:
     repository: docker/bitnamilegacy/memcached
     tag: 1.6.39-debian-12-r0
