@@ -49,29 +49,6 @@ spec:
               "-c",
               "until curl http://minio.$(NAMESPACE).svc.cluster.local:9000; do echo $(date) waiting... && sleep 1; done;"
             ]
-        - name: captain-init-minio-bucket-intelli-bridge
-          image: {{ include "minio-bucket-test-client.image" . }}
-          env:
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: MINIO_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-user
-            - name: MINIO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.captain.secret.minio.secretName }}
-                  key: capt-minio-password
-          command:
-            [
-              "sh",
-              "-c",
-              "until mc alias set m http://minio.$(NAMESPACE).svc.cluster.local:9000 $MINIO_USER $MINIO_PASSWORD && mc ls m/intelli-bridge; do echo $(date) waiting... && sleep 5; done;"
-            ]
         - name: captain-init-rabbitmq
           image: {{ include "rabbitmq-test-client.image" . }}
           env:
