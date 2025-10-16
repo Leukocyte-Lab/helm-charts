@@ -65,9 +65,11 @@ spec:
           image: {{ include "controller.image" . }}
           args:
             - "--health-probe-bind-address=:8081"
+          {{- if .Values.vector.enabled }}
           volumeMounts:
             - name: logs
               mountPath: /logs
+          {{- end }}
           env:
             {{- if .Values.kueue.enabled }}
             - name: KUEUE_NAME

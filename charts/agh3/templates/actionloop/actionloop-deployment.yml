@@ -98,9 +98,11 @@ spec:
         {{- end }}
         - name: action-loop
           image: {{ include "actionLoop.image" . }}
+          {{- if .Values.vector.enabled }}
           volumeMounts:
             - name: logs
               mountPath: /logs
+          {{- end }}
           env:
             - name: IMAGE_REGISTRY_URL
               value: {{ .Values.global.imageRegistry }}
