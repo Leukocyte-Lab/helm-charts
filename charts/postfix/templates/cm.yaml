@@ -101,8 +101,8 @@ data:
     smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
     myhostname = {{ .Values.mail_myhostname }}
     mydomain = {{ .Values.mydomain }}
-    lmtp_host_lookup = native
-    smtp_host_lookup = native
+    lmtp_host_lookup = dns
+    smtp_host_lookup = dns
     alias_maps = hash:/etc/aliases
     alias_database = hash:/etc/aliases
     #mydestination = $myhostname, /etc/mailname, localhost, localhost.localdomain, localhost
