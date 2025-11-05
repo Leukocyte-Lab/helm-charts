@@ -16,6 +16,17 @@ spec:
           port: 80
     {{- end }}
     {{- if .Values.captain.enabled }}
+    {{- if not .Values.captain.editor.enabled }}
+    - kind: Rule
+      match: {{ printf "%s%s" "PathPrefix(`/api/editor`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      priority: 100
+      middlewares:
+        - name: force-404-middleware
+      services:
+        - kind: Service
+          name: captain
+          port: 8080
+    {{- end }}
     - kind: Rule
       match: {{ printf "%s%s" "PathPrefix(`/api`)" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
       services:
@@ -42,4 +53,12 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: force-404-middleware
+spec:
+  replacePath:
+    path: /404
 {{- end }}
