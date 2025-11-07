@@ -154,6 +154,54 @@ agh3:
   ## @param agh3.enabled Enable agh3
   ##
   enabled: false
+  ingress:
+    ## @param agh3.ingress.enabled Enable ingress controller
+    ## @param agh3.ingress.host Ingress hostname
+    ##
+    enabled: true
+    host: app.argushack.com
+  keygen:
+    ## @param agh3.keygen.enabled Enable secret generate for keygen
+    ## @param agh3.keygen.apiToken Keygen API Token
+    ##
+    apiToken: <argo-dummy-api-token>
+    enabled: false
+  controller:
+    ## @param agh3.controller.image.repository Controller image repository
+    ## @param agh3.controller.image.tag Controller image tag (immutable tags are recommended)
+    ## @param agh3.controller.image.pullPolicy Controller image pull policy
+    ## @param agh3.controller.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-controller
+      tag: v1.3.2
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  captain:
+    ## @param agh3.captain.image.repository Captain image repository
+    ## @param agh3.captain.image.tag Captain image tag (immutable tags are recommended)
+    ## @param agh3.captain.image.pullPolicy Captain image pull policy
+    ## @param agh3.captain.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-captain
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  ## @param agh3.actionLoop.replicaCount Replica count for action loop
+  ##
+  actionLoop:
+    replicaCount: 1
+    ## @param agh3.actionLoop.image.repository Action Loop image repository
+    ## @param agh3.actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
+    ## @param agh3.actionLoop.image.pullPolicy Action Loop image pull policy
+    ## @param agh3.actionLoop.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-actionloop
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
   ## @param agh3.ui.enabled Enable UI for agh3
   ##
   ui:
