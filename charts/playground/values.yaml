@@ -154,6 +154,22 @@ agh3:
   ## @param agh3.enabled Enable agh3
   ##
   enabled: false
+  ## @param agh3.customRegistrySecret.enabled Enable custom registry secret generation
+  ##
+  customRegistrySecret:
+    ## @skip agh3.customRegistrySecret.secretName
+    ## Name of the generated secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+    ##
+    secretName: lkc-registry
+    enabled: true
+    ## @param agh3.customRegistrySecret.auth.registry URL of the registry server
+    ## @param agh3.customRegistrySecret.auth.username Username to authenticate with the registry server
+    ## @param agh3.customRegistrySecret.auth.password Password to authenticate with the registry server
+    auth:
+      registry: registry.lkc-lab.com
+      username: ""
+      password: ""
   ingress:
     ## @param agh3.ingress.enabled Enable ingress controller
     ## @param agh3.ingress.host Ingress hostname
