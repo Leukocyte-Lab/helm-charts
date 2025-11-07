@@ -15,6 +15,16 @@ spec:
           name: ui
           port: 80
     {{- end }}
+    {{- if .Values.ui.enabled }}
+    - kind: Rule
+      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - kind: Service
+          name: ui
+          port: 80
+    {{- end }}
     {{- if .Values.captain.enabled }}
     {{- if not .Values.captain.editor.enabled }}
     - kind: Rule
@@ -33,16 +43,6 @@ spec:
         - kind: Service
           name: captain
           port: 8080
-    {{- end }}
-    {{- if .Values.ui.enabled }}
-    - kind: Rule
-      match: {{ printf "%s%s" "(PathPrefix(`/api/static`) || PathPrefix(`/api/template`))" (empty .Values.ingress.host | ternary "" (print " && Host(`" (.Values.ingress.host) "`)" )) }}
-      middlewares:
-        - name: https-redirectscheme
-      services:
-        - kind: Service
-          name: ui
-          port: 80
     {{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
