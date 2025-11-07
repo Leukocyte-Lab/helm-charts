@@ -145,3 +145,54 @@ playground:
   ## @param playground.extraEnv UI additional environment variables
   ##
   extraEnv: {}
+## @section agh3 parameters
+##
+agh3:
+  ## @param agh3.fullnameOverride Fullname override for agh3
+  ##
+  fullnameOverride: agh3
+  ## @param agh3.enabled Enable agh3
+  ##
+  enabled: false
+  ## @param agh3.ui.enabled Enable UI for agh3
+  ##
+  ui:
+    enabled: false
+  ## @param agh3.report.enabled Enable Report for agh3
+  ##
+  report:
+    enabled: false
+  ## @param agh3.packet.secret.enabled Enable secret generate for packet
+  ##
+  packet:
+    secret:
+      enabled: false
+  ## @param agh3.parser.secret.enabled Enable secret generate for parser
+  ##
+  parser:
+    secret:
+      enabled: false
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  minio:
+    provisioning:
+      enabled: true
+      generateUser: true
+      ## @skip minio.provisioning.buckets
+      buckets:
+        - name: editor
+          versioning: true
+      ## @skip minio.provisioning.policies
+      ## @skip minio.provisioning.usersExistingSecrets
+      ##
+      policies:
+        - name: agh-controller-policy
+          statements:
+            - effect: "Allow"
+              resources:
+                - "arn:aws:s3:::*"
+              actions:
+                - "s3:GetBucketLocation"
+                - "s3:ListBucket"
+                - "s3:GetObject"

@@ -23,3 +23,7 @@ dependencies:
   - name: common
     version: 2.19.1
     repository: https://charts.bitnami.com/bitnami
+  - name: agh3
+    version: 3.13.11
+    repository: https://charts.lkc-lab.com
+    condition: agh3.enabled
