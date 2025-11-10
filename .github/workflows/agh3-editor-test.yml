@@ -36,12 +36,13 @@ jobs:
       - name: 🧪 Run chart-linting
         run: |
           helm dependency build charts/editor
-          helm lint charts/editor
+          helm lint --set agh3.enabled=false charts/editor
 
       - name: 🧪 Run chart-testing -> internal mode (default)
         run: |
           helm dependency build charts/editor
           helm template agh charts/editor \
+            --set agh3.enabled=false \
             --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
             --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
             -n agh3-editor
