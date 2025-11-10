@@ -41,6 +41,12 @@ jobs:
           releases-only: true
           token: ${{ secrets.GH_TOKEN }}
 
+      - name: Read AGH3 Helm Chart Version
+        id: chart-agh3
+        uses: jacobtomlinson/gha-read-helm-chart@master
+        with:
+          path: charts/agh3
+
       - name: 🔔 Checkout
         uses: actions/checkout@v4
         with:
@@ -81,6 +87,7 @@ jobs:
             cat charts/editor/Chart.yaml.tmp | \
               yq '.version = "${{ env.CHART_VERSION }}"' | \
               yq '.appVersion = "v${{ env.APP_VERSION }}"' | \
+              yq '.dependencies[0].version = "${{ steps.chart-agh3.outputs.version }}"' | \
               yq '.' > charts/editor/Chart.yaml
             rm charts/editor/Chart.yaml.tmp
 
