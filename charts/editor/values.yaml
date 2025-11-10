@@ -57,91 +57,118 @@ ingress:
     secretName: agh-playground-tls
     cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZFRENDQXZpZ0F3SUJBZ0lVV1BvMjlXUGtjOTYwWGNQMWhkMzFFKzBFUkZnd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1p6RUxNQWtHQTFVRUJoTUNWRmN4RHpBTkJnTlZCQWdNQmxSaGFYZGhiakVQTUEwR0ExVUVCd3dHVkdGcApjR1ZwTVNBd0hnWURWUVFLREJkTVpYVnJiMk41ZEdVdFRHRmlJRU52TGl3Z1RIUmtMakVVTUJJR0ExVUVBd3dMCmJHdGpMV3hoWWk1amIyMHdJQmNOTWpJeE1USXpNRGd5TkRJMldoZ1BNakV5TWpFd016QXdPREkwTWpaYU1JR0MKTVFzd0NRWURWUVFHRXdKVVZ6RVBNQTBHQTFVRUNBd0dWR0ZwZDJGdU1SZ3dGZ1lEVlFRSERBOU9aWGNnVkdGcApjR1ZwSUVOcGRIa3hJREFlQmdOVkJBb01GMHhsZFd0dlkzbDBaUzFNWVdJZ1EyOHVMQ0JNZEdRdU1Rd3dDZ1lEClZRUUxEQU5TUkZReEdEQVdCZ05WQkFNTUQzSmtkQzVzYTJNdGJHRmlMbU52YlRCWk1CTUdCeXFHU000OUFnRUcKQ0NxR1NNNDlBd0VIQTBJQUJHd0NKOWswZDN5U1VOSnpXUzlXS0x3Mm9OVkpuMW9MVkEralpzTlo1WGMvU2xsNgpWaGZDYlkvYTFLdTBlYjQxM1hIL3ZLUjBWU2pDQndlZ1RyVTBXOHlqZ2dGZk1JSUJXekNDQVJjR0ExVWRFUVNDCkFRNHdnZ0VLZ2c5eVpIUXViR3RqTFd4aFlpNWpiMjJDRVNvdWNtUjBMbXhyWXkxc1lXSXVZMjl0Z2hSc1l6QXgKTG5Ka2RDNXNhMk10YkdGaUxtTnZiWUlXS2k1c1l6QXhMbkprZEM1c2EyTXRiR0ZpTG1OdmJZSVViR013TWk1eQpaSFF1Ykd0akxXeGhZaTVqYjIyQ0Zpb3ViR013TWk1eVpIUXViR3RqTFd4aFlpNWpiMjJDRkd4ak1ETXVjbVIwCkxteHJZeTFzWVdJdVkyOXRnaFlxTG14ak1ETXVjbVIwTG14cll5MXNZV0l1WTI5dGdoUnNZekEwTG5Ka2RDNXMKYTJNdGJHRmlMbU52YllJV0tpNXNZekEwTG5Ka2RDNXNhMk10YkdGaUxtTnZiWUlVYkdNd05TNXlaSFF1Ykd0agpMV3hoWWk1amIyMkNGaW91YkdNd05TNXlaSFF1Ykd0akxXeGhZaTVqYjIwd0hRWURWUjBPQkJZRUZIeGF1a3dDCllibkF6S1lsZk9Lc2FnaWNNTjl5TUI4R0ExVWRJd1FZTUJhQUZBOWh6ZUJQdWVuRGZ2aTZTUXpzT0l3VHIrRlcKTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElDQVFEQTBnM3VWcVpTanhURFpXNFJmTzZjRnNROW1pTTdrQUFsRW50RApTV2FJQW1TVVI3UUZPazFQVjdMNFJFL0lubTA2Qm9yb0RUSVY3TTBMbnFmVjdVaENIbVVmUXdFbEhwSnYxMGV2CnFZZUluMThkSlJxWng0dFh4c3o1eHBLOGMrMHZieG1hWEFna3ZHRmtHVXNSNG1YUzRiK3V2ckN0ZVUrUGFnbGIKT2pjd2V4Qk1NZ0ZtNDU1VUtVald1VjdoN3VaNGpyRVdVbU53ZVcyR0xBMjFoaXg3VkZxTG9aSlFTby93NjkzZAptVUtGaW5Sb0Myd0lLOStVMExJVXNnU21wbWFLdmROUFFKajB1MlhpOWZzbmdwQnV5SWozSjNpNURVczV1aW04CkZmbUtqN3lKY1NaWkV0MmxYY3lCLzJDUEo1ZW8rbEFLK3YxZVpmcGQzSytYeitaQVpGRDVxbGJ0SHl3Vk5tMkQKdHhHL1N1d05UNnpDbTVLNUI3ZWhTWFMyZ2Q3cGNSSFFmZUk5OGtwUHJsT3R5RXB4YU1jL1hWT0o4QytoSnBsQQpjOVg3bml1WmJNME9WdHlxdERLVGtpTzFFRVYxNUFPUGZvaWh6QlJtTGsxaGxrbnZwQWlxU1QzSFlsT0JpWGhrCnp3MTl3SUlTNTA3N3I5SkFrRmlRQ3FMMVdiM0FlbjVaSkxQa2FUYnNyMExGUmFlZTMwQUswZmIwYUpscnE3N0YKUHlacnhUMXp2MC9nZGNneG50dmtMbXpId2hGV1FtQWVJaWphVm05dXJTQ1p6dXVWL2pQRkdIZHY3K3pGS1ZueQp0eFhlUG1jT0plT2NUcG9PRVNwbW5rNW1XZTlVK3UwbncvMzlEbW4rcm04K3ZiYW0vUUVFSWdXUnBKd2V0N3lBClgvR0Y2UT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
     key:
-## @section AGH3-CTR-Playground parameters
-## @descriptionStart
-## Playground module for AGH3.
-## ref: https://github.com/Leukocyte-Lab/AGH3-CTR-Playground
-## @descriptionEnd
+## @section agh3 parameters
 ##
-playground:
-  ## @param playground.enabled Enable Playground module
+agh3:
+  ## @param agh3.fullnameOverride Fullname override for agh3
+  ##
+  fullnameOverride: agh3
+  ## @param agh3.enabled Enable agh3
   ##
   enabled: true
-  ## @param playground.image.repository Playground image repository
-  ## @param playground.image.tag Playground image tag (immutable tags are recommended)
-  ## @param playground.image.pullPolicy Playground image pull policy
-  ## @param playground.image.pullSecrets Specify docker-registry secret names as an array
+  ## @param agh3.customRegistrySecret.enabled Enable custom registry secret generation
   ##
-  image:
-    repository: leukocyte-lab/argushack3/ctr-playground
-    tag: v1.6.12
-    pullPolicy: IfNotPresent
-    pullSecrets: []
-  ## @param playground.secret.enabled Enable secret generate for Playground
-  ##
-  secret:
-    enabled: true # Manually create secrets named as the value of `playground.secret.name` if set to false
-    ## @param playground.secret.firebase.enabled Enable secret generate for Playground Firebase
-    ## @param playground.secret.firebase.apiKey Firebase API key
-    ## @param playground.secret.firebase.authDomain Firebase auth domain
-    ## @param playground.secret.firebase.projectId Firebase project ID
-    ## @param playground.secret.firebase.storageBucket Firebase storage bucket
-    ## @param playground.secret.firebase.messagingSenderId Firebase messaging sender ID
-    ## @param playground.secret.firebase.appId Firebase app ID
-    ## @param playground.secret.firebase.measurementId Firebase measurement ID
+  customRegistrySecret:
+    ## @skip agh3.customRegistrySecret.secretName
+    ## Name of the generated secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
     ##
-    firebase:
-      ## @skip playground.secret.firebase.secretName
-      ## Secret name for Playground Firebase
-      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-      ##
-      secretName: playground-firebase-secrets
-      enabled: true
-      apiKey: ""
-      authDomain: ""
-      projectId: ""
-      storageBucket: ""
-      messagingSenderId: ""
-      appId: ""
-      measurementId: ""
-    ## @param playground.secret.ai.enabled Enable secret generate for Playground AI
+    secretName: lkc-registry
+    enabled: true
+    ## @param agh3.customRegistrySecret.auth.registry URL of the registry server
+    ## @param agh3.customRegistrySecret.auth.username Username to authenticate with the registry server
+    ## @param agh3.customRegistrySecret.auth.password Password to authenticate with the registry server
+    auth:
+      registry: registry.lkc-lab.com
+      username: ""
+      password: ""
+  ingress:
+    ## @param agh3.ingress.enabled Enable ingress controller
+    ## @param agh3.ingress.host Ingress hostname
     ##
-    ai:
-      ## @skip playground.secret.ai.secretName
-      ## Secret name for Playground AI
-      ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
-      ##
-      secretName: playground-ai-secrets
+    enabled: true
+    host: app.argushack.com
+  keygen:
+    ## @param agh3.keygen.enabled Enable secret generate for keygen
+    ## @param agh3.keygen.apiToken Keygen API Token
+    ##
+    apiToken: <argo-dummy-api-token>
+    enabled: false
+  controller:
+    ## @param agh3.controller.image.repository Controller image repository
+    ## @param agh3.controller.image.tag Controller image tag (immutable tags are recommended)
+    ## @param agh3.controller.image.pullPolicy Controller image pull policy
+    ## @param agh3.controller.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-controller
+      tag: v1.3.2
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  captain:
+    ## @param agh3.captain.image.repository Captain image repository
+    ## @param agh3.captain.image.tag Captain image tag (immutable tags are recommended)
+    ## @param agh3.captain.image.pullPolicy Captain image pull policy
+    ## @param agh3.captain.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-captain
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  ## @param agh3.actionLoop.replicaCount Replica count for action loop
+  ##
+  actionLoop:
+    replicaCount: 1
+    ## @param agh3.actionLoop.image.repository Action Loop image repository
+    ## @param agh3.actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
+    ## @param agh3.actionLoop.image.pullPolicy Action Loop image pull policy
+    ## @param agh3.actionLoop.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-actionloop
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  ## @param agh3.ui.enabled Enable UI for agh3
+  ##
+  ui:
+    enabled: false
+  ## @param agh3.report.enabled Enable Report for agh3
+  ##
+  report:
+    enabled: false
+  ## @param agh3.packet.secret.enabled Enable secret generate for packet
+  ##
+  packet:
+    secret:
+      enabled: false
+  ## @param agh3.parser.secret.enabled Enable secret generate for parser
+  ##
+  parser:
+    secret:
+      enabled: false
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  minio:
+    provisioning:
       enabled: true
-      ## @skip playground.secret.ai.workflows List of AI workflows
+      generateUser: true
+      ## @skip minio.provisioning.buckets
+      buckets:
+        - name: editor
+          versioning: true
+      ## @skip minio.provisioning.policies
+      ## @skip minio.provisioning.usersExistingSecrets
       ##
-      workflows: []
-      # @example
-      #
-      # - name: "generate-mitigations"
-      #   token: "token1"
-      # - name: "generate-mitigation"
-      #   token: "token2"
-  ## @section Playground service provisioning parameters
-  ##
-  ## @param playground.service.backendRef.kind Backend Service kind (available options: Service, ExternalService)
-  ## @param playground.service.backendRef.namespace Backend Service namespace, leave empty for the same namespace as the chart
-  ## @param playground.service.backendRef.name Backend Service name
-  ## @param playground.service.backendRef.port Backend Service port
-  ## @param playground.service.backendRef.protocol Backend Service protocol
-  ## @param playground.service.backendRef.endpoint Backend Service endpoint for the Playground service (required and must be full URL when playground.service.backendRef.kind is ExternalService, only the path or leave empty when playground.service.backendRef.kind is Service)
-  ## @param playground.service.ai.endpoint AI service endpoint
-  ##
-  service:
-    backendRef:
-      kind: "Service"
-      namespace: ""
-      name: "captain"
-      port: 8080
-      protocol: "HTTP"
-      endpoint: ""
-    ai:
-      endpoint: ""
-  ## @param playground.extraEnv UI additional environment variables
-  ##
-  extraEnv: {}
+      policies:
+        - name: agh-controller-policy
+          statements:
+            - effect: "Allow"
+              resources:
+                - "arn:aws:s3:::*"
+              actions:
+                - "s3:GetBucketLocation"
+                - "s3:ListBucket"
+                - "s3:GetObject"

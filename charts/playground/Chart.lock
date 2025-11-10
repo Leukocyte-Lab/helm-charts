@@ -2,8 +2,5 @@ dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 2.19.1
-- name: agh3
-  repository: https://charts.lkc-lab.com
-  version: 3.13.11
-digest: sha256:3d8ce2db0918cf7a956790ebceda084e72d7d3577e39eca405309898feac3a74
-generated: "2025-11-07T13:47:51.762256+08:00"
+digest: sha256:4f539b1fbde383dd5bc020d77d70655108ed4c188b7329c1639df3f1e65de2e0
+generated: "2025-11-10T15:36:24.885885+08:00"
