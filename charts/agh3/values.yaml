@@ -616,7 +616,7 @@ actionLoop:
   enabled: true
   ## @param actionLoop.replicaCount Number of Action Loop replicas
   ##
-  replicaCount: 3
+  replicaCount: 1
   ## @param actionLoop.image.repository Action Loop image repository
   ## @param actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
   ## @param actionLoop.image.pullPolicy Action Loop image pull policy
