@@ -1,0 +1,113 @@
+name: 🔧 [AGH3-Editor] Fetch & Create Chart for Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_version_increment:
+        description: "Chart Version Increment (Semver)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+      app_version_increment:
+        description: "App Version Increment (Semver or Use Existing)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - "minor"
+          - "patch"
+          - "use-existing"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏷️ Get latest Captain tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: captain
+        with:
+          repository: Leukocyte-Lab/AGH3-Captain
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: 🏷️ Get latest Controller tags from Release
+        uses: oprypin/find-latest-tag@v1
+        id: controller
+        with:
+          repository: Leukocyte-Lab/AGH3-Controller
+          releases-only: true
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Read AGH3 Helm Chart Version
+        id: chart-agh3
+        uses: jacobtomlinson/gha-read-helm-chart@master
+        with:
+          path: charts/agh3
+
+      - name: 🔔 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🖍️ Update version tags for Apps
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/editor/values.yaml charts/editor/values.yaml.tmp
+            cat charts/editor/values.yaml.tmp | \
+              yq '.agh3.captain.image.tag = "${{ steps.captain.outputs.tag }}"' | \
+              yq '.agh3.actionLoop.image.tag = "${{ steps.captain.outputs.tag }}"' | \
+              yq '.agh3.controller.image.tag = "${{ steps.controller.outputs.tag }}"' | \
+              yq '.' > charts/editor/values.yaml
+            rm charts/editor/values.yaml.tmp
+
+      - name: 📦 Install Tools for parsing semver
+        run: |
+          sudo apt update
+          sudo apt install gettext-base
+          sudo wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          sudo chmod +x /usr/local/bin/semver
+          semver --version
+
+      - name: 🔎 Get Chart versions
+        run: |
+          export APP_VERSION="$(yq '.appVersion' charts/editor/Chart.yaml | ${{ inputs.app_version_increment == 'use-existing' && 'sed "s/^v//g"' || format('xargs semver bump {0}', inputs.app_version_increment) }})"
+          export CHART_VERSION="$(yq '.version' charts/editor/Chart.yaml | xargs semver bump ${{ inputs.chart_version_increment }})"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "CHART_VERSION=$CHART_VERSION" >> "$GITHUB_ENV"
+
+      - name: 🖍️ Update Chart versions
+        uses: mikefarah/yq@v4.43.1
+        with:
+          cmd: |
+            cp charts/editor/Chart.yaml charts/editor/Chart.yaml.tmp
+            cat charts/editor/Chart.yaml.tmp | \
+              yq '.version = "${{ env.CHART_VERSION }}"' | \
+              yq '.appVersion = "v${{ env.APP_VERSION }}"' | \
+              yq '.dependencies[0].version = "${{ steps.chart-agh3.outputs.version }}"' | \
+              yq '.' > charts/editor/Chart.yaml
+            rm charts/editor/Chart.yaml.tmp
+
+      - name: 🙌 Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          branch: build/release-chart-agh3-editor-${{ env.CHART_VERSION }}
+          commit-message: |
+            build: Release chart/agh3-editor ${{ env.CHART_VERSION }}
+
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Captain: `${{ steps.captain.outputs.tag }}`
+              - ActionLoop: `${{ steps.captain.outputs.tag }}`
+              - Controller: `${{ steps.controller.outputs.tag }}`
+          title: "build: Release chart/agh3-editor `v${{ env.CHART_VERSION }}`"
+          body: |
+            - Chart Version: `${{ env.CHART_VERSION }}`
+            - App Version: `${{ env.APP_VERSION }}`
+              - Captain: `${{ steps.captain.outputs.tag }}`
+              - ActionLoop: `${{ steps.captain.outputs.tag }}`
+              - Controller: `${{ steps.controller.outputs.tag }}`

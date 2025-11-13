@@ -746,12 +746,14 @@ packet:
     ## @param packet.secret.minio.secretName Secret name for Minio
     ## @param packet.secret.minio.user Minio user
     ## @param packet.secret.minio.password Minio password
+    ## @param packet.secret.minio.policyName Minio policy name
     ##
     minio:
       enabled: true
       secretName: packet-minio-secret
       user: "packet-minio-user"
       password: ""
+      policyName: agh-packet-policy
 ## @section ai-parser parameters
 ## @descriptionStart
 ## AI Parser module for AGH3.
@@ -767,12 +769,14 @@ parser:
     ## @param parser.secret.minio.secretName Secret name for Minio
     ## @param parser.secret.minio.user Minio user
     ## @param parser.secret.minio.password Minio password
+    ## @param parser.secret.minio.policyName Minio policy name
     ##
     minio:
       enabled: true
       secretName: parser-minio-secret
       user: "parser-minio-user"
       password: ""
+      policyName: agh-ai-policy
     ## @param parser.secret.sa.enabled Enable secret generate for Parser service account
     ## @param parser.secret.sa.secretName Secret name for Parser service account
     ## @param parser.secret.sa.json Parser service account JSON
@@ -812,12 +816,14 @@ controller:
     ## @param controller.secret.minio.secretName Secret name for Minio
     ## @param controller.secret.minio.user Minio user
     ## @param controller.secret.minio.password Minio password
+    ## @param controller.secret.minio.policyName Minio policy name
     ##
     minio:
       enabled: true
       secretName: executor-minio-secret
       user: "executor-minio-user"
       password: ""
+      policyName: agh-controller-policy
   ## @param controller.serviceAccount.create Create serviceAccount for Controller
   ## @param controller.serviceAccount.name Name of the serviceAccount for Controller
   ##
