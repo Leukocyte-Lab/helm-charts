@@ -48,6 +48,21 @@ jobs:
             --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
             -n agh
 
+      - name: 🧪 Run chart-testing -> internal mode, enable observability
+        run: |
+          helm dependency build charts/agh3
+          helm template agh charts/agh3 \
+            --set customRegistrySecret.auth.username='robot$ci-test-lkc-lab+foo' \
+            --set customRegistrySecret.auth.password='ci-test-9e1e8ee7-edba-49d9-9cae-2dabf522d4d1' \
+            --set keygen.apiToken='ci-test-f9cef717fa3c' \
+            --set keygen.accountID='ci-test-50e8e2cc-a1ac-4c8d-85e3-f897be4350a0' \
+            --set vector.enabled=true \
+            --set grafana.enabled=true \
+            --set grafana-tempo.enabled=true \
+            --set grafana-loki.enabled=true \
+            --set memcached.enabled=true \
+            -n agh
+
       - name: 🧪 Run chart-testing -> internal mode, storage-system only
         run: |
           helm dependency build charts/agh3
