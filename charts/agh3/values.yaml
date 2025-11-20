@@ -805,7 +805,7 @@ controller:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-controller
-    tag: v1.3.1
+    tag: v1.3.2
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param controller.secret.enabled Enable secret generate for Controller
@@ -857,7 +857,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.13.17
+    tag: v1.13.18
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
