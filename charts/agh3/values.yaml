@@ -493,6 +493,8 @@ redis:
 ## @section RabbitMQ parameters
 ##
 rabbitmq:
+  ## @param rabbitmq.resourcesPreset RabbitMQ resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  resourcesPreset: medium
   ## @param rabbitmq.queueName Name of the RabbitMQ queue
   queueName: action_crd_result
   loadDefinition:
