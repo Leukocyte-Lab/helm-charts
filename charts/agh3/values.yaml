@@ -236,7 +236,7 @@ postgresql:
   enabled: true
   ## @skip postgresql.fullnameOverride
   fullnameOverride: db # remapping chart bitnami/postgresql -> db
-  ## @param minio.resourcesPreset Minio resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  ## @param postgresql.resourcesPreset PostgreSQL resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
   resourcesPreset: small
   ## Internal database image
   ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
@@ -461,7 +461,7 @@ redis:
   fullnameOverride: redis # remapping chart bitnami/redis -> redis
   ## @skip redis.architecture
   architecture: standalone
-  ## @param minio.resourcesPreset Minio resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  ## @param redis.resourcesPreset Redis resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
   resourcesPreset: small
   image:
     ## @param redis.image.repository Internal Redis image repository
