@@ -236,6 +236,8 @@ postgresql:
   enabled: true
   ## @skip postgresql.fullnameOverride
   fullnameOverride: db # remapping chart bitnami/postgresql -> db
+  ## @param postgresql.resourcesPreset PostgreSQL resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  resourcesPreset: small
   ## Internal database image
   ## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql/#installing-the-chart)
   ## @param postgresql.image.repository Internal database image repository
@@ -281,6 +283,8 @@ postgresql:
 ## @section Minio parameters
 ##
 minio:
+  ## @param minio.resourcesPreset Minio resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  resourcesPreset: small
   connection:
     ## @param minio.connection.type Choose to use external DB or internal DB
     ## internal` or `external` in string
@@ -454,9 +458,11 @@ redis:
   ## @param redis.enabled Enable internal redis
   enabled: true
   ## @skip redis.fullnameOverride
-  ## @skip redis.architecture
   fullnameOverride: redis # remapping chart bitnami/redis -> redis
+  ## @skip redis.architecture
   architecture: standalone
+  ## @param redis.resourcesPreset Redis resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  resourcesPreset: small
   image:
     ## @param redis.image.repository Internal Redis image repository
     ## @param redis.image.tag Internal Redis image tag (immutable tags are recommended)
@@ -493,6 +499,8 @@ redis:
 ## @section RabbitMQ parameters
 ##
 rabbitmq:
+  ## @param rabbitmq.resourcesPreset RabbitMQ resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
+  resourcesPreset: small
   ## @param rabbitmq.queueName Name of the RabbitMQ queue
   queueName: action_crd_result
   loadDefinition:
@@ -680,14 +688,12 @@ captain:
     ## @param captain.secret.minio.secretName Secret name for Minio
     ## @param captain.secret.minio.user Minio user
     ## @param captain.secret.minio.password Minio password
-    ## @param captain.secret.minio.resourcesPreset Minio resources preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge)
     ##
     minio:
       enabled: true
       secretName: capt-minio-secret
       user: "capt-minio-user"
       password: ""
-      resourcesPreset: "small"
     ## @param captain.secret.jwt.enabled Enable secret generate for JWT
     ## @param captain.secret.jwt.secretName Secret name for JWT
     ## @param captain.secret.jwt.secret JWT secret
