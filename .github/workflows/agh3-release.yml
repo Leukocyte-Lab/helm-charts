@@ -66,6 +66,7 @@ jobs:
             cp charts/agh3/values.yaml charts/agh3/values.yaml.tmp
             cat charts/agh3/values.yaml.tmp | \
               yq '.captain.image.tag = "${{ steps.captain.outputs.tag }}"' | \
+              yq '.captain.migration.image.tag = "${{ steps.captain.outputs.tag }}"' | \
               yq '.controller.image.tag = "${{ steps.controller.outputs.tag }}"' | \
               yq '.ui.image.tag = "${{ steps.ui.outputs.tag }}"' | \
               yq '.report.image.tag = "${{ steps.report.outputs.tag }}"' | \
@@ -111,6 +112,7 @@ jobs:
             - App Version: `${{ env.APP_VERSION }}`
               - ActionLoop: `${{ steps.captain.outputs.tag }}`
               - Captain: `${{ steps.captain.outputs.tag }}`
+              - Captain Migration: `${{ steps.captain.outputs.tag }}`
               - Controller: `${{ steps.controller.outputs.tag }}`
               - UI: `${{ steps.ui.outputs.tag }}`
               - Report: `${{ steps.report.outputs.tag }}`
@@ -120,6 +122,7 @@ jobs:
             - App Version: `${{ env.APP_VERSION }}`
               - ActionLoop: `${{ steps.captain.outputs.tag }}`
               - Captain: `${{ steps.captain.outputs.tag }}`
+              - Captain Migration: `${{ steps.captain.outputs.tag }}`
               - Controller: `${{ steps.controller.outputs.tag }}`
               - UI: `${{ steps.ui.outputs.tag }}`
               - Report: `${{ steps.report.outputs.tag }}`
