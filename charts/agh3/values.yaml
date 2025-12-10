@@ -724,6 +724,31 @@ captain:
       clientID: ""
       clientSecret: ""
       realm: ""
+  migration:
+    ## @param captain.migration.jobName Name of the migration job
+    ##
+    jobName: captain-migration
+    ## @param captain.migration.image.repository Image repository for the migration job
+    ## @param captain.migration.image.tag Tag for the migration job
+    ## @param captain.migration.image.pullPolicy Pull policy for the migration job
+    ## @param captain.migration.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-captain-migration
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    ## @param captain.migration.validate.image.repository Image repository for the migration validate job
+    ## @param captain.migration.validate.image.tag Tag for the migration validate job
+    ## @param captain.migration.validate.image.pullPolicy Pull policy for the migration validate job
+    ## @param captain.migration.validate.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    validate:
+      image:
+        repository: docker/bitnamilegacy/kubectl
+        tag: 1.28.15-debian-12-r5
+        pullPolicy: IfNotPresent
+        pullSecrets: []
   ## @param captain.serviceAccount.create Create serviceAccount for Captain
   ## @param captain.serviceAccount.name Name of the serviceAccount for Captain
   ##

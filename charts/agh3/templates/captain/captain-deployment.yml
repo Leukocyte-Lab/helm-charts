@@ -89,6 +89,20 @@ spec:
               "-c",
               "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
             ]
+        - name: captain-migration
+          image: {{ include "captain-migration-validate.image" . }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: {{ .Values.captain.migration.validate.image.pullPolicy }}
+          command: 
+            [
+              "sh",
+              "-c",
+              "kubectl wait --for=condition=complete job/{{ .Values.captain.migration.jobName }} -n $(NAMESPACE) --timeout=1200s",
+            ]
       {{- if .Values.vector.enabled }}
       volumes:
         - name: vector-captain-config

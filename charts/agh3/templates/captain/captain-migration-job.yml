@@ -1,0 +1,39 @@
+{{- if .Values.captain.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.captain.migration.jobName }}
+  labels:
+    {{- include "AGH3.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      {{- include "captain-migration.imagePullSecrets" . | nindent 6 }}
+      initContainers:
+      - name: captain-init-postgresql
+        image: {{ include "db.image" . }}
+        env:
+          - name: PG_CONN_STR
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.captain.secret.db.secretName }}
+                key: DB_CONN_STR
+        command:
+          [
+            "sh",
+            "-c",
+            "until pg_isready -d $PG_CONN_STR; do echo waiting for postgresql; sleep 1; done",
+          ]
+      containers:
+      - name: captain-migration
+        image: {{ include "captain-migration.image" . }}
+        env:
+          - name: DB_Conn
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.captain.secret.db.secretName }}
+                key: DB_CONN_STR
+        imagePullPolicy: {{ .Values.captain.migration.image.pullPolicy }}
+      restartPolicy: Never
+{{- end }}

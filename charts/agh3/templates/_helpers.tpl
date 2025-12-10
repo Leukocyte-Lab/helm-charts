@@ -169,6 +169,20 @@ Return the proper db image name
 {{- end }}
 
 {{/*
+Return the proper Captain migration image name
+*/}}
+{{- define "captain-migration.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.captain.migration.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
+Return the proper Captain migration validate image name
+*/}}
+{{- define "captain-migration-validate.image" -}}
+{{- include "common.images.image" (dict "imageRoot" .Values.captain.migration.validate.image "global" .Values.global) }}
+{{- end }}
+
+{{/*
 Return the proper actions-crds-job image name
 */}}
 {{- define "actions-crds-job.image" -}}
@@ -222,6 +236,13 @@ Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "captain.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.captain.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "captain-migration.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.captain.migration.image) "global" .Values.global) }}
 {{- end -}}
 
 {{/*
