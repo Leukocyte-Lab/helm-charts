@@ -239,6 +239,13 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "captain-migration.imagePullSecrets" -}}
+{{ include "common.images.pullSecrets" (dict "images" (list .Values.captain.migration.image) "global" .Values.global) }}
+{{- end -}}
+
+{{/*
 Return the name of the service account to use for the actions-crds-job
 */}}
 {{- define "actions-crds-job.serviceAccountName" -}}

@@ -9,6 +9,7 @@ spec:
   backoffLimit: 0
   template:
     spec:
+      {{- include "captain-migration.imagePullSecrets" . | nindent 6 }}
       initContainers:
       - name: captain-init-postgresql
         image: {{ include "db.image" . }}
