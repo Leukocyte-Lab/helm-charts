@@ -1,0 +1,6 @@
+dependencies:
+- name: agh3
+  repository: https://charts.lkc-lab.com
+  version: 3.13.11
+digest: sha256:626ef3e8e44ea97f2a89986bcd4378816b69c680f13b422b079d76fe9b412619
+generated: "2025-11-10T15:35:52.648279+08:00"
