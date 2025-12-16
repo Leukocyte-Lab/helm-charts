@@ -632,7 +632,7 @@ actionLoop:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-actionloop
-    tag: v1.16.4
+    tag: v1.16.5
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param actionLoop.serviceAccount.create Create serviceAccount for Action Loop
@@ -662,7 +662,7 @@ captain:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-captain
-    tag: v1.16.4
+    tag: v1.16.5
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param captain.secret.enabled Enable secret generate for Captain
@@ -859,7 +859,7 @@ ui:
   ##
   image:
     repository: leukocyte-lab/argushack3/ctr-ui
-    tag: v1.14.7
+    tag: v1.13.18
     pullPolicy: IfNotPresent
     pullSecrets: []
   ## @param ui.extraEnv UI additional environment variables
