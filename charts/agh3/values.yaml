@@ -726,10 +726,11 @@ captain:
       realm: ""
   migration:
     ## @param captain.migration.jobName Name of the migration job
-    ## @param captain.migration.ttl Time to live for the migration job
+    ## @param captain.migration.labels Labels for the migration job
     ##
     jobName: captain-migration
-    ttl: 3600
+    labels:
+      app: migration
     ## @param captain.migration.image.repository Image repository for the migration job
     ## @param captain.migration.image.tag Tag for the migration job
     ## @param captain.migration.image.pullPolicy Pull policy for the migration job

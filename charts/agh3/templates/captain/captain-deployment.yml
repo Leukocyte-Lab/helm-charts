@@ -1,3 +1,8 @@
+{{- $labelList := list -}}
+{{- range $key, $value := .Values.captain.migration.labels -}}
+  {{- $labelList = append $labelList (printf "-l %s=%s" $key $value) -}}
+{{- end -}}
+
 {{- if .Values.captain.enabled }}
 apiVersion: apps/v1
 kind: Deployment
@@ -101,7 +106,7 @@ spec:
             [
               "sh",
               "-c",
-              "kubectl wait --for=condition=complete job/{{ .Values.captain.migration.jobName }} -n $(NAMESPACE) --timeout=1200s",
+              "kubectl wait --for=condition=complete $(kubectl get jobs {{ $labelList | join " " }} --sort-by=.metadata.creationTimestamp -o name | tail -n1) -n $(NAMESPACE) --timeout=1200s",
             ]
       {{- if .Values.vector.enabled }}
       volumes:

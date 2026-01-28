@@ -2,12 +2,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Values.captain.migration.jobName }}
+  name: {{ .Values.captain.migration.jobName }}-{{ .Release.Revision }}
   labels:
+    {{- with .Values.captain.migration.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     {{- include "AGH3.labels" . | nindent 4 }}
 spec:
   backoffLimit: 0
-  ttlSecondsAfterFinished: {{ .Values.captain.migration.ttl }}
   template:
     spec:
       {{- include "captain-migration.imagePullSecrets" . | nindent 6 }}
