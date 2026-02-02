@@ -176,13 +176,6 @@ Return the proper Captain migration image name
 {{- end }}
 
 {{/*
-Return the proper Captain migration validate image name
-*/}}
-{{- define "captain-migration-validate.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.captain.migration.validate.image "global" .Values.global) }}
-{{- end }}
-
-{{/*
 Return the proper actions-crds-job image name
 */}}
 {{- define "actions-crds-job.image" -}}

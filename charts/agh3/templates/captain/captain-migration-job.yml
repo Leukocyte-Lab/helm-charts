@@ -5,9 +5,11 @@ metadata:
   name: {{ .Values.captain.migration.jobName }}
   labels:
     {{- include "AGH3.labels" . | nindent 4 }}
+annotations:
+    "helm.sh/hook": post-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   backoffLimit: 0
-  ttlSecondsAfterFinished: {{ .Values.captain.migration.ttl }}
   template:
     spec:
       {{- include "captain-migration.imagePullSecrets" . | nindent 6 }}
