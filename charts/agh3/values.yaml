@@ -655,6 +655,10 @@ captain:
   ## @param captain.enabled Enable Captain module
   ##
   enabled: true
+  ## @param captain.editor.enabled Enable editor module
+  ##
+  editor:
+    enabled: false
   ## @param captain.image.repository Captain image repository
   ## @param captain.image.tag Captain image tag (immutable tags are recommended)
   ## @param captain.image.pullPolicy Captain image pull policy
