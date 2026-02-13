@@ -1,0 +1,174 @@
+## Default values for AGH3-Playground.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
+
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
+
+## @param global.imageRegistry Global Docker Image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global storage class for dynamic provisioning
+## @param global.volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`
+##
+global:
+  imageRegistry: "registry.lkc-lab.com"
+  imagePullSecrets:
+    - lkc-registry
+  storageClass: ""
+  volumePermissions:
+    enabled: true
+## @section Common parameters
+##
+
+## @param customRegistrySecret.enabled Enable custom registry secret generation
+##
+customRegistrySecret:
+  ## @skip customRegistrySecret.secretName
+  ## Name of the generated secret
+  ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+  ##
+  secretName: lkc-registry
+  enabled: true
+  ## @param customRegistrySecret.auth.registry URL of the registry server
+  ## @param customRegistrySecret.auth.username Username to authenticate with the registry server
+  ## @param customRegistrySecret.auth.password Password to authenticate with the registry server
+  auth:
+    registry: registry.lkc-lab.com
+    username: ""
+    password: ""
+## @param ingress.enabled Enable ingress controller
+## @param ingress.host Ingress hostname
+##
+ingress:
+  enabled: true
+  host: ""
+  ## @section TLS parameters
+  ##
+  tls:
+    ## @param ingress.tls.enabled Enable TLS certificate generation
+    ## @param ingress.tls.secretName Name of the generated secret
+    ## @param ingress.tls.cert Server certificate content
+    ## @param ingress.tls.key Server private key content
+    ##
+    enabled: false
+    secretName: agh-playground-tls
+    cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZFRENDQXZpZ0F3SUJBZ0lVV1BvMjlXUGtjOTYwWGNQMWhkMzFFKzBFUkZnd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1p6RUxNQWtHQTFVRUJoTUNWRmN4RHpBTkJnTlZCQWdNQmxSaGFYZGhiakVQTUEwR0ExVUVCd3dHVkdGcApjR1ZwTVNBd0hnWURWUVFLREJkTVpYVnJiMk41ZEdVdFRHRmlJRU52TGl3Z1RIUmtMakVVTUJJR0ExVUVBd3dMCmJHdGpMV3hoWWk1amIyMHdJQmNOTWpJeE1USXpNRGd5TkRJMldoZ1BNakV5TWpFd016QXdPREkwTWpaYU1JR0MKTVFzd0NRWURWUVFHRXdKVVZ6RVBNQTBHQTFVRUNBd0dWR0ZwZDJGdU1SZ3dGZ1lEVlFRSERBOU9aWGNnVkdGcApjR1ZwSUVOcGRIa3hJREFlQmdOVkJBb01GMHhsZFd0dlkzbDBaUzFNWVdJZ1EyOHVMQ0JNZEdRdU1Rd3dDZ1lEClZRUUxEQU5TUkZReEdEQVdCZ05WQkFNTUQzSmtkQzVzYTJNdGJHRmlMbU52YlRCWk1CTUdCeXFHU000OUFnRUcKQ0NxR1NNNDlBd0VIQTBJQUJHd0NKOWswZDN5U1VOSnpXUzlXS0x3Mm9OVkpuMW9MVkEralpzTlo1WGMvU2xsNgpWaGZDYlkvYTFLdTBlYjQxM1hIL3ZLUjBWU2pDQndlZ1RyVTBXOHlqZ2dGZk1JSUJXekNDQVJjR0ExVWRFUVNDCkFRNHdnZ0VLZ2c5eVpIUXViR3RqTFd4aFlpNWpiMjJDRVNvdWNtUjBMbXhyWXkxc1lXSXVZMjl0Z2hSc1l6QXgKTG5Ka2RDNXNhMk10YkdGaUxtTnZiWUlXS2k1c1l6QXhMbkprZEM1c2EyTXRiR0ZpTG1OdmJZSVViR013TWk1eQpaSFF1Ykd0akxXeGhZaTVqYjIyQ0Zpb3ViR013TWk1eVpIUXViR3RqTFd4aFlpNWpiMjJDRkd4ak1ETXVjbVIwCkxteHJZeTFzWVdJdVkyOXRnaFlxTG14ak1ETXVjbVIwTG14cll5MXNZV0l1WTI5dGdoUnNZekEwTG5Ka2RDNXMKYTJNdGJHRmlMbU52YllJV0tpNXNZekEwTG5Ka2RDNXNhMk10YkdGaUxtTnZiWUlVYkdNd05TNXlaSFF1Ykd0agpMV3hoWWk1amIyMkNGaW91YkdNd05TNXlaSFF1Ykd0akxXeGhZaTVqYjIwd0hRWURWUjBPQkJZRUZIeGF1a3dDCllibkF6S1lsZk9Lc2FnaWNNTjl5TUI4R0ExVWRJd1FZTUJhQUZBOWh6ZUJQdWVuRGZ2aTZTUXpzT0l3VHIrRlcKTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElDQVFEQTBnM3VWcVpTanhURFpXNFJmTzZjRnNROW1pTTdrQUFsRW50RApTV2FJQW1TVVI3UUZPazFQVjdMNFJFL0lubTA2Qm9yb0RUSVY3TTBMbnFmVjdVaENIbVVmUXdFbEhwSnYxMGV2CnFZZUluMThkSlJxWng0dFh4c3o1eHBLOGMrMHZieG1hWEFna3ZHRmtHVXNSNG1YUzRiK3V2ckN0ZVUrUGFnbGIKT2pjd2V4Qk1NZ0ZtNDU1VUtVald1VjdoN3VaNGpyRVdVbU53ZVcyR0xBMjFoaXg3VkZxTG9aSlFTby93NjkzZAptVUtGaW5Sb0Myd0lLOStVMExJVXNnU21wbWFLdmROUFFKajB1MlhpOWZzbmdwQnV5SWozSjNpNURVczV1aW04CkZmbUtqN3lKY1NaWkV0MmxYY3lCLzJDUEo1ZW8rbEFLK3YxZVpmcGQzSytYeitaQVpGRDVxbGJ0SHl3Vk5tMkQKdHhHL1N1d05UNnpDbTVLNUI3ZWhTWFMyZ2Q3cGNSSFFmZUk5OGtwUHJsT3R5RXB4YU1jL1hWT0o4QytoSnBsQQpjOVg3bml1WmJNME9WdHlxdERLVGtpTzFFRVYxNUFPUGZvaWh6QlJtTGsxaGxrbnZwQWlxU1QzSFlsT0JpWGhrCnp3MTl3SUlTNTA3N3I5SkFrRmlRQ3FMMVdiM0FlbjVaSkxQa2FUYnNyMExGUmFlZTMwQUswZmIwYUpscnE3N0YKUHlacnhUMXp2MC9nZGNneG50dmtMbXpId2hGV1FtQWVJaWphVm05dXJTQ1p6dXVWL2pQRkdIZHY3K3pGS1ZueQp0eFhlUG1jT0plT2NUcG9PRVNwbW5rNW1XZTlVK3UwbncvMzlEbW4rcm04K3ZiYW0vUUVFSWdXUnBKd2V0N3lBClgvR0Y2UT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    key:
+## @section agh3 parameters
+##
+agh3:
+  ## @param agh3.fullnameOverride Fullname override for agh3
+  ##
+  fullnameOverride: agh3
+  ## @param agh3.enabled Enable agh3
+  ##
+  enabled: true
+  ## @param agh3.customRegistrySecret.enabled Enable custom registry secret generation
+  ##
+  customRegistrySecret:
+    ## @skip agh3.customRegistrySecret.secretName
+    ## Name of the generated secret
+    ## !!! DO NOT CHANGE IF YOU DON'T KNOW WHAT YOU ARE DOING !!!
+    ##
+    secretName: lkc-registry
+    enabled: true
+    ## @param agh3.customRegistrySecret.auth.registry URL of the registry server
+    ## @param agh3.customRegistrySecret.auth.username Username to authenticate with the registry server
+    ## @param agh3.customRegistrySecret.auth.password Password to authenticate with the registry server
+    auth:
+      registry: registry.lkc-lab.com
+      username: ""
+      password: ""
+  ingress:
+    ## @param agh3.ingress.enabled Enable ingress controller
+    ## @param agh3.ingress.host Ingress hostname
+    ##
+    enabled: true
+    host: app.argushack.com
+  keygen:
+    ## @param agh3.keygen.enabled Enable secret generate for keygen
+    ## @param agh3.keygen.apiToken Keygen API Token
+    ##
+    apiToken: <argo-dummy-api-token>
+    enabled: false
+  controller:
+    ## @param agh3.controller.image.repository Controller image repository
+    ## @param agh3.controller.image.tag Controller image tag (immutable tags are recommended)
+    ## @param agh3.controller.image.pullPolicy Controller image pull policy
+    ## @param agh3.controller.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-controller
+      tag: v1.3.2
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  captain:
+    ## @param agh3.captain.image.repository Captain image repository
+    ## @param agh3.captain.image.tag Captain image tag (immutable tags are recommended)
+    ## @param agh3.captain.image.pullPolicy Captain image pull policy
+    ## @param agh3.captain.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-captain
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  ## @param agh3.actionLoop.replicaCount Replica count for action loop
+  ##
+  actionLoop:
+    replicaCount: 1
+    ## @param agh3.actionLoop.image.repository Action Loop image repository
+    ## @param agh3.actionLoop.image.tag Action Loop image tag (immutable tags are recommended)
+    ## @param agh3.actionLoop.image.pullPolicy Action Loop image pull policy
+    ## @param agh3.actionLoop.image.pullSecrets Specify docker-registry secret names as an array
+    ##
+    image:
+      repository: leukocyte-lab/argushack3/ctr-actionloop
+      tag: v1.16.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+  ## @param agh3.ui.enabled Enable UI for agh3
+  ##
+  ui:
+    enabled: false
+  ## @param agh3.report.enabled Enable Report for agh3
+  ##
+  report:
+    enabled: false
+  ## @param agh3.packet.secret.enabled Enable secret generate for packet
+  ##
+  packet:
+    secret:
+      enabled: false
+  ## @param agh3.parser.secret.enabled Enable secret generate for parser
+  ##
+  parser:
+    secret:
+      enabled: false
+  ## @param minio.provisioning.enabled Enable minio provisioning
+  ## @param minio.provisioning.generateUser Enable minio user generation
+  ##
+  minio:
+    provisioning:
+      enabled: true
+      generateUser: true
+      ## @skip minio.provisioning.buckets
+      buckets:
+        - name: editor
+          versioning: true
+      ## @skip minio.provisioning.policies
+      ## @skip minio.provisioning.usersExistingSecrets
+      ##
+      policies:
+        - name: agh-controller-policy
+          statements:
+            - effect: "Allow"
+              resources:
+                - "arn:aws:s3:::*"
+              actions:
+                - "s3:GetBucketLocation"
+                - "s3:ListBucket"
+                - "s3:GetObject"
