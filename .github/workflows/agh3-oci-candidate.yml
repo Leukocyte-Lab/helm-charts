@@ -1,0 +1,96 @@
+name: '[AGH3] Explicit private OCI candidate only'
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/agh3-oci-candidate.yml
+      - .github/scripts/chart_candidate_guard.py
+      - .github/tests/test_chart_*.py
+      - .github/AGH3-OCI-CANDIDATES.md
+  workflow_dispatch:
+    inputs:
+      publish_candidate:
+        description: Publish a private non-formal candidate after readiness review
+        type: boolean
+        default: false
+      expected_source_sha:
+        description: Reviewed full SHA of protected main (must equal this run)
+        type: string
+        required: true
+permissions:
+  contents: read
+jobs:
+  offline-guards:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Offline candidate identity and refusal tests
+        run: python3 -B -m unittest discover -s .github/tests -p 'test_chart_*.py' -v
+  private-candidate:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_candidate && github.repository == 'Leukocyte-Lab/helm-charts' && github.ref == 'refs/heads/main' && github.ref_protected && vars.GHCR_CHART_CANDIDATE_ENABLED == 'true' && vars.GHCR_CHART_WRITER_EXCLUSION_VERIFIED == 'true' && vars.GHCR_CHART_COST_APPROVED == 'true' }}
+    needs: offline-guards
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    concurrency:
+      group: agh3-private-oci-candidate
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify exact source, private ownership/linkage and unused version
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISH_CANDIDATE: ${{ inputs.publish_candidate }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+          GHCR_CHART_CANDIDATE_ENABLED: ${{ vars.GHCR_CHART_CANDIDATE_ENABLED }}
+          GHCR_CHART_WRITER_EXCLUSION_VERIFIED: ${{ vars.GHCR_CHART_WRITER_EXCLUSION_VERIFIED }}
+          GHCR_CHART_COST_APPROVED: ${{ vars.GHCR_CHART_COST_APPROVED }}
+        run: python3 .github/scripts/chart_candidate_guard.py
+      - uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4
+        with:
+          version: v3.13.3
+      - name: Package unique prerelease from a temporary source copy
+        env:
+          CANDIDATE_VERSION: ${{ steps.candidate.outputs.version }}
+          CANDIDATE_FILENAME: ${{ steps.candidate.outputs.filename }}
+        run: |
+          set -euo pipefail
+          staging="$RUNNER_TEMP/agh3-candidate-source"
+          install -d "$staging" "$RUNNER_TEMP/agh3-candidate-output"
+          cp -R charts "$staging/charts"
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm dependency build "$staging/charts/postfix"
+          helm dependency build "$staging/charts/agh3"
+          helm lint "$staging/charts/agh3"
+          helm package "$staging/charts/agh3" --version "$CANDIDATE_VERSION" --destination "$RUNNER_TEMP/agh3-candidate-output"
+          helm show chart "$RUNNER_TEMP/agh3-candidate-output/$CANDIDATE_FILENAME" | python3 .github/scripts/chart_candidate_guard.py verify-archive-metadata "$CANDIDATE_VERSION"
+      - name: Login and upload only the unique private candidate
+        env:
+          GHCR_JOB_TOKEN: ${{ github.token }}
+          CANDIDATE_FILENAME: ${{ steps.candidate.outputs.filename }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$GHCR_JOB_TOKEN" | helm registry login ghcr.io --username "$GITHUB_ACTOR" --password-stdin --registry-config "$RUNNER_TEMP/agh3-candidate-registry.json"
+          helm push "$RUNNER_TEMP/agh3-candidate-output/$CANDIDATE_FILENAME" oci://ghcr.io/leukocyte-lab/charts --registry-config "$RUNNER_TEMP/agh3-candidate-registry.json"
+      - name: Read candidate archive back and compare bytes
+        env:
+          CANDIDATE_VERSION: ${{ steps.candidate.outputs.version }}
+          CANDIDATE_FILENAME: ${{ steps.candidate.outputs.filename }}
+        run: |
+          set -euo pipefail
+          install -d "$RUNNER_TEMP/agh3-candidate-readback"
+          helm pull oci://ghcr.io/leukocyte-lab/charts/agh3 --version "$CANDIDATE_VERSION" --destination "$RUNNER_TEMP/agh3-candidate-readback" --registry-config "$RUNNER_TEMP/agh3-candidate-registry.json"
+          cmp "$RUNNER_TEMP/agh3-candidate-output/$CANDIDATE_FILENAME" "$RUNNER_TEMP/agh3-candidate-readback/$CANDIDATE_FILENAME"
+          sha256sum "$RUNNER_TEMP/agh3-candidate-output/$CANDIDATE_FILENAME"
+      - name: Remove this job's temporary Helm credential file
+        if: ${{ always() }}
+        run: rm -f "$RUNNER_TEMP/agh3-candidate-registry.json"

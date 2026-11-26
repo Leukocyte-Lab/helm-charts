@@ -117,7 +117,7 @@ spec:
           {{- end }}
           env:
             - name: IMAGE_REGISTRY_URL
-              value: {{ .Values.global.imageRegistry }}
+              value: {{ include "agh3.firstPartyRegistry" . | quote }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:

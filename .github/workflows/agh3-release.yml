@@ -21,8 +21,14 @@ on:
           - "patch"
           - "use-existing"
 
+permissions:
+  contents: read
+
 jobs:
   release:
+    if: ${{ github.repository == 'Leukocyte-Lab/helm-charts' && github.ref_protected && startsWith(github.ref, 'refs/heads/') && vars.LEGACY_AGH3_CHART_AUTOMATION_ENABLED == 'true' }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: 🏷️ Get latest Captain tags from Release

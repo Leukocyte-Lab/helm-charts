@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 global:
   imageRegistry: "registry.lkc-lab.com"
+  firstPartyImageRegistry: ""
   imagePullSecrets:
     - lkc-registry
 

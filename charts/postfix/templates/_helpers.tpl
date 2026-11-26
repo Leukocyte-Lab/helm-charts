@@ -1,3 +1,10 @@
+{{/* A separate registry for organization-owned images preserves third-party defaults. */}}
+{{- define "postfix.firstPartyImage" -}}
+{{- $global := deepCopy .context.Values.global -}}
+{{- $_ := set $global "imageRegistry" (coalesce .context.Values.global.firstPartyImageRegistry .context.Values.global.imageRegistry) -}}
+{{- include "common.images.image" (dict "imageRoot" .image "global" $global) -}}
+{{- end -}}
+
 {{/*
 Expand the name of the chart.
 */}}
@@ -54,7 +61,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Return the proper Postfix image name
 */}}
 {{- define "image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- include "postfix.firstPartyImage" (dict "image" .Values.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -68,5 +75,5 @@ Return the proper Docker Image Registry Secret Names
 Return the proper Postfix image name
 */}}
 {{- define "dkim.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.dkim.image "global" .Values.global) }}
+{{- include "postfix.firstPartyImage" (dict "image" .Values.dkim.image "context" .) }}
 {{- end }}

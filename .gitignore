@@ -25,3 +25,5 @@
 # Artifacts
 artifacts/*
 **/artifacts/*
+
+__pycache__/
