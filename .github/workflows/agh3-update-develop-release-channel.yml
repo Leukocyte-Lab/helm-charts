@@ -10,10 +10,15 @@ on:
     paths:
       - charts/agh3/Chart.yaml
 
+permissions:
+  contents: read
+
 jobs:
   trigger-develop-release-channel-update:
+    if: ${{ github.repository == 'Leukocyte-Lab/helm-charts' && github.ref_protected && startsWith(github.ref, 'refs/heads/') && vars.LEGACY_AGH3_CHART_AUTOMATION_ENABLED == 'true' && (github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch') }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     steps:
       - name: 🔔 Checkout
         uses: actions/checkout@v4

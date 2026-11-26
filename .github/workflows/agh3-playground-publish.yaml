@@ -8,8 +8,14 @@ on:
     paths:
       - charts/playground/**
 
+permissions:
+  contents: read
+
 jobs:
   release:
+    if: ${{ github.repository == 'Leukocyte-Lab/helm-charts' && github.ref_protected && startsWith(github.ref, 'refs/heads/') && vars.LEGACY_AGH3_CHART_AUTOMATION_ENABLED == 'true' }}
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: 🔔 Checkout
