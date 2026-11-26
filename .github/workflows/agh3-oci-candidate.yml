@@ -5,7 +5,7 @@ on:
     paths:
       - .github/workflows/agh3-oci-candidate.yml
       - .github/scripts/chart_candidate_guard.py
-      - .github/tests/test_chart_candidate_guard.py
+      - .github/tests/test_chart_*.py
       - .github/AGH3-OCI-CANDIDATES.md
   workflow_dispatch:
     inputs:
@@ -29,7 +29,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Offline candidate identity and refusal tests
-        run: python3 -B -m unittest discover -s .github/tests -p test_chart_candidate_guard.py -v
+        run: python3 -B -m unittest discover -s .github/tests -p 'test_chart_*.py' -v
   private-candidate:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_candidate && github.repository == 'Leukocyte-Lab/helm-charts' && github.ref == 'refs/heads/main' && github.ref_protected && vars.GHCR_CHART_CANDIDATE_ENABLED == 'true' && vars.GHCR_CHART_WRITER_EXCLUSION_VERIFIED == 'true' && vars.GHCR_CHART_COST_APPROVED == 'true' }}
     needs: offline-guards
@@ -68,6 +68,7 @@ jobs:
           cp -R charts "$staging/charts"
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add grafana https://grafana.github.io/helm-charts
+          helm dependency build "$staging/charts/postfix"
           helm dependency build "$staging/charts/agh3"
           helm lint "$staging/charts/agh3"
           helm package "$staging/charts/agh3" --version "$CANDIDATE_VERSION" --destination "$RUNNER_TEMP/agh3-candidate-output"

@@ -19,11 +19,11 @@ The existing commands are compatibility code, not evidence that the old release 
 
 Publication can run only from a manual request on protected `main` with `publish_candidate=true`, the reviewed full source SHA equal to that run's SHA, and all three repository variables set to `true`: `GHCR_CHART_CANDIDATE_ENABLED`, `GHCR_CHART_WRITER_EXCLUSION_VERIFIED`, `GHCR_CHART_COST_APPROVED`. This work does not set or assume the current value of any variable.
 
-The job must first read `charts/agh3` as an existing container package owned by Leukocyte-Lab, private, linked to `Leukocyte-Lab/helm-charts`. Missing/inaccessible/different metadata stops the job. It then fully paginates active package versions and refuses an existing candidate tag or an unknown tag response. No fallback identity, package creation, relinking or visibility change is provided. Metadata reads do not prove `GITHUB_TOKEN` package write access; the actual token/access and package prerequisites remain unverified.
+The job must first read `charts/agh3` as an existing container package owned by Leukocyte-Lab, private, linked to `Leukocyte-Lab/helm-charts`. Missing/inaccessible/different metadata stops the job. Each metadata/version command has a 60-second timeout and fails closed on timeout. It then fully paginates active package versions and refuses an existing candidate tag or an unknown tag response. No fallback identity, package creation, relinking or visibility change is provided. Metadata reads do not prove `GITHUB_TOKEN` package write access; the actual token/access and package prerequisites remain unverified.
 
 The only version this workflow constructs is `0.0.0-candidate.sha<full SHA>.run<run ID>.attempt<attempt>`. It never publishes `3.15.0`, latest or another release/channel alias. A single job/concurrency group and unique run/attempt namespace avoid reuse by this workflow; all other writers must be proven to exclude that namespace before the writer-readiness gate is enabled. The tag-list check is not an atomic create-if-absent operation.
 
-Helm 3.13.3 packages a temporary copy of the existing chart/dependencies with `--version` set to the unique candidate. The original chart's 3.15.0 metadata is not rewritten or published as that version. The packaged name/version is checked again before login/push so a renamed chart cannot bypass the fixed-package preflight. No signing, provenance rewrite or old artifact retagging is performed.
+Helm builds the temporary Postfix dependency first (including its locked common child), then the AGH3 parent. It does not update lock versions. Helm 3.13.3 packages that temporary copy of the existing chart/dependencies with `--version` set to the unique candidate. The original chart's 3.15.0 metadata is not rewritten or published as that version. The packaged name/version is checked again before login/push so a renamed chart cannot bypass the fixed-package preflight. No signing, provenance rewrite or old artifact retagging is performed.
 
 The push target is `oci://ghcr.io/leukocyte-lab/charts`; Helm infers `agh3:<candidate version>` from the archive. Pull uses `oci://ghcr.io/leukocyte-lab/charts/agh3 --version <candidate>`. The workflow plans an archive readback/byte comparison, which would verify only the chart archive roundtrip, not full OCI manifest/blobs/referrers, image availability, license behavior or Kubernetes acceptance. None of those remote steps has been executed locally.
 
@@ -37,7 +37,7 @@ This CI has no promotion or formal-version publication job and no OCI-to-release
 
 ## Validation and sources
 
-Local validation is scoped to the six changed/new workflows, synthetic gate/metadata/version/archive-identity fixtures and command-preservation checks. It does not run Helm dependency/package/push/pull, Docker, Kubernetes, OEM publication, a release workflow or a paid service.
+Local validation is scoped to the six changed/new workflows, synthetic gate/metadata/version/archive-identity/timeout fixtures, empty-dependency child-before-parent shell controls and command-preservation checks. It does not run Helm dependency/package/push/pull, Docker, Kubernetes, OEM publication, a release workflow or a paid service.
 
 - [Helm OCI push/pull reference semantics](https://helm.sh/docs/topics/registries/): push omits the chart basename/tag; pull includes the chart name/version.
 - [GitHub package metadata/version API](https://docs.github.com/en/rest/packages/packages?apiVersion=2022-11-28): read-access metadata is not write authorization.

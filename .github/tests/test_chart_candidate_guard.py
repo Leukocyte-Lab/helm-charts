@@ -1,10 +1,13 @@
 import importlib.util
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location('chart_guard', ROOT / '.github/scripts/chart_candidate_guard.py')
@@ -93,6 +96,22 @@ print(os.environ['FIXTURE_VERSIONS' if '/versions?' in sys.argv[-1] else 'FIXTUR
                 self.assertEqual(success, result.returncode == 0, result.stderr)
                 self.assertEqual(success, output.exists())
                 self.assertNotIn('synthetic-job-token', result.stdout + result.stderr)
+
+    def test_api_timeout_is_bounded_and_fails_without_output(self):
+        response = mock.Mock(returncode=0, stdout=json.dumps(metadata()))
+        with mock.patch.object(guard.subprocess, 'run', return_value=response) as run:
+            guard.api('/synthetic-metadata')
+            self.assertEqual(60, run.call_args.kwargs['timeout'])
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'output'
+            env = {**valid(), 'GH_TOKEN': 'synthetic-job-token', 'GITHUB_OUTPUT': str(output)}
+            diagnostic = io.StringIO()
+            with mock.patch.dict(os.environ, env, clear=True), \
+                    mock.patch.object(guard.subprocess, 'run', side_effect=subprocess.TimeoutExpired('gh', 60)), \
+                    contextlib.redirect_stderr(diagnostic):
+                self.assertEqual(1, guard.main())
+            self.assertFalse(output.exists())
+            self.assertNotIn('synthetic-job-token', diagnostic.getvalue())
 
 
 if __name__ == '__main__':

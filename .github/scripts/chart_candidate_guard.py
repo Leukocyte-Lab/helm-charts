@@ -80,7 +80,7 @@ def api(endpoint, paginate=False):
             '-H', 'X-GitHub-Api-Version: 2022-11-28']
     if paginate:
         args += ['--paginate', '--slurp']
-    result = subprocess.run(args + [endpoint], capture_output=True, text=True, check=False)
+    result = subprocess.run(args + [endpoint], capture_output=True, text=True, check=False, timeout=60)
     if result.returncode or len(result.stdout) > 1024 * 1024:
         raise ValueError('Private metadata access is unknown')
     return json.loads(result.stdout)
@@ -97,7 +97,7 @@ def main():
         with Path(os.environ['GITHUB_OUTPUT']).open('a') as stream:
             for key, value in candidate.items():
                 stream.write(key + '=' + value + '\n')
-    except (ValueError, TypeError, OSError, KeyError):
+    except (ValueError, TypeError, OSError, KeyError, subprocess.TimeoutExpired):
         print('Chart candidate blocked: source/private/link/access/version/writer/cost readiness is unverified', file=sys.stderr)
         return 1
     return 0
