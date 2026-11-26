@@ -1,3 +1,14 @@
+{{/* Select the registry for organization-owned images without moving third-party caches. */}}
+{{- define "agh3.firstPartyRegistry" -}}
+{{- coalesce .Values.global.firstPartyImageRegistry .Values.global.imageRegistry -}}
+{{- end -}}
+
+{{- define "agh3.firstPartyImage" -}}
+{{- $global := deepCopy .context.Values.global -}}
+{{- $_ := set $global "imageRegistry" (include "agh3.firstPartyRegistry" .context) -}}
+{{- include "common.images.image" (dict "imageRoot" .image "global" $global) -}}
+{{- end -}}
+
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
@@ -172,7 +183,7 @@ Return the proper db image name
 Return the proper Captain migration image name
 */}}
 {{- define "captain-migration.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.captain.migration.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.captain.migration.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -214,14 +225,14 @@ Return the proper kueue-initialize image name
 Return the proper Captain image name
 */}}
 {{- define "captain.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.captain.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.captain.image "context" .) }}
 {{- end }}
 
 {{/*
 Return the proper checkin-daemon image name
 */}}
 {{- define "captain.service.checkinDaemon.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.captain.service.checkinDaemon.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.captain.service.checkinDaemon.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -278,7 +289,7 @@ Return the proper clusterFeatureEnabler image name
 Return the proper Action Loop image name
 */}}
 {{- define "actionLoop.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.actionLoop.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.actionLoop.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -303,7 +314,7 @@ Return the name of service account to use for Action Loop
 Return the proper Core image name
 */}}
 {{- define "controller.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.controller.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.controller.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -328,7 +339,7 @@ Return the name of the service account to use for the Controller
 Return the proper UI image name
 */}}
 {{- define "ui.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.ui.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.ui.image "context" .) }}
 {{- end }}
 
 {{/*
@@ -342,7 +353,7 @@ Return the proper Docker Image Registry Secret Names
 Return the proper UI image name
 */}}
 {{- define "report.image" -}}
-{{- include "common.images.image" (dict "imageRoot" .Values.report.image "global" .Values.global) }}
+{{- include "agh3.firstPartyImage" (dict "image" .Values.report.image "context" .) }}
 {{- end }}
 
 {{/*

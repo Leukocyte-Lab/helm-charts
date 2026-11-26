@@ -19,6 +19,7 @@ helm install agh2 lkclab/agh2
 | Name                      | Description                                     | Value                  |
 | ------------------------- | ----------------------------------------------- | ---------------------- |
 | `global.imageRegistry`    | Global Docker Image registry                    | `registry.lkc-lab.com` |
+| `global.firstPartyImageRegistry` | Optional registry for organization-owned images; empty preserves the global registry | `""` |
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `["lkc-registry"]`     |
 
 ### Proxy parameters

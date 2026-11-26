@@ -1,0 +1,17 @@
+# Candidate profile. Apply only after every organization-owned image digest,
+# private package and pull credential has been independently verified.
+# Third-party caches deliberately remain on the existing registry.
+global:
+  firstPartyImageRegistry: ghcr.io
+  imagePullSecrets:
+    - lkc-registry
+    - ghcr-pull
+
+# Supply both existing secrets in the same namespace outside this chart.
+# Never copy a Harbor robot credential into a GHCR secret.
+customRegistrySecret:
+  enabled: false
+
+controller:
+  env:
+    REGISTRY_URL: ghcr.io
